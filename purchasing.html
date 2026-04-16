@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ProCare - Purchasing Department</title>
@@ -234,7 +232,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:var(--text);
 .tag-rom{display:inline-block;padding:1px 5px;border-radius:3px;font-size:8px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:var(--pale);color:var(--navy)}
 @media(max-width:600px){.mc{padding:10px}.kg,.rg,.eg,.mr-grid,.ep-grid,.sc-entry-grid{grid-template-columns:1fr}}
 
-
 .pin-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:#1F4E79;display:flex;align-items:center;justify-content:center;z-index:9999}
 .pin-box{background:#fff;border-radius:16px;padding:40px 48px;max-width:380px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
 .pin-logo{font-size:28px;margin-bottom:8px}
@@ -251,97 +248,44 @@ body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:var(--text);
 .pin-error{color:#8B0000;font-size:12px;font-weight:500;min-height:18px;margin-top:4px}
 .pin-hint{font-size:11px;color:#a0aec0;margin-top:12px}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-
 </style>
 </head><body>
-<div class="pin-screen" id="pinScreen">
-  <div class="pin-box" id="pinBox">
-    <div class="pin-logo">🛒</div>
-    <div class="pin-title">Purchasing Department</div>
-    <div class="pin-sub">ProCare Medical Equipment<br>Enter your 4-digit PIN to access your dashboard</div>
-    <div class="pin-dots">
-      <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
-      <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
-    </div>
-    <div class="pin-keypad">
-      <button class="pin-key" onclick="pinKey('1')">1</button>
-      <button class="pin-key" onclick="pinKey('2')">2</button>
-      <button class="pin-key" onclick="pinKey('3')">3</button>
-      <button class="pin-key" onclick="pinKey('4')">4</button>
-      <button class="pin-key" onclick="pinKey('5')">5</button>
-      <button class="pin-key" onclick="pinKey('6')">6</button>
-      <button class="pin-key" onclick="pinKey('7')">7</button>
-      <button class="pin-key" onclick="pinKey('8')">8</button>
-      <button class="pin-key" onclick="pinKey('9')">9</button>
-      <button class="pin-key del" onclick="pinDel()">&#9003;</button>
-      <button class="pin-key" onclick="pinKey('0')">0</button>
-      <button class="pin-key del" onclick="pinClear()">&#x2715;</button>
-    </div>
-    <div class="pin-error" id="pinError"></div>
-    <div class="pin-hint">Contact your manager if you do not have a PIN</div>
-  </div>
+<div class="pin-screen" id="pinScreen"><div class="pin-box" id="pinBox">
+<div class="pin-logo">🛒</div>
+<div class="pin-title">Purchasing Department</div>
+<div class="pin-sub">ProCare Medical Equipment<br>Enter your 4-digit PIN to access your dashboard</div>
+<div class="pin-dots"><div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div><div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div></div>
+<div class="pin-keypad">
+<button class="pin-key" onclick="pinKey('1')">1</button><button class="pin-key" onclick="pinKey('2')">2</button><button class="pin-key" onclick="pinKey('3')">3</button>
+<button class="pin-key" onclick="pinKey('4')">4</button><button class="pin-key" onclick="pinKey('5')">5</button><button class="pin-key" onclick="pinKey('6')">6</button>
+<button class="pin-key" onclick="pinKey('7')">7</button><button class="pin-key" onclick="pinKey('8')">8</button><button class="pin-key" onclick="pinKey('9')">9</button>
+<button class="pin-key del" onclick="pinDel()">&#9003;</button><button class="pin-key" onclick="pinKey('0')">0</button><button class="pin-key del" onclick="pinClear()">&#x2715;</button>
 </div>
+<div class="pin-error" id="pinError"></div>
+<div class="pin-hint">Contact your manager if you do not have a PIN</div>
+</div></div>
 <div id="dashWrap" style="display:none">
-  <div class="hdr"><div class="hdr-i">
-    <div class="hdr-b"><h1>🛒 Purchasing Department</h1><p id="hdrUser">ProCare Medical Equipment</p></div>
-    <div class="hdr-w"><label>Week</label>
-      <select id="wkSel" onchange="chW(this.value)">
-        <option value="cur">Apr 14, 2026 (Current)</option>
-        <option value="p1">Apr 7, 2026</option>
-        <option value="p2">Mar 31, 2026</option>
-      </select>
-    </div>
-    <div class="hdr-r"><div class="live"></div><span class="hdr-t" id="hdrT"></span></div>
-  </div></div>
-  <nav class="nav" id="nav"></nav>
-  <div class="mc" id="mc"></div>
+<div class="hdr"><div class="hdr-i">
+<div class="hdr-b"><h1>🛒 Purchasing Department</h1><p id="hdrUser">ProCare Medical Equipment</p></div>
+<div class="hdr-w"><label>Week</label><select id="wkSel" onchange="chW(this.value)">
+<option value="cur">Apr 14, 2026 (Current)</option>
+<option value="p1">Apr 7, 2026</option>
+<option value="p2">Mar 31, 2026</option>
+</select></div>
+<div class="hdr-r"><div class="live"></div><span class="hdr-t" id="hdrT"></span></div>
+</div></div>
+<nav class="nav" id="nav"></nav>
+<div class="mc" id="mc"></div>
 </div>
 <script>
 var PIN_MAP = {"2291": "__MANAGER__", "5803": "Breanna Lawson"};
 var pinBuffer = '';
 var currentUser = null;
-
-function pinKey(k) {
-  if (pinBuffer.length >= 4) return;
-  pinBuffer += k;
-  updatePinDots();
-  if (pinBuffer.length === 4) { setTimeout(checkPin, 180); }
-}
-function pinDel() {
-  pinBuffer = pinBuffer.slice(0, -1);
-  updatePinDots();
-  document.getElementById('pinError').textContent = '';
-}
-function pinClear() {
-  pinBuffer = '';
-  updatePinDots();
-  document.getElementById('pinError').textContent = '';
-}
-function updatePinDots() {
-  for (var i = 0; i < 4; i++) {
-    var dot = document.getElementById('pd' + i);
-    if (dot) { dot.classList.toggle('filled', i < pinBuffer.length); }
-  }
-}
-function checkPin() {
-  var entered = pinBuffer;
-  pinBuffer = '';
-  updatePinDots();
-  if (PIN_MAP[entered]) {
-    currentUser = PIN_MAP[entered];
-    document.getElementById('pinScreen').style.display = 'none';
-    document.getElementById('dashWrap').style.display = 'block';
-    var uLabel = currentUser === '__MANAGER__' ? 'Justin Cavanaugh (Manager)' : currentUser;
-    document.getElementById('hdrUser').textContent = 'Signed in as: ' + uLabel;
-    initDashboard();
-  } else {
-    document.getElementById('pinError').textContent = 'Incorrect PIN. Please try again.';
-    var box = document.getElementById('pinBox');
-    box.style.animation = 'none';
-    void box.offsetHeight;
-    box.style.animation = 'shake 0.3s ease';
-  }
-}
+function pinKey(k){if(pinBuffer.length>=4)return;pinBuffer+=k;updatePinDots();if(pinBuffer.length===4){setTimeout(checkPin,180);}}
+function pinDel(){pinBuffer=pinBuffer.slice(0,-1);updatePinDots();document.getElementById('pinError').textContent='';}
+function pinClear(){pinBuffer='';updatePinDots();document.getElementById('pinError').textContent='';}
+function updatePinDots(){for(var i=0;i<4;i++){var dot=document.getElementById('pd'+i);if(dot){dot.classList.toggle('filled',i<pinBuffer.length);}}}
+function checkPin(){var entered=pinBuffer;pinBuffer='';updatePinDots();if(PIN_MAP[entered]){currentUser=PIN_MAP[entered];document.getElementById('pinScreen').style.display='none';document.getElementById('dashWrap').style.display='block';var uLabel=currentUser==='__MANAGER__'?'Justin Cavanaugh (Manager)':currentUser;document.getElementById('hdrUser').textContent='Signed in as: '+uLabel;initDashboard();}else{document.getElementById('pinError').textContent='Incorrect PIN. Please try again.';var box=document.getElementById('pinBox');box.style.animation='none';void box.offsetHeight;box.style.animation='shake 0.3s ease';}}
 
 const VG='#1A6B3C',VA='#7B5200',VR='#8B0000';
 
@@ -449,7 +393,7 @@ kpis:[
 ]},
 driver:{name:'Delivery & Driver',mgr:'Matthew Martin',icon:'🚚',color:'#1E5631',light:'#D4EDDA',
 why:'Drivers are the last mile — the moment patients actually receive their care. When delivery fails, patients notice, families call, and referral sources reconsider. This is ProCare\'s most visible promise kept or broken.',
-employees:[{n:'Moses Oneil',r:'Driver',av:'MO'},{n:'Ian Rohman',r:'Driver',av:'IR'},{n:'Scott White',r:'Driver',av:'SW'},{n:'Tyler Nalley',r:'Driver',av:'TN'},{n:'Jordan Goodrich',r:'Driver',av:'JG'},{n:'Richard Williams',r:'Driver',av:'RW'},{n:'Kado Rohman',r:'Warehouse/Driver',av:'KR'},{n:'Jeremy Guse',r:'Driver',av:'JE'}],
+employees:[{n:'Moses Oneil',r:'Driver',av:'MO'},{n:'Ian Rohman',r:'Driver',av:'IR'},{n:'Scott White',r:'Driver',av:'SW'},{n:'Tyler Nalley',r:'Driver',av:'TN'},{n:'Jordan Goodrich',r:'Driver',av:'JG'},{n:'Richard Williams',r:'Driver',av:'RW'},{n:'Jeremy Guse',r:'Driver',av:'JE'}],
 kpis:[
 {name:'On-Time Delivery Rate',unit:'%',key:'onTime',success:95,coast:88,li:false,why:'A patient waiting on a hospital bed or oxygen concentrator may be at medical risk. On-time delivery is ProCare\'s most visible reliability metric.',inst:'(Deliveries within scheduled window ÷ total deliveries completed) × 100',ex:'Ex: 82 on-time of 86 = 95.3%',s:'95%+ — patients trust ProCare',c:'88–94% — slipping, referral sources noticing',f:'Below 88% — failing patients. CEO-level issue.'},
 {name:'Re-Delivery Rate',unit:'%',key:'redelivery',success:3,coast:7,li:true,why:'Every re-delivery is wasted fuel, driver time, and a patient who waited longer.',inst:'(Re-deliveries ÷ total deliveries) × 100',ex:'Ex: 2 of 86 = 2.3%',s:'Under 3% — orders leave complete',c:'3–7% — investigate warehouse prep',f:'Over 7% — patients failed twice'},
@@ -541,10 +485,10 @@ purchasing:{name:'Purchasing Department',mgr:'Justin Cavanaugh',icon:'🛒',colo
 why:'Purchasing controls the supply chain that everything else depends on. A missed order, a bad vendor relationship, or an unnecessary re-order costs money and puts patient care at risk.',
 employees:[{n:'Breanna Lawson',r:'Purchasing',av:'BL'}],
 kpis:[
-{name:'PO Fill Rate',unit:'%',key:'poFill',success:95,coast:85,li:false,why:'A PO not filled on time or completely forces emergency orders, re-orders, and stockouts.',inst:'(POs received complete and on time ÷ total POs placed) × 100',ex:'Ex: 9 of 11 = 81.8%',s:'95%+ — vendors reliable',c:'85–94% — some delays or partial fills',f:'Below 85% — supply chain unreliable'},
+{name:'Stockout Incidents',unit:'count',key:'stockouts',success:0,coast:2,li:true,why:'A stockout in purchasing means the warehouse ran out before a PO could arrive — a direct patient impact and a signal that reorder timing failed.',inst:'Count every SKU that hit zero on-hand this week due to a procurement gap. List item names in notes.',ex:'Ex: 0 OR 1: bed wedges hit zero — emergency PO placed',s:'0 — no procurement-driven stockouts',c:'1–2 — investigate reorder timing',f:'3+ — procurement process failing'},
 {name:'Vendor On-Time Delivery',unit:'%',key:'vendorOnTime',success:90,coast:75,li:false,why:'Vendors who deliver late create downstream stockout risk.',inst:'(Deliveries received on or before expected date ÷ total deliveries received) × 100',ex:'Ex: 8 of 10 = 80%',s:'90%+ — vendors delivering reliably',c:'75–89% — some late deliveries',f:'Below 75% — vendors frequently late'},
 {name:'Emergency / Rush Orders',unit:'count',key:'rushOrders',success:1,coast:4,li:true,why:'Emergency orders are almost always more expensive and signal inventory management broke down.',inst:'Count POs placed as urgent or expedited due to stockout or near-stockout',ex:'Ex: 2 rush orders: bed wedges and transport chairs',s:'0–1 — purchasing is proactive',c:'2–4 — some reactivity',f:'5+ — purchasing reactive, costs elevated'},
-{name:'Cost Variance Rate',unit:'%',key:'costVariance',success:5,coast:10,li:true,why:'Paying more than expected erodes margins without anyone noticing immediately.',inst:'(Actual spend − expected spend) ÷ expected spend × 100',ex:'Ex: $2,100 vs $2,000 = 5%',s:'Under 5% — near contract price',c:'5–10% — some price drift',f:'Over 10% — pricing audit needed'},
+{name:'Inventory Accuracy Rate',unit:'%',key:'invAccuracy',success:97,coast:92,li:false,why:'Inaccurate inventory counts lead to ghost orders, missed stockouts, and PAR levels that do not reflect reality.',inst:'(SKUs with on-hand count matching physical count ÷ total SKUs audited this week) × 100. Run against your weekly cycle count.',ex:'Ex: 48 of 50 SKUs match = 96%',s:'97%+ — counts reliable',c:'92–96% — discrepancies emerging',f:'Below 92% — counts unreliable, PAR data compromised'},
 {name:'Vendor Re-Order Rate',unit:'count',key:'vendorReorder',success:2,coast:5,li:true,why:'Re-ordering same vendor within same week signals incomplete first orders and duplicate shipping costs.',inst:'Count times a second PO was placed with same vendor this week because an item was missed',ex:'Ex: 2 re-orders',s:'2 or fewer — orders complete',c:'3–5 — incomplete orders getting through',f:'6+ — ordering fragmented'},
 ]},
 };
@@ -563,7 +507,7 @@ cur:{
   billing:{cleanClaim:96,denialRate:4.2,daysAR:31,ar90:9.1,posting:99.1,notes:'3 Medicaid denials traced to missing CMN at intake — working with Jaquilyn.',submittedBy:'Michelle White',submittedAt:'Fri Apr 14 4:33 PM',verified:null},
   rt:{cpap:83,setupDays:4.5,utilization:84,cmn:97,retention:93,notes:'6 CPAP patients below compliance — all contacted and re-educated. 3 CMNs outstanding.',submittedBy:'Kimberly Saul',submittedAt:'Fri Apr 14 4:55 PM',verified:null},
   sales:{newReferrals:3,sourceVisits:11,salesOrders:27,followUp:90,pipeline:28,notes:'Visited St. Luke\'s discharge planning Thursday — strong interest. Jackson opened 3 new accounts.',submittedBy:'Sarah Rushton',submittedAt:'Fri Apr 14 5:08 PM',verified:null},
-  purchasing:{poFill:92,vendorOnTime:88,rushOrders:2,costVariance:4.5,vendorReorder:2,notes:'2 rush orders due to low HQ warehouse inventory. Both vendors delivered within 48 hours.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Apr 14 4:39 PM',verified:null},
+  purchasing:{stockouts:1,vendorOnTime:88,rushOrders:2,invAccuracy:95,vendorReorder:2,notes:'2 rush orders due to low HQ warehouse inventory. Both vendors delivered within 48 hours.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Apr 14 4:39 PM',verified:null},
 },
 p1:{
   csr:{calls:144,orders:58,fcr:79,accuracy:93,authRate:82,notes:'Lower volume — several staff out Monday.',submittedBy:'Jaquilyn Janousek',submittedAt:'Fri Apr 7 4:51 PM',verified:'verified'},
@@ -576,7 +520,7 @@ p1:{
   billing:{cleanClaim:94,denialRate:5.8,daysAR:37,ar90:12.4,posting:98.5,notes:'Higher denial rate. Top reason: missing documentation.',submittedBy:'Michelle White',submittedAt:'Fri Apr 7 4:36 PM',verified:'verified'},
   rt:{cpap:79,setupDays:6.2,utilization:81,cmn:95,retention:91,notes:'CPAP compliance low — 9 patients below threshold. Two discontinuations.',submittedBy:'Kimberly Saul',submittedAt:'Fri Apr 7 4:58 PM',verified:'verified'},
   sales:{newReferrals:1,sourceVisits:7,salesOrders:18,followUp:78,pipeline:14,notes:'Jackson out sick Thursday and Friday. Below target on visits.',submittedBy:'Sarah Rushton',submittedAt:'Fri Apr 7 5:09 PM',verified:'verified'},
-  purchasing:{poFill:84,vendorOnTime:78,rushOrders:5,costVariance:9.2,vendorReorder:6,notes:'5 rush orders. Vendor delays from two primary suppliers.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Apr 7 4:42 PM',verified:'flagged'},
+  purchasing:{stockouts:3,vendorOnTime:78,rushOrders:5,invAccuracy:91,vendorReorder:6,notes:'5 rush orders. Vendor delays from two primary suppliers.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Apr 7 4:42 PM',verified:'flagged'},
 },
 p2:{
   csr:{calls:178,orders:84,fcr:88,accuracy:98,authRate:93,notes:'Best week this quarter. Team fully staffed and performing well.',submittedBy:'Jaquilyn Janousek',submittedAt:'Fri Mar 31 4:49 PM',verified:'verified'},
@@ -589,7 +533,7 @@ p2:{
   billing:{cleanClaim:97,denialRate:3.1,daysAR:28,ar90:7.8,posting:99.5,notes:'Best billing week of the quarter.',submittedBy:'Michelle White',submittedAt:'Fri Mar 31 4:33 PM',verified:'verified'},
   rt:{cpap:88,setupDays:4.1,utilization:86,cmn:99,retention:94,notes:'CPAP compliance up. All CMNs current.',submittedBy:'Kimberly Saul',submittedAt:'Fri Mar 31 4:53 PM',verified:'verified'},
   sales:{newReferrals:5,sourceVisits:14,salesOrders:34,followUp:95,pipeline:38,notes:'Excellent week. 5 new accounts.',submittedBy:'Sarah Rushton',submittedAt:'Fri Mar 31 5:06 PM',verified:'verified'},
-  purchasing:{poFill:97,vendorOnTime:94,rushOrders:0,costVariance:2.8,vendorReorder:1,notes:'No rush orders. Vendors performing well.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Mar 31 4:38 PM',verified:'verified'},
+  purchasing:{stockouts:0,vendorOnTime:94,rushOrders:0,invAccuracy:98,vendorReorder:1,notes:'No rush orders. Vendors performing well.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Mar 31 4:38 PM',verified:'verified'},
 },
 };
 
@@ -611,7 +555,6 @@ const sampleEmp={
     'Tyler Nalley':{deliveries:16,onTime:96,redeliveries:0,safety:0,otHours:0,attendance:5,output:4,quality:5,communication:5},
     'Jordan Goodrich':{deliveries:15,onTime:93,redeliveries:2,safety:0,otHours:4,attendance:3,output:3,quality:3,communication:3},
     'Richard Williams':{deliveries:14,onTime:95,redeliveries:0,safety:0,otHours:2,attendance:4,output:4,quality:4,communication:4},
-    'Kado Rohman':{deliveries:13,onTime:95,redeliveries:0,safety:0,otHours:1,attendance:5,output:4,quality:4,communication:5},
     'Jeremy Guse':{deliveries:14,onTime:97,redeliveries:0,safety:0,otHours:0,attendance:5,output:5,quality:5,communication:5},
   },
   route:{'Kayden Rohman':{routesComp:5,avgStops:8.2,changes:2,milesPerDel:13.8,dispatchOT:95,attendance:5,output:5,quality:5,communication:5}},
@@ -650,7 +593,7 @@ const sampleEmp={
     'Josiah Matau':{newRefs:0,visits:2,orders:5,followUp:80,pipeline:15,attendance:4,output:3,quality:4,communication:4},
   },
   purchasing:{
-    'Breanna Lawson':{posPlaced:7,poFill:93,rush:1,variance:4.0,reorders:1,attendance:5,output:5,quality:5,communication:5},
+    'Breanna Lawson':{posPlaced:7,stockouts:0,rush:1,invAccuracy:96,reorders:1,attendance:5,output:5,quality:5,communication:5},
   },
 };
 EMP_DATA.cur=JSON.parse(JSON.stringify(sampleEmp));
@@ -807,7 +750,7 @@ function rDept(k,mc){
       });
       h+=('</div></div>');
       // Weekly comment
-      h+=('<div class="ecom"><div class="ecom-lbl">Weekly Comment — '+(wl())+(priorCmts.length?('<span class="ecom-hist" onclick="togHist(\'hist_'+(sk)+'\')">Prior weeks</span>'):'')+'</div>\n      <textarea class="ecom-ta" id="cmt_'+(k)+'_'+(sk)+'" placeholder="Enter your observations for '+(emp.n)+' this week...&#10;&#10;• Performance and output&#10;• Attendance or punctuality&#10;• Wins or standout moments&#10;• Concerns or coaching needed">'+(wkCmt?.text||'')+'</textarea>\n      <button class="ecom-save" onclick="saveCmt(\''+(k)+'\',\''+(emp.n)+'\',\''+(sk)+'\')">Save</button>\n      <div class="ecom-saved" id="sv_'+(sk)+'">✓ Saved</div>\n      '+(priorCmts.length?('<div class="hist-box" id="hist_'+(sk)+'" style="display:none">'+(priorCmts.map(function(c){ return '<div class="hent"><div class="hw">'+(c.week==='p1'?'Apr 7, 2026':c.week==='p2'?'Mar 31, 2026':c.week)+'</div><div class="ht">'+(c.text||'<em style="color:var(--text3)">No comment entered</em>')+'</div></div>'; }).join(''))+'</div>'):'')+'\n      </div></div>');
+      h+=('<div class="ecom"><div class="ecom-lbl">Weekly Comment — '+(wl())+(priorCmts.length?('<span class="ecom-hist" onclick="togHist(\'hist_'+(sk)+'\')">Prior weeks</span>'):'')+'</div>\n      <textarea class="ecom-ta" id="cmt_'+(k)+'_'+(sk)+'" placeholder="Enter your observations for '+(emp.n)+' this week...&#10;&#10;• Performance and output&#10;• Attendance or punctuality&#10;• Wins or standout moments&#10;• Concerns or coaching needed">'+(wkCmt?.text||'')+'</textarea>\n      <button class="ecom-save" onclick="saveCmt(\''+(k)+'\',\''+(emp.n)+'\',\''+(sk)+'\')">Save</button>\n      <div class="ecom-saved" id="sv_'+(sk)+'">✓ Saved</div>\n      '+(priorCmts.length?('<div class="hist-box" id="hist_'+(sk)+'" style="display:none">'+(priorCmts.map(c=>('<div class="hent"><div class="hw">'+(c.week==='p1'?'Apr 7, 2026':c.week==='p2'?'Mar 31, 2026':c.week)+'</div><div class="ht">'+(c.text||'<em style="color:var(--text3)">No comment entered</em>')+'</div></div>')).join(''))+'</div>'):'')+'\n      </div></div>');
     });
     h+=('</div>');
   }
@@ -1204,15 +1147,9 @@ function injectEmpVerification(dk) {
 
     // Inject verification bar at bottom of card
     const vDiv = document.createElement('div');
-    var isManagerView = (currentUser === '__MANAGER__');
     vDiv.style.cssText = 'padding:7px 13px;background:#F4F6F9;border-top:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between';
-    vDiv.innerHTML = ('<span style="font-size:9px;color:'+(vcolor)+';font-weight:600">'+(vtxt)+'</span>' +
-      (isManagerView ? ('<div style="display:flex;gap:5px">' +
-        (vs !== 'verified' ? '<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',\'verified\',this)" style="padding:3px 9px;background:#1A6B3C;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Verify</button>' : '') +
-        (vs !== 'flagged' ? '<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',\'flagged\',this)" style="padding:3px 9px;background:#8B0000;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Flag</button>' : '') +
-        (vs ? '<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',null,this)" style="padding:3px 9px;background:#F4F6F9;color:#595959;border:1px solid #E2E8F0;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Reset</button>' : '') +
-        '</div>') : ''));
-        card.appendChild(vDiv);
+    vDiv.innerHTML = ('<span style="font-size:9px;color:'+(vcolor)+';font-weight:600">'+(vtxt)+'</span>\n      <div style="display:flex;gap:5px">\n        '+(vs !== 'verified' ? ('<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',\'verified\',this)" style="padding:3px 9px;background:#1A6B3C;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Verify</button>') : '')+'\n        '+(vs !== 'flagged' ? ('<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',\'flagged\',this)" style="padding:3px 9px;background:#8B0000;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Flag</button>') : '')+'\n        '+(vs ? ('<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',null,this)" style="padding:3px 9px;background:#F4F6F9;color:#595959;border:1px solid #E2E8F0;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Reset</button>') : '')+'\n      </div>');
+    card.appendChild(vDiv);
   });
 }
 
@@ -1224,64 +1161,17 @@ function setEmpVerify(dk, empName, status, btn) {
   rDept(dk, document.getElementById('mc'));
 }
 
-function buildNav() {
-  var nav = document.getElementById('nav');
-  if (!nav) return;
-  var isManager = (currentUser === '__MANAGER__');
-  var html = "";
-  html += "<div class=\"ntab active\" id=\"nt-kpis\" onclick=\"setDeptTab('kpis',this)\">KPI Dashboard</div>";
-  if (isManager) {
-    html += "<div class=\"ntab\" id=\"nt-submission\" onclick=\"setDeptTab('submission',this)\">Submitted Report</div>";
-  }
-  html += "<div class=\"ntab\" id=\"nt-employees\" onclick=\"setDeptTab('employees',this)\">" + (isManager ? "Employee Performance" : "My Performance") + "</div>";
-  if (isManager) {
-    html += "<div class=\"ntab\" id=\"nt-entry\" onclick=\"setDeptTab('entry',this)\">&#9998; Enter Data</div>";
-  }
-  nav.innerHTML = html;
-}
-function setDeptTab(mode, el) {
-  var tabs = document.querySelectorAll('.ntab');
-  for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove('active'); }
-  if (el) { el.classList.add('active'); }
-  DV['purchasing'] = mode;
-  renderDeptFiltered('purchasing', document.getElementById('mc'));
-}
-function chW(v) {
-  CW = v;
-  renderDeptFiltered('purchasing', document.getElementById('mc'));
-}
-function renderDeptFiltered(k, mc) {
-  var isManager = (currentUser === '__MANAGER__');
-  var mode = DV[k] || 'kpis';
-  if (mode === 'entry' && isManager) {
-    // Show only this department's entry section
-    rEntryForDept(k, mc);
-  } else if (mode === 'employees' && !isManager) {
-    var D = DEPTS[k];
-    var allEmps = D.employees.slice();
-    D.employees = allEmps.filter(function(e) { return e.n === currentUser; });
-    rDept(k, mc);
-    D.employees = allEmps;
-  } else {
-    rDept(k, mc);
-  }
-}
-
 function rEntryForDept(k, mc) {
   var D = DEPTS[k];
   var sub = SUBS[CW][k] || {};
   var VG2 = '#1A6B3C', VA2 = '#7B5200', VR2 = '#8B0000';
-
   var h = '<p class="st">Enter This Week&#39;s Data</p>';
   h += '<p class="ss">Enter your department KPI values and employee metrics below. Read each instruction before entering a value.</p>';
-
-  // Dept totals section
   h += '<div class="ep" style="margin-bottom:14px">';
   h += '<div class="eph"><div class="di" style="background:' + D.color + '22;width:28px;height:28px;font-size:12px">' + D.icon + '</div>';
-  h += '<h3>' + D.name + ' — Department Totals</h3></div>';
+  h += '<h3>' + D.name + ' -- Department Totals</h3></div>';
   h += '<p class="eps">Overall department KPI numbers for the week.</p>';
   h += '<div class="ep-grid">';
-
   D.kpis.forEach(function(kp) {
     var cv = sub[kp.key] !== undefined ? sub[kp.key] : '';
     var s = cv !== '' ? gst(kp, cv) : '';
@@ -1295,28 +1185,23 @@ function rEntryForDept(k, mc) {
     h += '<div class="ef-e">' + kp.ex + '</div>';
     h += '</div>';
   });
-
   h += '</div>';
   h += '<div style="margin-top:10px"><label style="font-size:10px;font-weight:600;color:' + D.color + ';display:block;margin-bottom:3px">Manager Notes <span style="color:#8B0000">*required</span></label>';
   h += '<textarea class="ta" id="di_' + k + '_notes" placeholder="Flags, wins, issues, anything needing Coby attention...">' + (sub.notes || '') + '</textarea></div>';
   h += '<div style="display:flex;align-items:center;gap:8px;margin-top:10px">';
   h += '<button class="btn btn-p" onclick="subDept(\'' + k + '\')">Submit ' + D.name + '</button>';
   h += '<span class="btn-note">Marks submitted and visible to Coby in Verify Submissions</span></div></div>';
-
-  // Employee metrics section
   var ekpis = EMP_KPIS[k] || [];
   h += '<div class="ep" style="margin-bottom:14px">';
-  h += '<div class="eph"><h3>' + D.name + ' — Employee Metrics</h3></div>';
+  h += '<div class="eph"><h3>' + D.name + ' -- Employee Metrics</h3></div>';
   h += '<p class="eps">Enter individual KPI metrics and scorecard ratings for each team member.</p>';
   h += '<div class="sc-entry-grid">';
-
   D.employees.forEach(function(emp) {
     var ec2 = ecolor(emp.n);
     var ed = EMP_DATA[CW][k] ? (EMP_DATA[CW][k][emp.n] || {}) : {};
     var sk = emp.n.replace(/[^a-zA-Z0-9]/g, '_');
     var esc2 = empScore(k, emp.n);
     var escColor = esc2 >= 80 ? VG2 : esc2 >= 55 ? VA2 : VR2;
-
     h += '<div class="sc-entry-card">';
     h += '<div class="sc-ec-hdr">';
     h += '<div class="ea" style="background:' + ec2 + ';width:26px;height:26px;font-size:11px">' + emp.av + '</div>';
@@ -1324,7 +1209,6 @@ function rEntryForDept(k, mc) {
     h += '<div class="sc-ec-role">' + emp.r + '</div>';
     h += '<div style="font-family:DM Mono,monospace;font-size:13px;font-weight:500;color:' + escColor + ';margin-left:auto">' + esc2 + '</div>';
     h += '</div><div class="sc-ec-body">';
-
     h += '<div style="font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:600;margin-bottom:2px">Individual KPI Metrics</div>';
     ekpis.forEach(function(kp) {
       var cv2 = ed[kp.key] !== undefined ? ed[kp.key] : '';
@@ -1335,12 +1219,11 @@ function rEntryForDept(k, mc) {
       h += '<input type="number" id="ei_' + k + '_' + sk + '_' + kp.key + '" value="' + cv2 + '" step="' + (kp.unit === '%' ? '0.1' : '1') + '" min="0"';
       if (bc2) { h += ' style="border-color:' + bc2 + ';border-width:2px;padding:5px 8px;font-size:11px"'; }
       else { h += ' style="padding:5px 8px;font-size:11px"'; }
-      h += ' onchange="luvEmp(\'' + k + '\',\'' + emp.n + '\',\'' + kp.key + '\',this,\'' + sk + '\')">'; 
+      h += ' onchange="luvEmp(\'' + k + '\',\'' + emp.n + '\',\'' + kp.key + '\',this,\'' + sk + '\')">';
       h += '<div class="ef-i" style="font-size:8px">' + kp.inst + '</div>';
       h += '</div>';
     });
-
-    h += '<div style="font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:600;margin:6px 0 4px">Scorecard Ratings (1–5)</div>';
+    h += '<div style="font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:600;margin:6px 0 4px">Scorecard Ratings (1-5)</div>';
     SC_DIMS.forEach(function(dim) {
       var rating = ed[dim.key] || 0;
       h += '<div class="sc-row"><div class="sc-row-lbl">' + dim.name + '</div><div class="sc-row-stars">';
@@ -1349,34 +1232,45 @@ function rEntryForDept(k, mc) {
       }
       h += '</div><div class="sc-row-hint" style="font-size:8px;color:var(--text3)">' + dim.hint + '</div></div>';
     });
-
     h += '</div></div>';
   });
-
   h += '</div>';
   h += '<div style="display:flex;align-items:center;gap:8px;margin-top:8px">';
   h += '<button class="btn btn-p" onclick="saveEmpData(\'' + k + '\')">Save ' + D.name + ' Employee Data</button>';
   h += '<span class="btn-note">Saves all employee metrics and scorecard ratings</span></div></div>';
-
   mc.innerHTML = h;
 }
-function updTime() {
-  var n = new Date();
-  var el = document.getElementById('hdrT');
-  if (el) { el.textContent = n.toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'}); }
-}
-function initDashboard() {
-  buildNav();
-  DV['purchasing'] = 'kpis';
-  renderDeptFiltered('purchasing', document.getElementById('mc'));
-  updTime();
-  setInterval(updTime, 30000);
-}
 
-// Override sdv so inner sub-tabs also respect employee filtering
-function sdv(k, m) {
-  DV[k] = m;
-  renderDeptFiltered(k, document.getElementById('mc'));
-}
+// Override injectEmpVerification to gate verify buttons for managers only
+var _origInjectEmpVer = injectEmpVerification;
+injectEmpVerification = function(dk) {
+  var isManagerView = (currentUser === '__MANAGER__');
+  var cards = document.querySelectorAll('.ec');
+  var D = DEPTS[dk];
+  cards.forEach(function(card, i) {
+    var emp = D.employees[i];
+    if (!emp) return;
+    if (!EMP_VERIFY[CW][dk]) EMP_VERIFY[CW][dk] = {};
+    var vs = EMP_VERIFY[CW][dk][emp.n] || null;
+    var vcolor = vs === 'verified' ? '#1A6B3C' : vs === 'flagged' ? '#8B0000' : '#718096';
+    var vtxt = vs === 'verified' ? 'Verified ✓' : vs === 'flagged' ? 'Flagged ⚑' : 'Pending Review';
+    var vDiv = document.createElement('div');
+    vDiv.style.cssText = 'padding:7px 13px;background:#F4F6F9;border-top:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between';
+    vDiv.innerHTML = ('<span style="font-size:9px;color:'+vcolor+';font-weight:600">'+vtxt+'</span>' +
+      (isManagerView ? ('<div style="display:flex;gap:5px">' +
+        (vs !== 'verified' ? '<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',\'verified\',this)" style="padding:3px 9px;background:#1A6B3C;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Verify</button>' : '') +
+        (vs !== 'flagged' ? '<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',\'flagged\',this)" style="padding:3px 9px;background:#8B0000;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Flag</button>' : '') +
+        (vs ? '<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',null,this)" style="padding:3px 9px;background:#F4F6F9;color:#595959;border:1px solid #E2E8F0;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Reset</button>' : '') +
+        '</div>') : ''));
+    card.appendChild(vDiv);
+  });
+};
+function buildNav(){var nav=document.getElementById('nav');if(!nav)return;var isManager=(currentUser==='__MANAGER__');var html="";html+="<div class=\"ntab active\" id=\"nt-kpis\" onclick=\"setDeptTab('kpis',this)\">KPI Dashboard</div>";if(isManager){html+="<div class=\"ntab\" id=\"nt-submission\" onclick=\"setDeptTab('submission',this)\">Submitted Report</div>";}html+="<div class=\"ntab\" id=\"nt-employees\" onclick=\"setDeptTab('employees',this)\">"+(isManager?"Employee Performance":"My Performance")+"</div>";if(isManager){html+="<div class=\"ntab\" id=\"nt-entry\" onclick=\"setDeptTab('entry',this)\">&#9998; Enter Data</div>";}nav.innerHTML=html;}
+function setDeptTab(mode,el){var tabs=document.querySelectorAll('.ntab');for(var i=0;i<tabs.length;i++){tabs[i].classList.remove('active');}if(el){el.classList.add('active');}DV['purchasing']=mode;renderDeptFiltered('purchasing',document.getElementById('mc'));}
+function chW(v){CW=v;renderDeptFiltered('purchasing',document.getElementById('mc'));}
+function renderDeptFiltered(k,mc){var isManager=(currentUser==='__MANAGER__');var mode=DV[k]||'kpis';if(mode==='entry'&&isManager){rEntryForDept(k,mc);}else if(mode==='employees'&&!isManager){var D=DEPTS[k];var allEmps=D.employees.slice();D.employees=allEmps.filter(function(e){return e.n===currentUser;});rDept(k,mc);D.employees=allEmps;}else{rDept(k,mc);}}
+function sdv(k,m){DV[k]=m;renderDeptFiltered(k,document.getElementById('mc'));}
+function updTime(){var n=new Date();var el=document.getElementById('hdrT');if(el){el.textContent=n.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});}}
+function initDashboard(){buildNav();DV['purchasing']='kpis';renderDeptFiltered('purchasing',document.getElementById('mc'));updTime();setInterval(updTime,30000);}
 </script>
 </body></html>
