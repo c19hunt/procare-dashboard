@@ -1204,9 +1204,15 @@ function injectEmpVerification(dk) {
 
     // Inject verification bar at bottom of card
     const vDiv = document.createElement('div');
+    var isManagerView = (currentUser === '__MANAGER__');
     vDiv.style.cssText = 'padding:7px 13px;background:#F4F6F9;border-top:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between';
-    vDiv.innerHTML = ('<span style="font-size:9px;color:'+(vcolor)+';font-weight:600">'+(vtxt)+'</span>\n      <div style="display:flex;gap:5px">\n        '+(vs !== 'verified' ? ('<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',\'verified\',this)" style="padding:3px 9px;background:#1A6B3C;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Verify</button>') : '')+'\n        '+(vs !== 'flagged' ? ('<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',\'flagged\',this)" style="padding:3px 9px;background:#8B0000;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Flag</button>') : '')+'\n        '+(vs ? ('<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',null,this)" style="padding:3px 9px;background:#F4F6F9;color:#595959;border:1px solid #E2E8F0;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Reset</button>') : '')+'\n      </div>');
-    card.appendChild(vDiv);
+    vDiv.innerHTML = ('<span style="font-size:9px;color:'+(vcolor)+';font-weight:600">'+(vtxt)+'</span>' +
+      (isManagerView ? ('<div style="display:flex;gap:5px">' +
+        (vs !== 'verified' ? '<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',\'verified\',this)" style="padding:3px 9px;background:#1A6B3C;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Verify</button>' : '') +
+        (vs !== 'flagged' ? '<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',\'flagged\',this)" style="padding:3px 9px;background:#8B0000;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Flag</button>' : '') +
+        (vs ? '<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',null,this)" style="padding:3px 9px;background:#F4F6F9;color:#595959;border:1px solid #E2E8F0;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Reset</button>' : '') +
+        '</div>') : ''));
+        card.appendChild(vDiv);
   });
 }
 
@@ -1365,6 +1371,12 @@ function initDashboard() {
   renderDeptFiltered('billing', document.getElementById('mc'));
   updTime();
   setInterval(updTime, 30000);
+}
+
+// Override sdv so inner sub-tabs also respect employee filtering
+function sdv(k, m) {
+  DV[k] = m;
+  renderDeptFiltered(k, document.getElementById('mc'));
 }
 </script>
 </body></html>
