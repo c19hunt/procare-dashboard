@@ -355,7 +355,7 @@ kpis:[
 ]},
 driver:{name:'Delivery & Driver',mgr:'Matthew Martin',icon:'🚚',color:'#1E5631',light:'#D4EDDA',
 why:'Drivers are the last mile — the moment patients actually receive their care. When delivery fails, patients notice, families call, and referral sources reconsider. This is ProCare\'s most visible promise kept or broken.',
-employees:[{n:'Moses Oneil',r:'Driver',av:'MO'},{n:'Ian Rohman',r:'Driver',av:'IR'},{n:'Scott White',r:'Driver',av:'SW'},{n:'Tyler Nalley',r:'Driver',av:'TN'},{n:'Byron Talbott',r:'Driver',av:'BT'},{n:'Jordan Goodrich',r:'Driver',av:'JG'},{n:'Richard Williams',r:'Driver',av:'RW'},{n:'Kado Rohman',r:'Warehouse/Driver',av:'KR'},{n:'Jeremy Guse',r:'Driver',av:'JE'}],
+employees:[{n:'Moses Oneil',r:'Driver',av:'MO'},{n:'Ian Rohman',r:'Driver',av:'IR'},{n:'Scott White',r:'Driver',av:'SW'},{n:'Tyler Nalley',r:'Driver',av:'TN'},{n:'Jordan Goodrich',r:'Driver',av:'JG'},{n:'Richard Williams',r:'Driver',av:'RW'},{n:'Kado Rohman',r:'Warehouse/Driver',av:'KR'},{n:'Jeremy Guse',r:'Driver',av:'JE'}],
 kpis:[
 {name:'On-Time Delivery Rate',unit:'%',key:'onTime',success:95,coast:88,li:false,why:'A patient waiting on a hospital bed or oxygen concentrator may be at medical risk. On-time delivery is ProCare\'s most visible reliability metric.',inst:'(Deliveries within scheduled window ÷ total deliveries completed) × 100',ex:'Ex: 82 on-time of 86 = 95.3%',s:'95%+ — patients trust ProCare',c:'88–94% — slipping, referral sources noticing',f:'Below 88% — failing patients. CEO-level issue.'},
 {name:'Re-Delivery Rate',unit:'%',key:'redelivery',success:3,coast:7,li:true,why:'Every re-delivery is wasted fuel, driver time, and a patient who waited longer.',inst:'(Re-deliveries ÷ total deliveries) × 100',ex:'Ex: 2 of 86 = 2.3%',s:'Under 3% — orders leave complete',c:'3–7% — investigate warehouse prep',f:'Over 7% — patients failed twice'},
@@ -375,7 +375,7 @@ kpis:[
 ]},
 whhq:{name:'Warehouse — HQ',mgr:'Justin Cavanaugh',icon:'🏭',color:'#7B3F00',light:'#FAE5CC',
 why:'HQ Warehouse is the engine room. Every piece of equipment that reaches a patient passed through this team. Stockouts of key items have been a CEO-level concern. Inventory accuracy is not optional.',
-employees:[{n:'Derek Teater',r:'Warehouse',av:'DT'},{n:'Shawn Berryman',r:'Warehouse',av:'SB'},{n:'Bailey Detty',r:'Warehouse',av:'BD'},{n:'Gerardo Aguilar Jr.',r:'Warehouse',av:'GA'},{n:'Hector Salas',r:'Warehouse',av:'HS'}],
+employees:[{n:'Derek Teater',r:'Warehouse',av:'DT'},{n:'Shawn Berryman',r:'Warehouse',av:'SB'},{n:'Bailey Detty',r:'Warehouse',av:'BD'},{n:'Gerardo Aguilar Jr.',r:'Warehouse',av:'GA'},{n:'Hector Salas',r:'Warehouse',av:'HS'},{n:'Bradley Grim',r:'Warehouse',av:'BG'},{n:'Blake Davis',r:'Warehouse',av:'BD2'}],
 kpis:[
 {name:'PAR Compliance Rate',unit:'%',key:'par',success:90,coast:75,li:false,why:'PAR levels are the early warning system. Falling below PAR means ProCare is one more order away from a stockout.',inst:'(SKUs at or above PAR ÷ total tracked SKUs) × 100',ex:'Ex: 47 of 52 = 90.4%',s:'90%+ — inventory healthy',c:'75–89% — cracks showing',f:'Below 75% — stockout risk high'},
 {name:'Stockout Incidents',unit:'count',key:'stockouts',success:0,coast:2,li:true,why:'A stockout means a patient order cannot be fulfilled. The worst outcome for this department.',inst:'Count every SKU that hit zero on-hand this week. List item names in notes.',ex:'Ex: 0 OR 1: bed wedges hit zero Tuesday',s:'0 — no patient turned away',c:'1–2 — investigate immediately',f:'3+ — systemic failure'},
@@ -515,7 +515,6 @@ const sampleEmp={
     'Ian Rohman':{deliveries:19,onTime:95,redeliveries:1,safety:0,otHours:2,attendance:5,output:5,quality:4,communication:4},
     'Scott White':{deliveries:18,onTime:94,redeliveries:1,safety:0,otHours:3,attendance:4,output:4,quality:4,communication:4},
     'Tyler Nalley':{deliveries:16,onTime:96,redeliveries:0,safety:0,otHours:0,attendance:5,output:4,quality:5,communication:5},
-    'Byron Talbott':{deliveries:17,onTime:97,redeliveries:0,safety:0,otHours:1,attendance:5,output:5,quality:5,communication:4},
     'Jordan Goodrich':{deliveries:15,onTime:93,redeliveries:2,safety:0,otHours:4,attendance:3,output:3,quality:3,communication:3},
     'Richard Williams':{deliveries:14,onTime:95,redeliveries:0,safety:0,otHours:2,attendance:4,output:4,quality:4,communication:4},
     'Kado Rohman':{deliveries:13,onTime:95,redeliveries:0,safety:0,otHours:1,attendance:5,output:4,quality:4,communication:5},
@@ -1019,4 +1018,195 @@ function updT(){const n=new Date();document.getElementById('hdrT').textContent=n
 
 // ── INIT ──────────────────────────────────────────────────────────────
 buildNav();updDots();sv('regional');updT();setInterval(updT,30000);
-</script></body></html>
+</script><!-- PATCH: employee verification + improvement suggestions -->
+<script>
+// ── EMPLOYEE VERIFICATION STORE ───────────────────────────────────────
+// EMP_VERIFY[week][deptKey][empName] = 'verified' | 'flagged' | null
+const EMP_VERIFY = {cur:{},p1:{},p2:{}};
+
+// ── IMPROVEMENT SUGGESTIONS ENGINE ───────────────────────────────────
+// Generates specific, actionable suggestions based on actual scores
+function getSuggestions(dk, empName) {
+  const ed = EMP_DATA[CW][dk]?.[empName] || {};
+  const ekpis = EMP_KPIS[dk] || [];
+  const suggestions = [];
+
+  // Find failing and coasting KPIs
+  ekpis.forEach(kp => {
+    const v = ed[kp.key];
+    if (v === undefined) return;
+    const s = gst(kp, v);
+    if (s === 'red' || s === 'amber') {
+      const tip = getKPITip(dk, kp.key, s, v, kp);
+      if (tip) suggestions.push({level: s, kpi: kp.name, tip});
+    }
+  });
+
+  // Scorecard suggestions
+  SC_DIMS.forEach(dim => {
+    const r = ed[dim.key] || 0;
+    if (r > 0 && r <= 2) suggestions.push({level:'red', kpi: dim.name, tip: getScorecardTip(dim.key, r)});
+    else if (r === 3) suggestions.push({level:'amber', kpi: dim.name, tip: getScorecardTip(dim.key, r)});
+  });
+
+  return suggestions;
+}
+
+function getKPITip(dk, key, status, val, kpi) {
+  const tips = {
+    // CSR
+    calls: {red:'Call volume is significantly below target. Review scheduling to ensure adequate coverage during peak call hours. Consider whether unanswered calls are going to voicemail and implement a return-call process.', amber:'Call volume is below the 150-call target. Check if there are time blocks where coverage is thin and adjust schedules accordingly.'},
+    orders: {red:'Order entry volume is critically low. Review whether referrals are coming in but not being processed, or whether intake needs support. Target is 60+ orders per week.', amber:'Order volume is below target. Identify whether the gap is in referral volume or in conversion of referrals to orders.'},
+    fcr: {red:'First-call resolution is below 70%. Invest in product knowledge training and ensure CSRs have authority to resolve common issues without escalating.', amber:'FCR between 70–84%. Identify the top 3 reasons for callbacks and build quick-reference guides for those scenarios.'},
+    accuracy: {red:'Order accuracy below 90% means rework is routine. Implement a pre-submit checklist and peer review for complex orders.', amber:'Order accuracy between 90–96%. Review the most common error types and create a targeted training session.'},
+    authRate: {red:'Auth approval below 75% signals systemic documentation issues. Audit the last 10 denials for common missing fields and build a pre-submission checklist.', amber:'Auth approval between 75–89%. Pull the top denial reason code and address it directly with a process change.'},
+    // Driver
+    deliveries: {red:'Delivery count is low. Verify whether routes are being fully dispatched and whether the driver is being fully utilized each day.', amber:'Delivery count below target. Review route assignments to ensure this driver has adequate stop volume.'},
+    onTime: {red:'On-time delivery rate below 88%. Review this driver\'s routes for time estimation accuracy and identify recurring late stops.', amber:'On-time rate between 88–94%. Identify which stops are consistently running late and adjust time windows.'},
+    redeliveries: {red:'Re-delivery count is high. Review whether the issue is equipment staging, address verification, or patient availability. Each re-delivery is a direct cost.', amber:'Re-deliveries occurring. Review the reasons for each one — most should be preventable with better prep.'},
+    safety: {red:'Safety incident recorded. Conduct a formal incident review, document the root cause, and implement a corrective action. Do not normalize incidents.', amber:'Safety incident recorded. Review with driver immediately even if minor.'},
+    otHours: {red:'Overtime hours are high. Review route efficiency, dispatch timing, and whether workload is appropriately distributed.', amber:'Overtime hours trending up. Monitor closely and review whether route planning is setting realistic time expectations.'},
+    // Repair
+    woComp: {red:'Work order completion rate below 75% means backlog is compounding. Triage open WOs by patient impact and prioritize blocked orders.', amber:'WO completion between 75–89%. Identify what is causing carry-forward — parts delays, complexity, or workload.'},
+    turnaround: {red:'Average turnaround over 5 days. Identify the longest-sitting WOs and determine whether parts, complexity, or workload is the bottleneck.', amber:'Turnaround between 3–5 days. Review whether parts ordering is proactive or reactive.'},
+    blocked: {red:'Multiple patient orders are blocked by equipment in this technician\'s queue. Escalate the highest-priority blocked items immediately and communicate ETAs to CSR.', amber:'A patient order is waiting on repair. Communicate proactively with CSR and set a specific return-to-service date.'},
+    rework: {red:'Comeback rate over 5% indicates quality shortcuts or incomplete diagnosis. Review recent comebacks to identify the pattern.', amber:'Comebacks occurring. Review the most recent cases — was the root cause addressed or just the symptom?'},
+    partsReady: {red:'Parts availability below 70% means repairs are regularly stalled. Review reorder points and identify which parts are most frequently missing.', amber:'Parts delays occurring on some repairs. Review which parts are causing delays and adjust stock levels.'},
+    // Billing
+    cleanClaim: {red:'Clean claim rate below 88%. Pull the top 3 rejection reason codes and address each one with a targeted process fix.', amber:'Clean claim rate between 88–94%. Identify the most common first-pass rejection and eliminate it.'},
+    denials: {red:'Denial count is high. Identify the top denial reason by payer and address it — documentation gap, coding error, or timely filing issue.', amber:'Denials occurring. Track by payer and denial code to find the pattern.'},
+    postingAcc: {red:'Payment posting errors are creating unreliable AR aging. Implement a same-day error correction process and review posting workflow.', amber:'Occasional posting errors. Review and correct same day to maintain AR accuracy.'},
+    ar90: {red:'90+ day AR rate is high for this person\'s accounts. Prioritize follow-up on the oldest balances — most payers have timely filing limits.', amber:'Aging balances accumulating. Increase follow-up frequency on accounts approaching 60 days.'},
+    // RT
+    cpap: {red:'CPAP compliance below 70% for this person\'s patients. Contact every non-compliant patient this week and document the intervention.', amber:'CPAP compliance between 70–84%. Identify which patients are at risk and schedule compliance coaching calls.'},
+    setupDays: {red:'Average setup time over 10 days. Identify the bottleneck — auth delays, scheduling gaps, or equipment availability.', amber:'Setup time between 5–10 days. Review whether auth turnaround or scheduling is causing the delay.'},
+    cmn: {red:'CMN compliance below 93% means billing exposure is significant. Identify every patient without a valid CMN and pursue signatures this week.', amber:'A few CMNs missing. Track down outstanding signatures before end of week.'},
+    retention: {red:'Patient retention below 85% is unsustainable. Identify why patients are discontinuing — equipment issues, compliance failure, or insurance loss.', amber:'Some patient attrition occurring. Review discontinuation reasons and identify any preventable losses.'},
+    // Sales
+    newRefs: {red:'No new referral sources this week. Schedule at least 3 new account visits next week and identify which physician offices have not yet been contacted.', amber:'New referral source count below target. Identify 5 prospects to contact this week.'},
+    visits: {red:'Referral source visit count critically low. Accounts go cold without face time. Schedule visits immediately for your top 10 accounts.', amber:'Visit count below target. Prioritize accounts that have not been contacted in 3+ weeks.'},
+    orders: {red:'Orders from sales activity below 15. Review which accounts are active but not converting and identify the barrier.', amber:'Sales-linked orders below target. Follow up with accounts that expressed interest but have not submitted referrals.'},
+    followUp: {red:'Follow-up completion below 75%. Referral sources that are not followed up on go cold. Review the scheduling system and clear the backlog this week.', amber:'Some follow-ups missed. Identify which accounts were skipped and contact them first thing next week.'},
+    // Purchasing
+    rush: {red:'Multiple rush orders placed. Identify which inventory items triggered them and adjust PAR levels or reorder timing to prevent recurrence.', amber:'Rush orders placed. Review the root cause — was it a forecasting miss or an unexpected demand spike?'},
+    variance: {red:'Cost variance over 10%. Pull the specific purchases driving the overage and renegotiate or find alternative vendors.', amber:'Cost variance between 5–10%. Review whether the overage is on contracted items — if so, address with vendor.'},
+    reorders: {red:'Vendor re-orders indicate incomplete initial orders. Implement a needs-assessment checklist before placing any PO.', amber:'Some re-orders occurring. Review which vendors and items are being re-ordered and identify the planning gap.'},
+  };
+  const deptTips = tips[key];
+  if (!deptTips) return null;
+  return deptTips[status] || deptTips['amber'] || null;
+}
+
+function getScorecardTip(dim, rating) {
+  const tips = {
+    attendance: {1:'Attendance is a serious concern. Have a direct conversation documenting absences and set clear expectations. Consider whether an attendance improvement plan is needed.', 2:'Multiple attendance issues this period. Address directly in 1:1 and document the conversation.', 3:'Attendance is meeting the minimum but not consistent. Acknowledge and set the expectation for improvement.'},
+    output: {1:'Output is well below expectations. Clarify performance standards, identify any barriers, and set specific measurable targets for next week.', 2:'Output below expectations. Review workload balance and identify whether the gap is capability, clarity, or capacity.', 3:'Output meets the minimum. Identify one specific area where this employee could increase productivity and discuss it in the next 1:1.'},
+    quality: {1:'Work quality is significantly below standard. Implement a review process for this employee\'s work output and provide immediate coaching on the most common errors.', 2:'Quality issues occurring. Identify the specific error patterns and provide targeted coaching.', 3:'Quality meets the minimum. Identify one recurring error type and address it specifically.'},
+    communication: {1:'Communication is a significant gap. Set explicit expectations for response time and proactive updates. Address directly in next 1:1.', 2:'Communication needs improvement. Coach on specific scenarios where better communication would have changed the outcome.', 3:'Communication is adequate but not proactive. Encourage this employee to surface issues earlier and share wins more openly.'},
+  };
+  return tips[dim]?.[rating] || null;
+}
+
+// Department-level suggestions
+function getDeptSuggestions(dk) {
+  const sub = SUBS[CW][dk] || {};
+  const suggestions = [];
+  DEPTS[dk].kpis.forEach(kp => {
+    const v = sub[kp.key];
+    if (v === undefined) return;
+    const s = gst(kp, v);
+    if (s === 'red' || s === 'amber') {
+      const tip = getKPITip(dk, kp.key, s, v, kp);
+      if (tip) suggestions.push({level: s, kpi: kp.name, tip});
+    }
+  });
+  return suggestions;
+}
+
+// ── PATCH rDept to add suggestions + emp verification ─────────────────
+const _origRDept = rDept;
+rDept = function(k, mc) {
+  _origRDept(k, mc);
+  // After rendering, inject suggestions into KPI tab and emp verification into employees tab
+  const mode = DV[k] || 'kpis';
+  if (mode === 'kpis') injectDeptSuggestions(k);
+  if (mode === 'employees') injectEmpVerification(k);
+};
+
+function injectDeptSuggestions(dk) {
+  const sugs = getDeptSuggestions(dk);
+  if (!sugs.length) return;
+  const grid = document.querySelector('.kg');
+  if (!grid) return;
+  const div = document.createElement('div');
+  div.style.cssText = 'grid-column:1/-1;background:#fff;border-radius:9px;border:1px solid #E2E8F0;overflow:hidden;margin-bottom:4px';
+  const colors = {red:'#8B0000', amber:'#7B5200'};
+  const bgs = {red:'#F8D7DA', amber:'#FFF3CD'};
+  let h = `<div style="padding:10px 14px;background:#1F4E79;border-bottom:1px solid #E2E8F0">
+    <span style="font-size:11px;font-weight:600;color:#fff">💡 Improvement Suggestions — based on this week\'s scores</span></div>
+    <div style="padding:12px 14px;display:flex;flex-direction:column;gap:8px">`;
+  sugs.forEach(s => {
+    h += `<div style="display:flex;gap:10px;align-items:flex-start;padding:8px 10px;background:${bgs[s.level]};border-radius:6px;border-left:3px solid ${colors[s.level]}">
+      <div style="flex-shrink:0;font-size:10px;font-weight:700;color:${colors[s.level]};min-width:50px;padding-top:1px">${s.kpi}</div>
+      <div style="font-size:10px;color:#2C2C2A;line-height:1.6">${s.tip}</div>
+    </div>`;
+  });
+  h += `</div>`;
+  div.innerHTML = h;
+  grid.insertBefore(div, grid.firstChild);
+}
+
+function injectEmpVerification(dk) {
+  const cards = document.querySelectorAll('.ec');
+  const D = DEPTS[dk];
+  cards.forEach((card, i) => {
+    const emp = D.employees[i];
+    if (!emp) return;
+    if (!EMP_VERIFY[CW][dk]) EMP_VERIFY[CW][dk] = {};
+    const vs = EMP_VERIFY[CW][dk][emp.n] || null;
+    const vcolor = vs === 'verified' ? '#1A6B3C' : vs === 'flagged' ? '#8B0000' : '#718096';
+    const vtxt = vs === 'verified' ? 'Verified ✓' : vs === 'flagged' ? 'Flagged ⚑' : 'Pending Review';
+    const sk = emp.n.replace(/[^a-zA-Z0-9]/g,'_');
+
+    // Inject suggestions for this employee
+    const sugs = getSuggestions(dk, emp.n);
+    const ecom = card.querySelector('.ecom');
+    if (ecom && sugs.length) {
+      const sugDiv = document.createElement('div');
+      sugDiv.style.cssText = 'border-top:1px solid #E2E8F0;padding:8px 13px;background:#FAFBFC';
+      const bgs = {red:'#F8D7DA', amber:'#FFF3CD'};
+      const colors = {red:'#8B0000', amber:'#7B5200'};
+      let sh = `<div style="font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:#718096;font-weight:600;margin-bottom:5px">💡 Improvement Suggestions</div>`;
+      sugs.slice(0,3).forEach(s => {
+        sh += `<div style="margin-bottom:5px;padding:6px 8px;background:${bgs[s.level]};border-radius:5px;border-left:3px solid ${colors[s.level]}">
+          <div style="font-size:9px;font-weight:700;color:${colors[s.level]};margin-bottom:2px">${s.kpi}</div>
+          <div style="font-size:9px;color:#2C2C2A;line-height:1.5">${s.tip}</div>
+        </div>`;
+      });
+      sugDiv.innerHTML = sh;
+      ecom.parentNode.insertBefore(sugDiv, ecom);
+    }
+
+    // Inject verification bar at bottom of card
+    const vDiv = document.createElement('div');
+    vDiv.style.cssText = 'padding:7px 13px;background:#F4F6F9;border-top:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between';
+    vDiv.innerHTML = `<span style="font-size:9px;color:${vcolor};font-weight:600">${vtxt}</span>
+      <div style="display:flex;gap:5px">
+        ${vs !== 'verified' ? `<button onclick="setEmpVerify('${dk}','${emp.n}','verified',this)" style="padding:3px 9px;background:#1A6B3C;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Verify</button>` : ''}
+        ${vs !== 'flagged' ? `<button onclick="setEmpVerify('${dk}','${emp.n}','flagged',this)" style="padding:3px 9px;background:#8B0000;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Flag</button>` : ''}
+        ${vs ? `<button onclick="setEmpVerify('${dk}','${emp.n}',null,this)" style="padding:3px 9px;background:#F4F6F9;color:#595959;border:1px solid #E2E8F0;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Reset</button>` : ''}
+      </div>`;
+    card.appendChild(vDiv);
+  });
+}
+
+function setEmpVerify(dk, empName, status, btn) {
+  if (!EMP_VERIFY[CW][dk]) EMP_VERIFY[CW][dk] = {};
+  EMP_VERIFY[CW][dk][empName] = status;
+  // Re-render employees tab
+  DV[dk] = 'employees';
+  rDept(dk, document.getElementById('mc'));
+}
+</script>
+
+</body></html>
