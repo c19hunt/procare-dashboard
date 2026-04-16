@@ -1228,6 +1228,9 @@ function buildNav() {
     html += "<div class=\"ntab\" id=\"nt-submission\" onclick=\"setDeptTab('submission',this)\">Submitted Report</div>";
   }
   html += "<div class=\"ntab\" id=\"nt-employees\" onclick=\"setDeptTab('employees',this)\">" + (isManager ? "Employee Performance" : "My Performance") + "</div>";
+  if (isManager) {
+    html += "<div class=\"ntab\" id=\"nt-entry\" onclick=\"setDeptTab('entry',this)\">&#9998; Enter Data</div>";
+  }
   nav.innerHTML = html;
 }
 function setDeptTab(mode, el) {
@@ -1244,7 +1247,10 @@ function chW(v) {
 function renderDeptFiltered(k, mc) {
   var isManager = (currentUser === '__MANAGER__');
   var mode = DV[k] || 'kpis';
-  if (mode === 'employees' && !isManager) {
+  if (mode === 'entry' && isManager) {
+    // Show only this department's entry section
+    rEntryForDept(k, mc);
+  } else if (mode === 'employees' && !isManager) {
     var D = DEPTS[k];
     var allEmps = D.employees.slice();
     D.employees = allEmps.filter(function(e) { return e.n === currentUser; });
@@ -1253,6 +1259,100 @@ function renderDeptFiltered(k, mc) {
   } else {
     rDept(k, mc);
   }
+}
+
+function rEntryForDept(k, mc) {
+  var D = DEPTS[k];
+  var sub = SUBS[CW][k] || {};
+  var VG2 = '#1A6B3C', VA2 = '#7B5200', VR2 = '#8B0000';
+
+  var h = '<p class="st">Enter This Week&#39;s Data</p>';
+  h += '<p class="ss">Enter your department KPI values and employee metrics below. Read each instruction before entering a value.</p>';
+
+  // Dept totals section
+  h += '<div class="ep" style="margin-bottom:14px">';
+  h += '<div class="eph"><div class="di" style="background:' + D.color + '22;width:28px;height:28px;font-size:12px">' + D.icon + '</div>';
+  h += '<h3>' + D.name + ' — Department Totals</h3></div>';
+  h += '<p class="eps">Overall department KPI numbers for the week.</p>';
+  h += '<div class="ep-grid">';
+
+  D.kpis.forEach(function(kp) {
+    var cv = sub[kp.key] !== undefined ? sub[kp.key] : '';
+    var s = cv !== '' ? gst(kp, cv) : '';
+    var bc = s === 'green' ? VG2 : s === 'amber' ? VA2 : s === 'red' ? VR2 : '';
+    h += '<div class="ef">';
+    h += '<label style="color:' + D.color + '">' + kp.name + ' <span style="font-size:8px;color:var(--text3);font-weight:400">(' + kp.unit + ')</span></label>';
+    h += '<input type="number" id="di_' + k + '_' + kp.key + '" value="' + cv + '" step="' + (kp.unit === '%' ? '0.1' : '1') + '" min="0"';
+    if (bc) { h += ' style="border-color:' + bc + ';border-width:2px"'; }
+    h += ' onchange="luv(\'' + k + '\',\'' + kp.key + '\',this)">';
+    h += '<div class="ef-i"><b>How:</b> ' + kp.inst + '</div>';
+    h += '<div class="ef-e">' + kp.ex + '</div>';
+    h += '</div>';
+  });
+
+  h += '</div>';
+  h += '<div style="margin-top:10px"><label style="font-size:10px;font-weight:600;color:' + D.color + ';display:block;margin-bottom:3px">Manager Notes <span style="color:#8B0000">*required</span></label>';
+  h += '<textarea class="ta" id="di_' + k + '_notes" placeholder="Flags, wins, issues, anything needing Coby attention...">' + (sub.notes || '') + '</textarea></div>';
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-top:10px">';
+  h += '<button class="btn btn-p" onclick="subDept(\'' + k + '\')">Submit ' + D.name + '</button>';
+  h += '<span class="btn-note">Marks submitted and visible to Coby in Verify Submissions</span></div></div>';
+
+  // Employee metrics section
+  var ekpis = EMP_KPIS[k] || [];
+  h += '<div class="ep" style="margin-bottom:14px">';
+  h += '<div class="eph"><h3>' + D.name + ' — Employee Metrics</h3></div>';
+  h += '<p class="eps">Enter individual KPI metrics and scorecard ratings for each team member.</p>';
+  h += '<div class="sc-entry-grid">';
+
+  D.employees.forEach(function(emp) {
+    var ec2 = ecolor(emp.n);
+    var ed = EMP_DATA[CW][k] ? (EMP_DATA[CW][k][emp.n] || {}) : {};
+    var sk = emp.n.replace(/[^a-zA-Z0-9]/g, '_');
+    var esc2 = empScore(k, emp.n);
+    var escColor = esc2 >= 80 ? VG2 : esc2 >= 55 ? VA2 : VR2;
+
+    h += '<div class="sc-entry-card">';
+    h += '<div class="sc-ec-hdr">';
+    h += '<div class="ea" style="background:' + ec2 + ';width:26px;height:26px;font-size:11px">' + emp.av + '</div>';
+    h += '<div class="sc-ec-name">' + emp.n + '</div>';
+    h += '<div class="sc-ec-role">' + emp.r + '</div>';
+    h += '<div style="font-family:DM Mono,monospace;font-size:13px;font-weight:500;color:' + escColor + ';margin-left:auto">' + esc2 + '</div>';
+    h += '</div><div class="sc-ec-body">';
+
+    h += '<div style="font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:600;margin-bottom:2px">Individual KPI Metrics</div>';
+    ekpis.forEach(function(kp) {
+      var cv2 = ed[kp.key] !== undefined ? ed[kp.key] : '';
+      var s2 = cv2 !== '' ? gst(kp, cv2) : '';
+      var bc2 = s2 === 'green' ? VG2 : s2 === 'amber' ? VA2 : s2 === 'red' ? VR2 : '';
+      h += '<div class="ef" style="margin-bottom:4px">';
+      h += '<label style="color:' + D.color + ';font-size:9px">' + kp.name + ' <span style="color:var(--text3);font-weight:400">(' + kp.unit + ')</span></label>';
+      h += '<input type="number" id="ei_' + k + '_' + sk + '_' + kp.key + '" value="' + cv2 + '" step="' + (kp.unit === '%' ? '0.1' : '1') + '" min="0"';
+      if (bc2) { h += ' style="border-color:' + bc2 + ';border-width:2px;padding:5px 8px;font-size:11px"'; }
+      else { h += ' style="padding:5px 8px;font-size:11px"'; }
+      h += ' onchange="luvEmp(\'' + k + '\',\'' + emp.n + '\',\'' + kp.key + '\',this,\'' + sk + '\')">'; 
+      h += '<div class="ef-i" style="font-size:8px">' + kp.inst + '</div>';
+      h += '</div>';
+    });
+
+    h += '<div style="font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:600;margin:6px 0 4px">Scorecard Ratings (1–5)</div>';
+    SC_DIMS.forEach(function(dim) {
+      var rating = ed[dim.key] || 0;
+      h += '<div class="sc-row"><div class="sc-row-lbl">' + dim.name + '</div><div class="sc-row-stars">';
+      for (var i = 1; i <= 5; i++) {
+        h += '<div class="sc-star ' + (i <= rating ? 'on' : '') + '" onclick="setScorecard(\'' + k + '\',\'' + emp.n + '\',\'' + dim.key + '\',' + i + ',\'' + sk + '\')" title="' + i + '">' + (i <= rating ? '&#9733;' : '&#9734;') + '</div>';
+      }
+      h += '</div><div class="sc-row-hint" style="font-size:8px;color:var(--text3)">' + dim.hint + '</div></div>';
+    });
+
+    h += '</div></div>';
+  });
+
+  h += '</div>';
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-top:8px">';
+  h += '<button class="btn btn-p" onclick="saveEmpData(\'' + k + '\')">Save ' + D.name + ' Employee Data</button>';
+  h += '<span class="btn-note">Saves all employee metrics and scorecard ratings</span></div></div>';
+
+  mc.innerHTML = h;
 }
 function updTime() {
   var n = new Date();
