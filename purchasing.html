@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProCare - Purchasing Department</title>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#1F4E79;--blue:#2E75B6;--pale:#DEEAF1;
+  --green:#1A6B3C;--gbg:#D4EDDA;--gmid:#2D9E5F;
+  --amber:#7B5200;--abg:#FFF3CD;--amid:#D4930A;
+  --red:#8B0000;--rbg:#F8D7DA;--rmid:#C0392B;
+  --lgray:#F4F6F9;--border:#E2E8F0;
+  --text:#1a2332;--text2:#4a5568;--text3:#718096;
+  --sh:0 2px 12px rgba(0,0,0,0.07);--shl:0 8px 32px rgba(0,0,0,0.13);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--lgray);color:var(--text);min-height:100vh}
+.hdr{background:var(--navy);position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,0.3)}
+.hdr-i{display:flex;align-items:stretch}
+.hdr-b{padding:12px 20px;border-right:1px solid rgba(255,255,255,0.12)}
+.hdr-b h1{font-family:'Playfair Display',serif;font-size:16px;color:#fff}
+.hdr-b p{font-size:9px;color:rgba(255,255,255,0.4);font-family:'DM Mono',monospace;margin-top:1px;letter-spacing:1px;text-transform:uppercase}
+.hdr-w{padding:12px 14px;border-right:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;justify-content:center}
+.hdr-w label{font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;font-family:'DM Mono',monospace}
+.hdr-w select{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:11px;padding:3px 7px;border-radius:4px;cursor:pointer;margin-top:2px;font-family:'DM Sans',sans-serif}
+.hdr-w select option{background:var(--navy)}
+.hdr-r{padding:12px 16px;display:flex;align-items:center;gap:8px;margin-left:auto}
+.live{width:6px;height:6px;background:#2ecc71;border-radius:50%;box-shadow:0 0 7px #2ecc71;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hdr-t{font-size:10px;color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace}
+.nav{background:#fff;border-bottom:2px solid var(--border);display:flex;overflow-x:auto;position:sticky;top:53px;z-index:190;box-shadow:0 1px 6px rgba(0,0,0,0.05)}
+.nav::-webkit-scrollbar{height:3px}.nav::-webkit-scrollbar-thumb{background:var(--blue)}
+.ntab{padding:10px 13px;font-size:11px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all .18s;display:flex;align-items:center;gap:5px;user-select:none;flex-shrink:0}
+.ntab:hover{color:var(--text);background:var(--lgray)}
+.ntab.active{color:var(--navy);border-bottom-color:var(--blue);background:#EBF5FB}
+.nsep{width:1px;background:var(--border);margin:6px 0;flex-shrink:0}
+.nd{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.nd-g{background:var(--gmid)}.nd-a{background:var(--amid)}.nd-r{background:var(--rmid)}.nd-0{background:#CBD5E0}
+.mc{padding:16px;max-width:1440px;margin:0 auto}
+/* Regional */
+.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px}
+.dc{background:#fff;border-radius:10px;box-shadow:var(--sh);overflow:hidden;cursor:pointer;transition:all .2s;border:2px solid transparent}
+.dc:hover{box-shadow:var(--shl);transform:translateY(-2px)}
+.dc-h{padding:10px 12px 7px;display:flex;align-items:center;gap:8px}
+.di{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.dn{flex:1;min-width:0}.dn-t{font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dn-m{font-size:9px;color:var(--text3);margin-top:1px}
+.ds{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;min-width:38px;text-align:right}
+.kb{padding:0 12px 8px;display:flex;flex-direction:column;gap:4px}
+.kr{display:flex;align-items:center;gap:6px}
+.kl{font-size:9px;color:var(--text3);width:88px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kt{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.kf{height:100%;border-radius:2px;transition:width .7s}
+.kd{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.df{padding:6px 12px;background:var(--lgray);display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border)}
+.dfg{display:flex;gap:7px}
+.dfc{font-size:9px;font-weight:500}
+.dtr{font-size:9px;font-family:'DM Mono',monospace}
+/* Dept detail */
+.dh{background:#fff;border-radius:10px;box-shadow:var(--sh);padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:13px}
+.dhi{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.bsc{font-family:'DM Mono',monospace;font-size:30px;font-weight:500}
+/* Tab strip */
+.dts{display:flex;gap:0;border:1px solid var(--border);border-radius:7px;overflow:hidden;margin-bottom:13px;background:#fff;flex-wrap:wrap}
+.dt{padding:7px 13px;font-size:11px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:all .15s;font-family:'DM Sans',sans-serif;border-right:1px solid var(--border)}
+.dt:last-child{border-right:none}
+.dt.active{background:var(--navy);color:#fff}
+.dt:hover:not(.active){background:var(--lgray)}
+/* Why banner */
+.wb{background:var(--navy);border-radius:8px;padding:12px 15px;margin-bottom:13px;display:flex;align-items:flex-start;gap:10px}
+.wbi{font-size:17px;flex-shrink:0;margin-top:1px}
+.wbt h4{color:#fff;font-size:12px;font-weight:600;margin-bottom:2px}
+.wbt p{color:rgba(255,255,255,0.68);font-size:10px;line-height:1.5}
+/* KPI cards */
+.kg{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;margin-bottom:16px}
+.kc{background:#fff;border-radius:8px;border:1px solid var(--border);overflow:hidden}
+.kct{padding:10px 12px 6px;display:flex;align-items:flex-start;gap:8px}
+.kr2{font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);background:var(--lgray);border-radius:3px;padding:2px 4px;flex-shrink:0;margin-top:1px}
+.kn{font-size:12px;font-weight:600;line-height:1.3;flex:1}
+.kva{text-align:right;flex-shrink:0}
+.kv{font-family:'DM Mono',monospace;font-size:17px;font-weight:500}
+.ku{font-size:9px;color:var(--text3);margin-top:1px}
+.ta{font-size:12px;margin-left:2px}
+.kw{padding:6px 12px;font-size:10px;color:var(--text2);line-height:1.5;background:#FAFBFC;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.kwl{font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:600;display:block;margin-bottom:1px}
+.kp{padding:6px 12px 10px}
+.kp-t{display:flex;justify-content:space-between;font-size:9px;color:var(--text3);margin-bottom:4px}
+.kp-b{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.kp-f{height:100%;border-radius:3px;transition:width .9s}
+.tr-r{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border)}
+.tc{padding:7px 9px}
+.tl{font-size:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}
+.tt{font-size:9px;line-height:1.4;color:var(--text2)}
+.tg{background:var(--gbg)}.tg .tl{color:var(--green)}
+.ta2{background:var(--abg)}.ta2 .tl{color:var(--amber)}
+.tr2{background:var(--rbg)}.tr2 .tl{color:var(--red)}
+/* Employee cards */
+.eg{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.ec{background:#fff;border-radius:9px;border:1px solid var(--border);overflow:hidden}
+.ech{padding:11px 13px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--border)}
+.ea{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;color:#fff;flex-shrink:0}
+.en{font-size:12px;font-weight:600}.er{font-size:9px;color:var(--text3);margin-top:1px}
+.esc{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;margin-left:auto}
+/* Employee KPI rows */
+.ekpis{padding:9px 13px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:5px}
+.ekpi-row{display:flex;align-items:center;gap:7px}
+.ekpi-lbl{font-size:10px;color:var(--text3);flex:1}
+.ekpi-bar{width:60px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;flex-shrink:0}
+.ekpi-bar-f{height:100%;border-radius:2px}
+.ekpi-val{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;min-width:38px;text-align:right}
+.ekpi-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+/* Scorecard */
+.esc-sec{padding:9px 13px;border-bottom:1px solid var(--border);background:#FAFBFC}
+.esc-lbl{font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:600;margin-bottom:6px}
+.esc-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.esc-item{display:flex;align-items:center;justify-content:space-between}
+.esc-name{font-size:10px;color:var(--text2)}
+.esc-stars{display:flex;gap:2px}
+.star{width:12px;height:12px;border-radius:2px;cursor:pointer;transition:background .1s;background:var(--border)}
+.star.on{background:var(--amid)}
+.star.on-g{background:var(--gmid)}
+.star.on-r{background:var(--rmid)}
+/* Employee comment */
+.ecom{padding:9px 13px}
+.ecom-lbl{font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:600;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
+.ecom-hist{font-size:9px;color:var(--blue);cursor:pointer;font-weight:500;text-transform:none;letter-spacing:0}
+.ecom-ta{width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:5px;font-size:10px;font-family:'DM Sans',sans-serif;resize:vertical;min-height:56px;color:var(--text);background:#fff;line-height:1.5}
+.ecom-ta:focus{outline:none;border-color:var(--blue)}
+.ecom-save{margin-top:5px;padding:4px 11px;background:var(--navy);color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.ecom-save:hover{background:var(--blue)}
+.ecom-saved{font-size:9px;color:var(--green);margin-top:3px;display:none}
+.hist-box{margin-top:7px;display:flex;flex-direction:column;gap:4px}
+.hent{background:var(--lgray);border-radius:5px;padding:6px 8px}
+.hw{font-size:8px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:2px}
+.ht{font-size:10px;color:var(--text2);line-height:1.5}
+/* Submission viewer */
+.sv-box{background:#fff;border-radius:9px;box-shadow:var(--sh);overflow:hidden;margin-bottom:16px}
+.sv-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--lgray)}
+.sv-hdr h3{font-size:13px;font-weight:600;color:var(--navy)}
+.sv-meta{font-size:10px;color:var(--text3)}
+.sv-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:10px;font-size:9px;font-weight:600}
+.sv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.sf{padding:11px 14px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.sf-l{font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:600;margin-bottom:3px}
+.sf-v{font-size:13px;font-weight:500;font-family:'DM Mono',monospace}
+.sf-s{font-size:8px;margin-top:2px;font-weight:600}
+.sf-i{font-size:9px;color:var(--text3);margin-top:2px;line-height:1.4;font-style:italic}
+.sv-notes{padding:12px 16px;border-top:1px solid var(--border);background:#FAFBFC}
+.sv-nd{font-size:9px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px}
+.sv-empty{padding:28px 16px;text-align:center;color:var(--text3);font-size:11px}
+.vbar{padding:9px 16px;background:var(--pale);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px}
+.vbar p{font-size:10px;color:var(--navy)}
+.vbtns{display:flex;gap:7px}
+.vb{padding:4px 12px;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .13s}
+.vb-ok{background:var(--green);color:#fff}.vb-ok:hover{background:#145A32}
+.vb-fl{background:var(--red);color:#fff}.vb-fl:hover{background:#6B0000}
+/* Data entry */
+.ep{background:#fff;border-radius:9px;box-shadow:var(--sh);padding:16px;margin-bottom:13px}
+.eph{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.eph h3{font-size:13px;font-weight:600;color:var(--navy)}
+.eps{font-size:10px;color:var(--text3);margin-bottom:12px}
+/* Entry section tabs */
+.entry-tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:14px;background:var(--lgray);width:fit-content}
+.etab{padding:6px 14px;font-size:11px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:all .15s;font-family:'DM Sans',sans-serif;border-right:1px solid var(--border)}
+.etab:last-child{border-right:none}
+.etab.active{background:var(--navy);color:#fff}
+.etab:hover:not(.active){background:var(--border)}
+.ep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.ef{display:flex;flex-direction:column;gap:3px}
+.ef label{font-size:10px;font-weight:600;color:var(--text2)}
+.ef input{padding:7px 9px;border:1px solid var(--border);border-radius:5px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text);background:#FAFBFC;transition:border-color .18s}
+.ef input:focus{outline:none;border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(46,117,182,.07)}
+.ef-i{font-size:9px;color:var(--text3);line-height:1.4}
+.ef-i b{color:var(--navy)}
+.ef-e{font-size:9px;color:#bbb;font-style:italic}
+/* Scorecard entry */
+.sc-entry-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:12px}
+.sc-entry-card{border:1px solid var(--border);border-radius:7px;overflow:hidden}
+.sc-ec-hdr{padding:8px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);background:var(--lgray)}
+.sc-ec-name{font-size:11px;font-weight:600;color:var(--text)}
+.sc-ec-role{font-size:9px;color:var(--text3);margin-left:auto}
+.sc-ec-body{padding:10px 12px;display:flex;flex-direction:column;gap:7px}
+.sc-row{display:flex;align-items:center;gap:8px}
+.sc-row-lbl{font-size:10px;color:var(--text2);width:90px;flex-shrink:0}
+.sc-row-stars{display:flex;gap:3px}
+.sc-star{width:20px;height:20px;border-radius:3px;cursor:pointer;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;transition:background .1s;user-select:none}
+.sc-star.on{background:var(--amid);color:#fff}
+.sc-row-hint{font-size:9px;color:var(--text3);font-style:italic}
+.ta{width:100%;padding:7px 9px;border:1px solid var(--border);border-radius:5px;font-size:10px;font-family:'DM Sans',sans-serif;resize:vertical;min-height:52px;color:var(--text);background:#FAFBFC}
+.ta:focus{outline:none;border-color:var(--blue)}
+/* Buttons */
+.btn{padding:7px 16px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.btn-p{background:var(--navy);color:#fff}.btn-p:hover{background:var(--blue)}
+.btn-s{background:var(--lgray);color:var(--text2);border:1px solid var(--border)}.btn-s:hover{background:var(--border)}
+.btn-g{background:var(--green);color:#fff}.btn-g:hover{background:#145A32}
+.btn-note{font-size:9px;color:var(--text3)}
+/* Manager rating */
+.mr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.mr-c{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff}
+.mr-ch{padding:9px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);background:var(--lgray)}
+.mr-cn{font-size:11px;font-weight:600}
+.mr-cd{font-size:9px;color:var(--text3)}
+.mr-b{padding:11px 12px;display:flex;flex-direction:column;gap:8px}
+.mr-q{display:flex;flex-direction:column;gap:3px}
+.mr-qt{font-size:10px;font-weight:500;color:var(--text2)}
+.mr-opts{display:flex;gap:4px;flex-wrap:wrap}
+.mop{padding:3px 8px;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--lgray);color:var(--text3);transition:all .12s;user-select:none}
+.mop-y{background:var(--gbg);color:var(--green);border-color:var(--green)}
+.mop-p{background:var(--abg);color:var(--amber);border-color:var(--amber)}
+.mop-n{background:var(--rbg);color:var(--red);border-color:var(--red)}
+.mop-na{background:#EBF5FB;color:var(--navy);border-color:var(--blue)}
+.mop-e{background:var(--gbg);color:var(--green);border-color:var(--green)}
+.mop-m{background:#EBF5FB;color:var(--navy);border-color:var(--blue)}
+.mop-a{background:var(--abg);color:var(--amber);border-color:var(--amber)}
+.mop-b{background:var(--rbg);color:var(--red);border-color:var(--red)}
+.mr-notes{padding:5px 7px;border:1px solid var(--border);border-radius:5px;font-size:10px;resize:vertical;min-height:44px;color:var(--text);background:#FAFBFC;font-family:'DM Sans',sans-serif;width:100%}
+.mr-notes:focus{outline:none;border-color:var(--blue)}
+.mr-foot{padding:7px 12px;background:var(--lgray);display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border)}
+.mr-fl{font-size:9px;color:var(--text3)}
+.mr-fv{font-family:'DM Mono',monospace;font-size:13px;font-weight:500}
+/* Report */
+.rep-panel{background:#fff;border-radius:9px;box-shadow:var(--sh);padding:16px}
+/* Misc */
+.pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.pill{padding:4px 10px;border-radius:13px;font-size:10px;font-weight:500;display:flex;align-items:center;gap:4px}
+.pg{background:var(--gbg);color:var(--green)}.pa{background:var(--abg);color:var(--amber)}.pr{background:var(--rbg);color:var(--red)}
+.sc-g{color:var(--green)}.sc-a{color:var(--amber)}.sc-r{color:var(--red)}
+.st{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);margin-bottom:2px}
+.ss{font-size:10px;color:var(--text3);margin-bottom:12px}
+.ib{background:var(--pale);border-left:3px solid var(--blue);border-radius:0 6px 6px 0;padding:8px 12px;margin-bottom:11px;font-size:10px;color:var(--navy);line-height:1.5}
+.tag-rom{display:inline-block;padding:1px 5px;border-radius:3px;font-size:8px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:var(--pale);color:var(--navy)}
+@media(max-width:600px){.mc{padding:10px}.kg,.rg,.eg,.mr-grid,.ep-grid,.sc-entry-grid{grid-template-columns:1fr}}
+
+
+.pin-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:#1F4E79;display:flex;align-items:center;justify-content:center;z-index:9999}
+.pin-box{background:#fff;border-radius:16px;padding:40px 48px;max-width:380px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.pin-logo{font-size:28px;margin-bottom:8px}
+.pin-title{font-family:'Playfair Display',serif;font-size:22px;color:#1F4E79;margin-bottom:4px}
+.pin-sub{font-size:12px;color:#718096;margin-bottom:28px;line-height:1.5}
+.pin-dots{display:flex;gap:12px;justify-content:center;margin-bottom:24px}
+.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid #CBD5E0;background:#fff;transition:all .2s}
+.pin-dot.filled{background:#1F4E79;border-color:#1F4E79}
+.pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.pin-key{padding:14px;border:1px solid #E2E8F0;border-radius:10px;font-size:18px;font-weight:600;cursor:pointer;background:#F4F6F9;color:#1a2332;transition:all .15s;font-family:'DM Sans',sans-serif;user-select:none}
+.pin-key:hover{background:#DEEAF1;border-color:#2E75B6}
+.pin-key:active{background:#BDD7EE}
+.pin-key.del{font-size:14px;color:#718096}
+.pin-error{color:#8B0000;font-size:12px;font-weight:500;min-height:18px;margin-top:4px}
+.pin-hint{font-size:11px;color:#a0aec0;margin-top:12px}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+</style>
+</head><body>
+<div class="pin-screen" id="pinScreen">
+  <div class="pin-box" id="pinBox">
+    <div class="pin-logo">🛒</div>
+    <div class="pin-title">Purchasing Department</div>
+    <div class="pin-sub">ProCare Medical Equipment<br>Enter your 4-digit PIN to access your dashboard</div>
+    <div class="pin-dots">
+      <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+    </div>
+    <div class="pin-keypad">
+      <button class="pin-key" onclick="pinKey('1')">1</button>
+      <button class="pin-key" onclick="pinKey('2')">2</button>
+      <button class="pin-key" onclick="pinKey('3')">3</button>
+      <button class="pin-key" onclick="pinKey('4')">4</button>
+      <button class="pin-key" onclick="pinKey('5')">5</button>
+      <button class="pin-key" onclick="pinKey('6')">6</button>
+      <button class="pin-key" onclick="pinKey('7')">7</button>
+      <button class="pin-key" onclick="pinKey('8')">8</button>
+      <button class="pin-key" onclick="pinKey('9')">9</button>
+      <button class="pin-key del" onclick="pinDel()">&#9003;</button>
+      <button class="pin-key" onclick="pinKey('0')">0</button>
+      <button class="pin-key del" onclick="pinClear()">&#x2715;</button>
+    </div>
+    <div class="pin-error" id="pinError"></div>
+    <div class="pin-hint">Contact your manager if you do not have a PIN</div>
+  </div>
+</div>
+<div id="dashWrap" style="display:none">
+  <div class="hdr"><div class="hdr-i">
+    <div class="hdr-b"><h1>🛒 Purchasing Department</h1><p id="hdrUser">ProCare Medical Equipment</p></div>
+    <div class="hdr-w"><label>Week</label>
+      <select id="wkSel" onchange="chW(this.value)">
+        <option value="cur">Apr 14, 2026 (Current)</option>
+        <option value="p1">Apr 7, 2026</option>
+        <option value="p2">Mar 31, 2026</option>
+      </select>
+    </div>
+    <div class="hdr-r"><div class="live"></div><span class="hdr-t" id="hdrT"></span></div>
+  </div></div>
+  <nav class="nav" id="nav"></nav>
+  <div class="mc" id="mc"></div>
+</div>
+<script>
+var PIN_MAP = {"2291": "__MANAGER__", "5803": "Breanna Lawson"};
+var pinBuffer = '';
+var currentUser = null;
+
+function pinKey(k) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += k;
+  updatePinDots();
+  if (pinBuffer.length === 4) { setTimeout(checkPin, 180); }
+}
+function pinDel() {
+  pinBuffer = pinBuffer.slice(0, -1);
+  updatePinDots();
+  document.getElementById('pinError').textContent = '';
+}
+function pinClear() {
+  pinBuffer = '';
+  updatePinDots();
+  document.getElementById('pinError').textContent = '';
+}
+function updatePinDots() {
+  for (var i = 0; i < 4; i++) {
+    var dot = document.getElementById('pd' + i);
+    if (dot) { dot.classList.toggle('filled', i < pinBuffer.length); }
+  }
+}
+function checkPin() {
+  var entered = pinBuffer;
+  pinBuffer = '';
+  updatePinDots();
+  if (PIN_MAP[entered]) {
+    currentUser = PIN_MAP[entered];
+    document.getElementById('pinScreen').style.display = 'none';
+    document.getElementById('dashWrap').style.display = 'block';
+    var uLabel = currentUser === '__MANAGER__' ? 'Justin Cavanaugh (Manager)' : currentUser;
+    document.getElementById('hdrUser').textContent = 'Signed in as: ' + uLabel;
+    initDashboard();
+  } else {
+    document.getElementById('pinError').textContent = 'Incorrect PIN. Please try again.';
+    var box = document.getElementById('pinBox');
+    box.style.animation = 'none';
+    void box.offsetHeight;
+    box.style.animation = 'shake 0.3s ease';
+  }
+}
+
+const VG='#1A6B3C',VA='#7B5200',VR='#8B0000';
+
+// ── EMPLOYEE KPI DEFINITIONS per department ──────────────────────────
+// Each dept lists which 5 KPIs apply at the employee level and how to enter them
+const EMP_KPIS = {
+  csr:[
+    {key:'calls',name:'Calls Answered',unit:'count',success:30,coast:20,li:false,inst:'Individual calls answered by this CSR this week'},
+    {key:'orders',name:'Orders Written',unit:'count',success:12,coast:8,li:false,inst:'Individual orders entered by this CSR this week'},
+    {key:'fcr',name:'FCR Rate',unit:'%',success:85,coast:70,li:false,inst:'First-call resolution rate for this CSR\'s calls'},
+    {key:'accuracy',name:'Order Accuracy',unit:'%',success:97,coast:90,li:false,inst:'Order accuracy rate for this CSR'},
+    {key:'authRate',name:'Auth Approval',unit:'%',success:90,coast:75,li:false,inst:'Prior auth approval rate for auths submitted by this CSR'},
+  ],
+  driver:[
+    {key:'deliveries',name:'Deliveries Done',unit:'count',success:18,coast:12,li:false,inst:'Total deliveries completed by this driver this week'},
+    {key:'onTime',name:'On-Time Rate',unit:'%',success:95,coast:88,li:false,inst:'Percentage of this driver\'s deliveries completed on time'},
+    {key:'redeliveries',name:'Re-Deliveries',unit:'count',success:0,coast:2,li:true,inst:'Number of re-deliveries made by this driver this week'},
+    {key:'safety',name:'Safety Incidents',unit:'count',success:0,coast:0,li:true,inst:'Safety incidents involving this driver (0 = none)'},
+    {key:'otHours',name:'Overtime Hours',unit:'hrs',success:2,coast:6,li:true,inst:'Overtime hours worked by this driver this week'},
+  ],
+  route:[
+    {key:'routesComp',name:'Routes Completed',unit:'count',success:5,coast:3,li:false,inst:'Routes fully completed by this coordinator this week'},
+    {key:'avgStops',name:'Avg Stops/Route',unit:'count',success:8,coast:5,li:false,inst:'Average stops per route planned by this coordinator'},
+    {key:'changes',name:'Route Changes',unit:'count',success:1,coast:4,li:true,inst:'Same-day route changes attributed to planning errors'},
+    {key:'milesPerDel',name:'Miles/Delivery',unit:'miles',success:15,coast:25,li:true,inst:'Average miles per delivery on routes planned this week'},
+    {key:'dispatchOT',name:'On-Time Dispatch',unit:'%',success:95,coast:85,li:false,inst:'Percentage of routes dispatched on time'},
+  ],
+  whhq:[
+    {key:'unitsProc',name:'Units Processed',unit:'count',success:15,coast:8,li:false,inst:'Equipment units received, staged, or processed by this person'},
+    {key:'turnaround',name:'Turnaround (days)',unit:'days',success:2,coast:4,li:true,inst:'Average turnaround time on equipment assigned to this person'},
+    {key:'errors',name:'Fulfillment Errors',unit:'count',success:0,coast:1,li:true,inst:'Order fulfillment errors attributable to this person'},
+    {key:'posComp',name:'POs Completed',unit:'count',success:5,coast:2,li:false,inst:'Purchase orders or receiving tasks completed by this person'},
+    {key:'reorders',name:'Vendor Re-Orders',unit:'count',success:0,coast:2,li:true,inst:'Re-orders placed due to incomplete ordering by this person'},
+  ],
+  whtf:[
+    {key:'unitsProc',name:'Units Processed',unit:'count',success:10,coast:5,li:false,inst:'Equipment units received, staged, or processed by this person'},
+    {key:'turnaround',name:'Turnaround (days)',unit:'days',success:2,coast:4,li:true,inst:'Average turnaround on equipment assigned to this person'},
+    {key:'stagingOT',name:'On-Time Staging',unit:'%',success:95,coast:85,li:false,inst:'Percentage of deliveries staged on time by this person'},
+    {key:'errors',name:'Staging Errors',unit:'count',success:0,coast:1,li:true,inst:'Staging or dispatch errors attributable to this person'},
+    {key:'coordination',name:'Coord. Accuracy',unit:'%',success:95,coast:85,li:false,inst:'HQ transfer coordination accuracy for requests by this person'},
+  ],
+  repair:[
+    {key:'woComp',name:'WOs Completed',unit:'count',success:5,coast:3,li:false,inst:'Work orders completed by this technician this week'},
+    {key:'turnaround',name:'Avg Turnaround',unit:'days',success:3,coast:5,li:true,inst:'Average days to close a work order for this technician'},
+    {key:'blocked',name:'Orders Blocked',unit:'count',success:0,coast:1,li:true,inst:'Patient orders blocked by equipment in this technician\'s queue'},
+    {key:'rework',name:'Rework Count',unit:'count',success:0,coast:1,li:true,inst:'Comebacks / rework attributable to this technician this week'},
+    {key:'partsReady',name:'Parts Ready Rate',unit:'%',success:85,coast:70,li:false,inst:'Percentage of this tech\'s repairs completed without parts delay'},
+  ],
+  va:[
+    {key:'auths',name:'Auths Submitted',unit:'count',success:5,coast:2,li:false,inst:'VA authorizations submitted by this person this week'},
+    {key:'authApproval',name:'Auth Approval',unit:'%',success:90,coast:75,li:false,inst:'Auth approval rate for this person\'s submissions'},
+    {key:'fulfillDays',name:'Days to Fulfill',unit:'days',success:10,coast:21,li:true,inst:'Average days from referral to delivery for orders handled by this person'},
+    {key:'conversion',name:'Referral Conv.',unit:'%',success:90,coast:75,li:false,inst:'Referral conversion rate for referrals assigned to this person'},
+    {key:'portalAcc',name:'Portal Accuracy',unit:'%',success:95,coast:85,li:false,inst:'VA portal submission accuracy for this person\'s submissions'},
+  ],
+  billing:[
+    {key:'claims',name:'Claims Submitted',unit:'count',success:30,coast:15,li:false,inst:'Total claims submitted by this person this week'},
+    {key:'cleanClaim',name:'Clean Claim Rate',unit:'%',success:95,coast:88,li:false,inst:'Clean claim rate for this person\'s submissions'},
+    {key:'denials',name:'Denial Count',unit:'count',success:1,coast:4,li:true,inst:'Claim denials on submissions by this person this week'},
+    {key:'postingAcc',name:'Posting Accuracy',unit:'%',success:99,coast:97,li:false,inst:'Payment posting accuracy for this person'},
+    {key:'ar90',name:'90+ Day AR %',unit:'%',success:10,coast:20,li:true,inst:'Percentage of AR over 90 days for accounts managed by this person'},
+  ],
+  rt:[
+    {key:'setups',name:'Patient Setups',unit:'count',success:3,coast:1,li:false,inst:'New RT patient setups completed by this person this week'},
+    {key:'cpap',name:'CPAP Compliance',unit:'%',success:85,coast:70,li:false,inst:'CPAP compliance rate for patients under this person\'s care'},
+    {key:'setupDays',name:'Days to Setup',unit:'days',success:5,coast:10,li:true,inst:'Average days from referral to setup for this person\'s patients'},
+    {key:'cmn',name:'CMN Rate',unit:'%',success:98,coast:93,li:false,inst:'CMN compliance rate for this person\'s patients'},
+    {key:'retention',name:'Retention Rate',unit:'%',success:92,coast:85,li:false,inst:'Patient retention rate for patients under this person\'s care'},
+  ],
+  sales:[
+    {key:'newRefs',name:'New Referral Sources',unit:'count',success:2,coast:0,li:false,inst:'New referral sources opened by this person this week'},
+    {key:'visits',name:'Source Visits',unit:'count',success:6,coast:3,li:false,inst:'Referral source visits completed by this person this week'},
+    {key:'orders',name:'Orders from Sales',unit:'count',success:15,coast:8,li:false,inst:'Orders generated through this person\'s sales activity'},
+    {key:'followUp',name:'Follow-Up Rate',unit:'%',success:90,coast:75,li:false,inst:'Follow-up completion rate for this person\'s scheduled contacts'},
+    {key:'pipeline',name:'Pipeline Conv.',unit:'%',success:30,coast:15,li:false,inst:'Pipeline conversion rate for prospects assigned to this person'},
+  ],
+  purchasing:[
+    {key:'posPlaced',name:'POs Placed',unit:'count',success:8,coast:4,li:false,inst:'Purchase orders placed by this person this week'},
+    {key:'poFill',name:'PO Fill Rate',unit:'%',success:95,coast:85,li:false,inst:'Fill rate for POs placed by this person'},
+    {key:'rush',name:'Rush Orders',unit:'count',success:0,coast:2,li:true,inst:'Emergency/rush orders placed by this person due to inventory gaps'},
+    {key:'variance',name:'Cost Variance',unit:'%',success:5,coast:10,li:true,inst:'Cost variance on purchases placed by this person'},
+    {key:'reorders',name:'Vendor Re-Orders',unit:'count',success:0,coast:2,li:true,inst:'Re-orders placed by this person due to incomplete first order'},
+  ],
+};
+
+// Scorecard dimensions (same for all employees)
+const SC_DIMS=[
+  {key:'attendance',name:'Attendance',hint:'1=multiple absences, 5=perfect'},
+  {key:'output',name:'Output/Productivity',hint:'1=below expectations, 5=exceeds'},
+  {key:'quality',name:'Work Quality',hint:'1=errors/rework needed, 5=no errors'},
+  {key:'communication',name:'Communication',hint:'1=poor, 5=proactive and clear'},
+];
+
+// ── DEPARTMENT DEFINITIONS ────────────────────────────────────────────
+const DEPTS={
+csr:{name:'CSR Department',mgr:'Jaquilyn Janousek',icon:'📋',color:'#1D6A96',light:'#D0E8F4',
+why:'CSR is the front door of ProCare. Every referral, patient, and physician order flows through this team first. Their speed and accuracy determine whether patients get equipment on time and whether ProCare gets paid.',
+employees:[{n:'Nicole Lombardo',r:'CSR',av:'NL'},{n:'Michaela Valle',r:'CSR',av:'MV'},{n:'Holly Shafer',r:'CSR',av:'HS'},{n:'Natalie Jones',r:'CSR',av:'NJ'},{n:'Rebecca Pierce',r:'CSR',av:'RP'}],
+kpis:[
+{name:'Calls Answered',unit:'count',key:'calls',success:150,coast:100,li:false,why:'Every unanswered call is a patient or referral source who did not get through. Volume shows whether the team is keeping up with demand.',inst:'Count every inbound call answered by a CSR this week. Pull from your phone system report.',ex:'Ex: 167 calls answered this week',s:'150+ — keeping pace',c:'100–149 — capacity strain',f:'Below 100 — significant calls unanswered'},
+{name:'Weekly Orders Written',unit:'count',key:'orders',success:60,coast:40,li:false,why:'Orders written is the primary output metric for CSR. It directly links team activity to patient care and revenue.',inst:'Count all new DME orders entered in SeriousERP this week. Not corrections or resubmissions.',ex:'Ex: 74 new orders entered',s:'60+ — strong intake',c:'40–59 — below expected volume',f:'Below 40 — critically low'},
+{name:'First-Call Resolution Rate',unit:'%',key:'fcr',success:85,coast:70,li:false,why:'Every callback wastes capacity. High FCR means patients get answers fast and staff are not duplicating work.',inst:'(Calls resolved on first contact ÷ total calls handled) × 100',ex:'Ex: 112 resolved of 130 = 86%',s:'85%+ — resolving on first contact',c:'70–84% — callbacks routine',f:'Below 70% — overwhelmed or under-trained'},
+{name:'Order Accuracy Rate',unit:'%',key:'accuracy',success:97,coast:90,li:false,why:'An inaccurate order costs double the work and delays the patient.',inst:'((Total orders − returned for errors) ÷ total orders) × 100',ex:'Ex: 2 errors of 74 = 97.3%',s:'97%+ — errors are rare',c:'90–96% — rework becoming routine',f:'Below 90% — 1 in 10 has an error'},
+{name:'Prior Auth Approval Rate',unit:'%',key:'authRate',success:90,coast:75,li:false,why:'Denied auths mean equipment cannot be delivered. This links CSR documentation quality to patient outcomes and revenue.',inst:'(Auths approved ÷ auths submitted) × 100',ex:'Ex: 18 of 21 = 85.7%',s:'90%+ — submissions clean',c:'75–89% — denials occurring',f:'Below 75% — systemic problem, escalate now'},
+]},
+driver:{name:'Delivery & Driver',mgr:'Matthew Martin',icon:'🚚',color:'#1E5631',light:'#D4EDDA',
+why:'Drivers are the last mile — the moment patients actually receive their care. When delivery fails, patients notice, families call, and referral sources reconsider. This is ProCare\'s most visible promise kept or broken.',
+employees:[{n:'Moses Oneil',r:'Driver',av:'MO'},{n:'Ian Rohman',r:'Driver',av:'IR'},{n:'Scott White',r:'Driver',av:'SW'},{n:'Tyler Nalley',r:'Driver',av:'TN'},{n:'Jordan Goodrich',r:'Driver',av:'JG'},{n:'Richard Williams',r:'Driver',av:'RW'},{n:'Kado Rohman',r:'Warehouse/Driver',av:'KR'},{n:'Jeremy Guse',r:'Driver',av:'JE'}],
+kpis:[
+{name:'On-Time Delivery Rate',unit:'%',key:'onTime',success:95,coast:88,li:false,why:'A patient waiting on a hospital bed or oxygen concentrator may be at medical risk. On-time delivery is ProCare\'s most visible reliability metric.',inst:'(Deliveries within scheduled window ÷ total deliveries completed) × 100',ex:'Ex: 82 on-time of 86 = 95.3%',s:'95%+ — patients trust ProCare',c:'88–94% — slipping, referral sources noticing',f:'Below 88% — failing patients. CEO-level issue.'},
+{name:'Re-Delivery Rate',unit:'%',key:'redelivery',success:3,coast:7,li:true,why:'Every re-delivery is wasted fuel, driver time, and a patient who waited longer.',inst:'(Re-deliveries ÷ total deliveries) × 100',ex:'Ex: 2 of 86 = 2.3%',s:'Under 3% — orders leave complete',c:'3–7% — investigate warehouse prep',f:'Over 7% — patients failed twice'},
+{name:'Fleet Availability Rate',unit:'%',key:'fleet',success:90,coast:80,li:false,why:'A van that is down is a delivery that does not happen.',inst:'(Operational vans ÷ total fleet) × 100, averaged across the week',ex:'Ex: 9 of 11 = 81.8%',s:'90%+ — fleet ready',c:'80–89% — coverage pressure',f:'Below 80% — deliveries rescheduled'},
+{name:'Driver Productivity Score',unit:'score',key:'productivity',success:80,coast:60,li:false,why:'Balances orders completed against overtime. High completion with low overtime = efficient. Low completion or high overtime = scheduling problem.',inst:'(Orders completed ÷ scheduled) × 80 minus (OT hours ÷ total hours) × 20',ex:'Ex: 83/90 done minus 8/220 OT = ~76',s:'80+ — strong completion, controlled OT',c:'60–79 — needs attention',f:'Below 60 — significant efficiency problem'},
+{name:'Safety Incidents',unit:'count',key:'safety',success:0,coast:1,li:true,why:'Incidents cost ProCare in workers comp, liability, and vehicle repair. Zero is the only standard.',inst:'Count all documented incidents this week. Enter 0 if none.',ex:'Ex: 0 — enter zero, not blank',s:'0 — the standard',c:'1 minor — investigate immediately',f:'2+ or OSHA-recordable — immediate intervention'},
+]},
+route:{name:'Route Coordination',mgr:'Matthew Martin',icon:'🗺',color:'#2C6B8A',light:'#D4EAF5',
+why:'Route coordinators are the connective tissue between dispatch and delivery. Poor routing costs fuel, time, and patient satisfaction. Efficient routing means more deliveries per driver per day — a direct margin improvement.',
+employees:[{n:'Kayden Rohman',r:'Route Coordinator',av:'KY'}],
+kpis:[
+{name:'Route Completion Rate',unit:'%',key:'routeComp',success:95,coast:85,li:false,why:'Routes not completed signal scheduling errors or driver capacity problems.',inst:'(Routes fully completed ÷ routes dispatched) × 100',ex:'Ex: 19 of 20 = 95%',s:'95%+ — accurately planned and executed',c:'85–94% — some routes not finishing',f:'Below 85% — routing unreliable'},
+{name:'Avg Stops Per Route',unit:'count',key:'stopsPerRoute',success:8,coast:5,li:false,why:'More stops per route = more patients served per driver per day.',inst:'Total delivery stops ÷ total routes dispatched',ex:'Ex: 160 stops / 20 routes = 8.0',s:'8+ — routes dense and efficient',c:'5–7 — some routes light',f:'Below 5 — routes under-loaded'},
+{name:'Same-Day Route Changes',unit:'count',key:'routeChanges',success:3,coast:8,li:true,why:'Frequent same-day changes signal poor planning or unmanaged last-minute orders.',inst:'Count route modifications made after dispatch begins',ex:'Ex: 2 changes this week',s:'3 or fewer — routes stable',c:'4–8 — some disruption',f:'9+ — planning needs overhaul'},
+{name:'Miles Per Delivery',unit:'miles',key:'milesPerDel',success:15,coast:25,li:true,why:'High miles per delivery means drivers covering too much ground. Lower miles = better territory clustering.',inst:'Total fleet miles ÷ total deliveries completed',ex:'Ex: 1,240 miles / 86 deliveries = 14.4',s:'Under 15 miles — tight routing',c:'15–25 miles — acceptable',f:'Over 25 miles — routes spread too thin'},
+{name:'On-Time Dispatch Rate',unit:'%',key:'dispatchOnTime',success:95,coast:85,li:false,why:'Routes that leave late cannot catch up. On-time dispatch protects the day\'s delivery windows.',inst:'(Routes dispatched within 15 min of schedule ÷ total routes) × 100',ex:'Ex: 18 of 20 = 90%',s:'95%+ — dispatch tight',c:'85–94% — some late starts',f:'Below 85% — late dispatch routine'},
+]},
+whhq:{name:'Warehouse — HQ',mgr:'Justin Cavanaugh',icon:'🏭',color:'#7B3F00',light:'#FAE5CC',
+why:'HQ Warehouse is the engine room. Every piece of equipment that reaches a patient passed through this team. Stockouts of key items have been a CEO-level concern. Inventory accuracy is not optional.',
+employees:[{n:'Derek Teater',r:'Warehouse',av:'DT'},{n:'Shawn Berryman',r:'Warehouse',av:'SB'},{n:'Bailey Detty',r:'Warehouse',av:'BD'},{n:'Gerardo Aguilar Jr.',r:'Warehouse',av:'GA'},{n:'Hector Salas',r:'Warehouse',av:'HS'},{n:'Bradley Grim',r:'Warehouse',av:'BG'},{n:'Blake Davis',r:'Warehouse',av:'BD2'}],
+kpis:[
+{name:'PAR Compliance Rate',unit:'%',key:'par',success:90,coast:75,li:false,why:'PAR levels are the early warning system. Falling below PAR means ProCare is one more order away from a stockout.',inst:'(SKUs at or above PAR ÷ total tracked SKUs) × 100',ex:'Ex: 47 of 52 = 90.4%',s:'90%+ — inventory healthy',c:'75–89% — cracks showing',f:'Below 75% — stockout risk high'},
+{name:'Stockout Incidents',unit:'count',key:'stockouts',success:0,coast:2,li:true,why:'A stockout means a patient order cannot be fulfilled. The worst outcome for this department.',inst:'Count every SKU that hit zero on-hand this week. List item names in notes.',ex:'Ex: 0 OR 1: bed wedges hit zero Tuesday',s:'0 — no patient turned away',c:'1–2 — investigate immediately',f:'3+ — systemic failure'},
+{name:'Equipment Turnaround',unit:'days',key:'turnaround',success:2,coast:4,li:true,why:'Equipment sitting in Needs Cleaning or Needs Repair is capacity that cannot reach patients.',inst:'Average days from return/pull to Ready to Rent for all items this week',ex:'Ex: 8 items, 18 total days = 2.25 avg',s:'Under 2 days — cycles quickly',c:'2–4 days — acceptable',f:'Over 4 days — backlog building'},
+{name:'Order Fulfillment Accuracy',unit:'%',key:'fulfillment',success:99,coast:95,li:false,why:'Sending the wrong item causes a re-delivery, complaint, and safety risk.',inst:'((Orders dispatched − errors) ÷ total dispatched) × 100',ex:'Ex: 1 error in 87 = 98.9%',s:'99%+ — near-perfect',c:'95–98% — occasional errors',f:'Below 95% — 1 in 20 wrong'},
+{name:'Vendor Re-Order Rate',unit:'count',key:'vendorReorder',success:2,coast:5,li:true,why:'Re-ordering same vendor within same week signals poor planning. Every re-order means duplicate shipping costs.',inst:'Count times a second PO was placed with same vendor this week because an item was missed',ex:'Ex: 2 re-orders',s:'2 or fewer — orders complete',c:'3–5 — incomplete orders getting through',f:'6+ — ordering process fragmented'},
+]},
+whtf:{name:'Warehouse — Twin Falls',mgr:'Sergei Mathas',icon:'📦',color:'#5C3317',light:'#F5DFD0',
+why:'Twin Falls is a satellite operation — when inventory runs out here, there is no quick HQ backup. This team directly protects delivery reliability for every patient in the Twin Falls region.',
+employees:[{n:'Simon Alexander',r:'Driver/TF',av:'SA'},{n:'Elias Spooner',r:'Driver/TF',av:'ES'},{n:'Hunter Jones',r:'Driver/TF',av:'HJ'},{n:'Justin Coates',r:'Driver/TF',av:'JC'}],
+kpis:[
+{name:'PAR Compliance Rate',unit:'%',key:'par',success:90,coast:75,li:false,why:'TF PAR directly protects local delivery. HQ cannot solve a local stockout quickly.',inst:'(SKUs at or above PAR for TF ÷ total tracked TF SKUs) × 100',ex:'Ex: 22 of 26 = 84.6%',s:'90%+ — TF self-sustaining',c:'75–89% — coordinate with HQ',f:'Below 75% — local delivery compromised'},
+{name:'Stockout Incidents',unit:'count',key:'stockouts',success:0,coast:1,li:true,why:'A TF stockout requires emergency transfer or order. Every one delays local patients.',inst:'Count every SKU that hit zero at TF this week',ex:'Ex: 0 — enter zero, not blank',s:'0 — no local patient failed',c:'1 — coordinate with HQ immediately',f:'2+ — escalate to Coby'},
+{name:'Dispatch Readiness Rate',unit:'%',key:'dispatch',success:95,coast:85,li:false,why:'Local drivers depend on the warehouse having equipment staged and ready.',inst:'(Orders with equipment staged at pickup ÷ total orders) × 100',ex:'Ex: 18 of 20 = 90%',s:'95%+ — drivers leave on time',c:'85–94% — occasional staging delays',f:'Below 85% — schedule unreliable'},
+{name:'Equipment Turnaround',unit:'days',key:'turnaround',success:2,coast:4,li:true,why:'Returned equipment sitting idle at TF cannot be deployed locally.',inst:'Average days from return/pull to Ready to Rent at TF',ex:'Ex: 3 items over 7 days = 2.3 avg',s:'Under 2 days — cycles back quickly',c:'2–4 days — acceptable',f:'Over 4 days — local capacity in limbo'},
+{name:'HQ Coordination Accuracy',unit:'%',key:'coordination',success:95,coast:85,li:false,why:'Transfer errors compound the supply problem rather than solve it.',inst:'(Transfer requests filled correctly ÷ total transfer requests) × 100',ex:'Ex: 4 of 5 = 80%',s:'95%+ — transfers solve the problem',c:'85–94% — occasional errors',f:'Below 85% — TF cannot rely on HQ'},
+]},
+repair:{name:'Repair Department',mgr:'Brianna Richards-Batt',icon:'🔧',color:'#4A235A',light:'#EAD9F5',
+why:'Repair is invisible when it works and catastrophic when it does not. Equipment in the shop too long means patients wait, deliveries fail, and ProCare\'s capacity shrinks without anyone buying new equipment.',
+employees:[{n:'Ronald Griffiths',r:'Repair Tech',av:'RG'},{n:'Braxton Wilburn',r:'Repair Tech',av:'BW'},{n:'Brianna Richards-Batt',r:'Repair Manager',av:'BR'}],
+kpis:[
+{name:'WO Completion Rate',unit:'%',key:'woComp',success:90,coast:75,li:false,why:'Every open WO is equipment that cannot reach a patient. Repair speed determines ProCare\'s available inventory.',inst:'(WOs completed ÷ WOs opened this week) × 100',ex:'Ex: 9 of 11 = 81.8%',s:'90%+ — keeping pace',c:'75–89% — some carry-forward',f:'Below 75% — backlog compounding'},
+{name:'Avg Turnaround Time',unit:'days',key:'turnaround',success:3,coast:5,li:true,why:'Time in repair is time off the floor. Two weeks in the shop is a patient who cannot be served.',inst:'Sum of (close − open) for all completed WOs ÷ total WOs completed',ex:'Ex: 9 WOs, 31 total days = 3.4 avg',s:'Under 3 days — efficient',c:'3–5 days — acceptable for complex',f:'Over 5 days — equipment sitting too long'},
+{name:'Orders Blocked by Repair',unit:'count',key:'blocked',success:0,coast:2,li:true,why:'When a patient order waits on equipment in the shop, that is a direct patient failure.',inst:'Count every piece of equipment in repair with an active patient delivery order waiting',ex:'Ex: 1 power chair, order 8842 waiting',s:'0 — no patient held up',c:'1–2 — communicate with CSR and Coby',f:'3+ — multiple patients waiting. Notify Coby same day.'},
+{name:'Rework / Comeback Rate',unit:'%',key:'rework',success:2,coast:5,li:true,why:'A failed repair returned is worse than no repair — it wasted time, parts, and labor.',inst:'(Items returned within 30 days ÷ total completions) × 100',ex:'Ex: 1 of 9 = 11.1%',s:'Under 2% — repairs thorough and holding',c:'2–5% — review recent cases',f:'Over 5% — quality slipping'},
+{name:'Parts Availability Rate',unit:'%',key:'parts',success:85,coast:70,li:false,why:'Parts delays are the top reason repairs take too long. Proactive stocking keeps turnaround short.',inst:'(Repairs with no parts delay ÷ total repairs) × 100',ex:'Ex: 7 of 9 = 77.8%',s:'85%+ — not held up by supply',c:'70–84% — some delays',f:'Below 70% — repairs regularly stalled'},
+]},
+va:{name:'VA / Veterans Affairs',mgr:'Alexa Johnson',icon:'🎖',color:'#8B0000',light:'#F5D0D0',
+why:'Veterans have waited enough. The VA tracks ProCare\'s performance. Referral sources track it. Patients feel every day of delay. These metrics are both a patient care standard and a federal compliance requirement.',
+employees:[{n:'Steven Toomey',r:'VA Specialist',av:'ST'},{n:'Alexa Johnson',r:'VA Manager',av:'AJ'}],
+kpis:[
+{name:'Auth Approval Rate',unit:'%',key:'authApproval',success:90,coast:75,li:false,why:'VA authorizations are the gateway to delivery. A denied auth is a veteran who does not get equipment on time.',inst:'(VA auths approved ÷ VA auths submitted) × 100',ex:'Ex: 7 of 8 = 87.5%',s:'90%+ — submissions clean',c:'75–89% — denials occurring',f:'Below 75% — VA relationship at risk'},
+{name:'Days to Fulfillment',unit:'days',key:'daysToFulfill',success:10,coast:21,li:true,why:'The time from referral to delivery is the most patient-facing metric in this department. Veterans feel every day.',inst:'Average days from referral received to delivery for VA orders fulfilled this week',ex:'Ex: 3 fulfillments at 8, 9, 11 days = 9.3 avg',s:'Under 10 days — ProCare responsive',c:'10–21 days — auth or scheduling delays',f:'Over 21 days — veterans waiting 3+ weeks'},
+{name:'Auths Pending 30+ Days',unit:'count',key:'pending30',success:0,coast:2,li:true,why:'Auths past 30 days risk expiring — uncompensated care and compliance violations.',inst:'Count open VA auths where (today − submission date) > 30 calendar days',ex:'Ex: 1 auth at 34 days pending',s:'0 — all auths resolved within 30 days',c:'1–2 — escalate with VA coordinator',f:'3+ — compliance and revenue at risk'},
+{name:'Referral Conversion Rate',unit:'%',key:'conversion',success:90,coast:75,li:false,why:'A VA referral that never becomes an order is a veteran not served and revenue not earned.',inst:'(VA referrals converted to orders ÷ total VA referrals received) × 100',ex:'Ex: 6 of 7 = 85.7%',s:'90%+ — nearly every referral becomes an order',c:'75–89% — referrals falling through',f:'Below 75% — significant referral loss'},
+{name:'Portal Compliance Rate',unit:'%',key:'portal',success:95,coast:85,li:false,why:'VA portal errors are rejected submissions that delay care and damage ProCare\'s standing with a federal partner.',inst:'(Portal submissions accepted without rejection ÷ total submissions) × 100',ex:'Ex: 9 of 10 = 90%',s:'95%+ — submissions clean',c:'85–94% — some rejections',f:'Below 85% — recurring errors'},
+]},
+billing:{name:'Billing Department',mgr:'Michelle White',icon:'💰',color:'#1A5276',light:'#D4E6F1',
+why:'Billing is where patient care becomes company revenue. A denial is money ProCare earned but has not collected — and may never collect if not appealed in time. Every metric here has a dollar sign behind it.',
+employees:[{n:'Michelle White',r:'Billing Supervisor',av:'MW'},{n:'Tricia Horning',r:'Billing',av:'TH'}],
+kpis:[
+{name:'Clean Claim Rate',unit:'%',key:'cleanClaim',success:95,coast:88,li:false,why:'A clean claim is paid faster. A dirty claim costs time, delays cash flow, and may expire.',inst:'(Claims accepted first submission ÷ total claims submitted) × 100',ex:'Ex: 58 of 62 = 93.5%',s:'95%+ — billing accurate',c:'88–94% — rework occurring',f:'Below 88% — 1 in 8 claims needs rework'},
+{name:'Denial Rate',unit:'%',key:'denialRate',success:5,coast:10,li:true,why:'Denials are money earned but not collected — may be lost if appeal deadlines are missed.',inst:'(Claims denied ÷ total claims submitted) × 100',ex:'Ex: 4 of 62 = 6.5%',s:'Under 5% — denials rare',c:'5–10% — patterns emerging',f:'Over 10% — systemic problem'},
+{name:'Days in AR',unit:'days',key:'daysAR',success:35,coast:50,li:true,why:'Days in AR measures how long to collect money earned. Long cycles signal disputes or slow follow-up.',inst:'Total AR balance ÷ average daily charges for the month',ex:'Ex: $180,000 / $5,100 daily = 35.3 days',s:'Under 35 days — cash flowing',c:'35–50 days — some delays',f:'Over 50 days — working capital impact'},
+{name:'90+ Day AR Rate',unit:'%',key:'ar90',success:10,coast:20,li:true,why:'Claims over 90 days are at high write-off risk.',inst:'(90+ day AR balance ÷ total AR balance) × 100',ex:'Ex: $22K / $180K = 12.2%',s:'Under 10% — very little at risk',c:'10–20% — aging accumulating',f:'Over 20% — significant revenue at risk'},
+{name:'Payment Posting Accuracy',unit:'%',key:'posting',success:99,coast:97,li:false,why:'Incorrect posting creates phantom balances and compliance risk.',inst:'(Payments posted without error ÷ total payments posted) × 100',ex:'Ex: 143 of 145 = 98.6%',s:'99%+ — posting accurate',c:'97–98% — occasional errors',f:'Below 97% — AR reporting unreliable'},
+]},
+rt:{name:'Respiratory Therapy',mgr:'Kimberly Saul',icon:'🫁',color:'#145A32',light:'#D5F5E3',
+why:'RT patients depend on ProCare equipment to breathe, sleep, and manage serious conditions. CPAP compliance is a Medicare requirement — patients below threshold lose their equipment. Every metric is simultaneously a patient safety standard and a revenue protection measure.',
+employees:[{n:'Kimberly Saul',r:'RT Manager',av:'KS'},{n:'Vickie Lancaster',r:'RT Specialist',av:'VL'}],
+kpis:[
+{name:'CPAP Compliance Rate',unit:'%',key:'cpap',success:85,coast:70,li:false,why:'Medicare requires 4+ hrs/night on 70%+ of nights. Patients below threshold lose authorization and equipment.',inst:'(CPAP patients meeting Medicare threshold ÷ total active CPAP patients) × 100 — pull from modem software',ex:'Ex: 38 of 44 = 86.4%',s:'85%+ — most patients adherent',c:'70–84% — coaching needed',f:'Below 70% — majority at risk'},
+{name:'Days Referral to Setup',unit:'days',key:'setupDays',success:5,coast:10,li:true,why:'Patients referred for RT often manage serious conditions. Every day without equipment is a day without treatment.',inst:'Average days from referral received to delivery and training for all setups completed this week',ex:'Ex: 3 setups at 4, 5, 7 days = 5.3 avg',s:'Under 5 days — patients getting equipment quickly',c:'5–10 days — auth or scheduling delays',f:'Over 10 days — patients waiting too long'},
+{name:'Equipment Utilization Rate',unit:'%',key:'utilization',success:85,coast:65,li:false,why:'RT equipment is expensive. Equipment on a shelf is revenue ProCare paid for but is not collecting.',inst:'Average of (units on rental ÷ units owned) × 100 across all RT equipment types',ex:'Ex: 41 of 48 concentrators = 85.4%',s:'80–90% — fleet earning revenue',c:'65–79% — underutilized',f:'Below 65% or above 92% — fleet sizing problem'},
+{name:'CMN Compliance Rate',unit:'%',key:'cmn',success:98,coast:93,li:false,why:'Missing Certificates of Medical Necessity mean ProCare cannot bill. Every rental without a valid CMN is uncompensated care.',inst:'(Active rental patients with valid signed CMN ÷ total active rental patients) × 100',ex:'Ex: 138 of 142 = 97.2%',s:'98%+ — every rental can be billed',c:'93–97% — a few gaps, track down this week',f:'Below 93% — significant billing exposure'},
+{name:'Patient Retention Rate',unit:'%',key:'retention',success:92,coast:85,li:false,why:'Long-term RT patients are ProCare\'s most reliable revenue. Early discontinuation is a patient care failure and a revenue loss.',inst:'(Active patients end of week ÷ (active patients start + new setups)) × 100',ex:'Ex: 142 / (138 + 6) = 97.9%',s:'92%+ — patients staying on therapy',c:'85–91% — some attrition',f:'Below 85% — high turnover'},
+]},
+sales:{name:'Sales Department',mgr:'Sarah Rushton',icon:'📈',color:'#1B4F72',light:'#D6EAF8',
+why:'Sales determines how much ProCare grows. Every referral relationship built or lost directly determines patient volume and revenue. Without consistent sales activity every other department has less work — and ProCare has less revenue to sustain it.',
+employees:[{n:'Jackson Matheson',r:'Sales Representative',av:'JM'},{n:'Josiah Matau',r:'Sales',av:'JO'}],
+kpis:[
+{name:'New Referral Sources',unit:'count',key:'newReferrals',success:3,coast:1,li:false,why:'Every new physician office or discharge planner added to ProCare\'s network is a recurring source of patient orders.',inst:'Count unique new referral sources who submitted their first order to ProCare this week',ex:'Ex: 2 new physician offices submitted first referrals',s:'3+ — actively growing the network',c:'1–2 — some growth but below pace',f:'0 — no new sources, network stagnant'},
+{name:'Referral Source Visits',unit:'count',key:'sourceVisits',success:10,coast:5,li:false,why:'In-person visits to physicians, discharge planners, and case managers drive referral loyalty.',inst:'Count unique in-person or virtual visits to referral sources this week',ex:'Ex: 12 visits: 8 physician offices, 3 hospital depts, 1 HHA',s:'10+ — actively building relationships',c:'5–9 — below pace, accounts going cold',f:'Below 5 — referral relationships neglected'},
+{name:'Weekly Orders from Sales',unit:'count',key:'salesOrders',success:25,coast:15,li:false,why:'Orders generated through active sales represent ProCare\'s growth revenue.',inst:'Count orders where referral source was directly contacted by sales within prior 30 days',ex:'Ex: 28 orders from active referral relationships',s:'25+ — sales converting to orders',c:'15–24 — moderate conversion',f:'Below 15 — not converting'},
+{name:'Follow-Up Completion Rate',unit:'%',key:'followUp',success:90,coast:75,li:false,why:'Referral sources that are not followed up on go cold. Consistent follow-up keeps ProCare top of mind.',inst:'(Scheduled follow-up contacts completed ÷ total follow-ups scheduled) × 100',ex:'Ex: 18 of 20 = 90%',s:'90%+ — sources maintained consistently',c:'75–89% — some slipping',f:'Below 75% — relationships being neglected'},
+{name:'Pipeline Conversion Rate',unit:'%',key:'pipeline',success:30,coast:15,li:false,why:'Conversion shows whether outreach is turning into referral relationships that generate orders.',inst:'(New referral sources placing first order ÷ total prospects being pursued) × 100',ex:'Ex: 3 of 12 prospects placed first order = 25%',s:'30%+ — outreach converting',c:'15–29% — slow conversion',f:'Below 15% — outreach not converting'},
+]},
+purchasing:{name:'Purchasing Department',mgr:'Justin Cavanaugh',icon:'🛒',color:'#117A65',light:'#D1F2EB',
+why:'Purchasing controls the supply chain that everything else depends on. A missed order, a bad vendor relationship, or an unnecessary re-order costs money and puts patient care at risk.',
+employees:[{n:'Breanna Lawson',r:'Purchasing',av:'BL'}],
+kpis:[
+{name:'PO Fill Rate',unit:'%',key:'poFill',success:95,coast:85,li:false,why:'A PO not filled on time or completely forces emergency orders, re-orders, and stockouts.',inst:'(POs received complete and on time ÷ total POs placed) × 100',ex:'Ex: 9 of 11 = 81.8%',s:'95%+ — vendors reliable',c:'85–94% — some delays or partial fills',f:'Below 85% — supply chain unreliable'},
+{name:'Vendor On-Time Delivery',unit:'%',key:'vendorOnTime',success:90,coast:75,li:false,why:'Vendors who deliver late create downstream stockout risk.',inst:'(Deliveries received on or before expected date ÷ total deliveries received) × 100',ex:'Ex: 8 of 10 = 80%',s:'90%+ — vendors delivering reliably',c:'75–89% — some late deliveries',f:'Below 75% — vendors frequently late'},
+{name:'Emergency / Rush Orders',unit:'count',key:'rushOrders',success:1,coast:4,li:true,why:'Emergency orders are almost always more expensive and signal inventory management broke down.',inst:'Count POs placed as urgent or expedited due to stockout or near-stockout',ex:'Ex: 2 rush orders: bed wedges and transport chairs',s:'0–1 — purchasing is proactive',c:'2–4 — some reactivity',f:'5+ — purchasing reactive, costs elevated'},
+{name:'Cost Variance Rate',unit:'%',key:'costVariance',success:5,coast:10,li:true,why:'Paying more than expected erodes margins without anyone noticing immediately.',inst:'(Actual spend − expected spend) ÷ expected spend × 100',ex:'Ex: $2,100 vs $2,000 = 5%',s:'Under 5% — near contract price',c:'5–10% — some price drift',f:'Over 10% — pricing audit needed'},
+{name:'Vendor Re-Order Rate',unit:'count',key:'vendorReorder',success:2,coast:5,li:true,why:'Re-ordering same vendor within same week signals incomplete first orders and duplicate shipping costs.',inst:'Count times a second PO was placed with same vendor this week because an item was missed',ex:'Ex: 2 re-orders',s:'2 or fewer — orders complete',c:'3–5 — incomplete orders getting through',f:'6+ — ordering fragmented'},
+]},
+};
+
+// ── DATA STORES ───────────────────────────────────────────────────────
+// Department-level submissions
+const SUBS={
+cur:{
+  csr:{calls:162,orders:71,fcr:82,accuracy:96,authRate:87,notes:'Volume spike Thursday. One order error traced to new workflow — coaching underway.',submittedBy:'Jaquilyn Janousek',submittedAt:'Fri Apr 14 4:47 PM',verified:null},
+  driver:{onTime:96,redelivery:2.8,fleet:91,productivity:84,safety:0,notes:'All clear. Van 3 check engine light cleared Wednesday.',submittedBy:'Matthew Martin',submittedAt:'Fri Apr 14 4:58 PM',verified:null},
+  route:{routeComp:96,stopsPerRoute:8.2,routeChanges:2,milesPerDel:13.8,dispatchOnTime:95,notes:'Two same-day changes: one patient not home, one wrong address. Both rescheduled same day.',submittedBy:'Matthew Martin',submittedAt:'Fri Apr 14 5:02 PM',verified:null},
+  whhq:{par:88,stockouts:1,turnaround:2.5,fulfillment:98,vendorReorder:3,notes:'Bed wedges hit zero Tuesday — emergency PO placed, received Thursday. 3 vendor re-orders this week — reviewing PO process.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Apr 14 4:39 PM',verified:null},
+  whtf:{par:72,stockouts:2,dispatch:89,turnaround:3.1,coordination:94,notes:'Transport chairs and manual wheelchairs both hit zero. Short-staffed Tuesday, 3 delivery delays.',submittedBy:'Sergei Mathas',submittedAt:'Fri Apr 14 5:11 PM',verified:null},
+  repair:{woComp:82,turnaround:4.2,blocked:2,rework:3.1,parts:78,notes:'2 orders blocked: power chair (8842) and hospital bed (8855). Waiting on parts from Quantum — ETA Wednesday.',submittedBy:'Brianna Richards-Batt',submittedAt:'Fri Apr 14 4:52 PM',verified:null},
+  va:{authApproval:91,daysToFulfill:8,pending30:1,conversion:88,portal:96,notes:'1 auth at 34 days — escalated Thursday. 1 portal rejection — corrected and resubmitted Friday.',submittedBy:'Alexa Johnson',submittedAt:'Fri Apr 14 4:44 PM',verified:null},
+  billing:{cleanClaim:96,denialRate:4.2,daysAR:31,ar90:9.1,posting:99.1,notes:'3 Medicaid denials traced to missing CMN at intake — working with Jaquilyn.',submittedBy:'Michelle White',submittedAt:'Fri Apr 14 4:33 PM',verified:null},
+  rt:{cpap:83,setupDays:4.5,utilization:84,cmn:97,retention:93,notes:'6 CPAP patients below compliance — all contacted and re-educated. 3 CMNs outstanding.',submittedBy:'Kimberly Saul',submittedAt:'Fri Apr 14 4:55 PM',verified:null},
+  sales:{newReferrals:3,sourceVisits:11,salesOrders:27,followUp:90,pipeline:28,notes:'Visited St. Luke\'s discharge planning Thursday — strong interest. Jackson opened 3 new accounts.',submittedBy:'Sarah Rushton',submittedAt:'Fri Apr 14 5:08 PM',verified:null},
+  purchasing:{poFill:92,vendorOnTime:88,rushOrders:2,costVariance:4.5,vendorReorder:2,notes:'2 rush orders due to low HQ warehouse inventory. Both vendors delivered within 48 hours.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Apr 14 4:39 PM',verified:null},
+},
+p1:{
+  csr:{calls:144,orders:58,fcr:79,accuracy:93,authRate:82,notes:'Lower volume — several staff out Monday.',submittedBy:'Jaquilyn Janousek',submittedAt:'Fri Apr 7 4:51 PM',verified:'verified'},
+  driver:{onTime:94,redelivery:3.5,fleet:88,productivity:72,safety:1,notes:'One near-miss Tuesday. Van 5 and Van 9 both down mid-week.',submittedBy:'Matthew Martin',submittedAt:'Fri Apr 7 5:04 PM',verified:'verified'},
+  route:{routeComp:91,stopsPerRoute:7.1,routeChanges:5,milesPerDel:17.2,dispatchOnTime:88,notes:'Higher route changes due to patient cancellations.',submittedBy:'Matthew Martin',submittedAt:'Fri Apr 7 5:04 PM',verified:'verified'},
+  whhq:{par:85,stockouts:2,turnaround:3.1,fulfillment:97,vendorReorder:5,notes:'Two stockouts: transport chairs and concentrators.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Apr 7 4:42 PM',verified:'flagged'},
+  whtf:{par:70,stockouts:3,dispatch:86,turnaround:3.8,coordination:91,notes:'Three stockouts. Working with HQ on better advance ordering.',submittedBy:'Sergei Mathas',submittedAt:'Fri Apr 7 5:15 PM',verified:'verified'},
+  repair:{woComp:78,turnaround:4.8,blocked:3,rework:4.0,parts:74,notes:'3 orders blocked — notified CSR and Coby on all three.',submittedBy:'Brianna Richards-Batt',submittedAt:'Fri Apr 7 4:55 PM',verified:'verified'},
+  va:{authApproval:88,daysToFulfill:11,pending30:2,conversion:84,portal:93,notes:'Two auths at 31 and 33 days. Escalated both.',submittedBy:'Alexa Johnson',submittedAt:'Fri Apr 7 4:48 PM',verified:'verified'},
+  billing:{cleanClaim:94,denialRate:5.8,daysAR:37,ar90:12.4,posting:98.5,notes:'Higher denial rate. Top reason: missing documentation.',submittedBy:'Michelle White',submittedAt:'Fri Apr 7 4:36 PM',verified:'verified'},
+  rt:{cpap:79,setupDays:6.2,utilization:81,cmn:95,retention:91,notes:'CPAP compliance low — 9 patients below threshold. Two discontinuations.',submittedBy:'Kimberly Saul',submittedAt:'Fri Apr 7 4:58 PM',verified:'verified'},
+  sales:{newReferrals:1,sourceVisits:7,salesOrders:18,followUp:78,pipeline:14,notes:'Jackson out sick Thursday and Friday. Below target on visits.',submittedBy:'Sarah Rushton',submittedAt:'Fri Apr 7 5:09 PM',verified:'verified'},
+  purchasing:{poFill:84,vendorOnTime:78,rushOrders:5,costVariance:9.2,vendorReorder:6,notes:'5 rush orders. Vendor delays from two primary suppliers.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Apr 7 4:42 PM',verified:'flagged'},
+},
+p2:{
+  csr:{calls:178,orders:84,fcr:88,accuracy:98,authRate:93,notes:'Best week this quarter. Team fully staffed and performing well.',submittedBy:'Jaquilyn Janousek',submittedAt:'Fri Mar 31 4:49 PM',verified:'verified'},
+  driver:{onTime:97,redelivery:2.1,fleet:93,productivity:91,safety:0,notes:'Excellent week. No incidents, low overtime, strong completion.',submittedBy:'Matthew Martin',submittedAt:'Fri Mar 31 5:01 PM',verified:'verified'},
+  route:{routeComp:98,stopsPerRoute:8.8,routeChanges:1,milesPerDel:12.2,dispatchOnTime:98,notes:'Best routing week in months. New territory clustering working well.',submittedBy:'Matthew Martin',submittedAt:'Fri Mar 31 5:01 PM',verified:'verified'},
+  whhq:{par:92,stockouts:0,turnaround:1.8,fulfillment:99,vendorReorder:1,notes:'Clean week — no stockouts, inventory in great shape.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Mar 31 4:38 PM',verified:'verified'},
+  whtf:{par:88,stockouts:0,dispatch:97,turnaround:2.1,coordination:98,notes:'Best week of the quarter at TF.',submittedBy:'Sergei Mathas',submittedAt:'Fri Mar 31 5:10 PM',verified:'verified'},
+  repair:{woComp:92,turnaround:2.7,blocked:0,rework:1.5,parts:89,notes:'No blocked orders. Great throughput.',submittedBy:'Brianna Richards-Batt',submittedAt:'Fri Mar 31 4:50 PM',verified:'verified'},
+  va:{authApproval:94,daysToFulfill:7,pending30:0,conversion:93,portal:98,notes:'All auths current. Fast fulfillment. Portal submissions all clean.',submittedBy:'Alexa Johnson',submittedAt:'Fri Mar 31 4:45 PM',verified:'verified'},
+  billing:{cleanClaim:97,denialRate:3.1,daysAR:28,ar90:7.8,posting:99.5,notes:'Best billing week of the quarter.',submittedBy:'Michelle White',submittedAt:'Fri Mar 31 4:33 PM',verified:'verified'},
+  rt:{cpap:88,setupDays:4.1,utilization:86,cmn:99,retention:94,notes:'CPAP compliance up. All CMNs current.',submittedBy:'Kimberly Saul',submittedAt:'Fri Mar 31 4:53 PM',verified:'verified'},
+  sales:{newReferrals:5,sourceVisits:14,salesOrders:34,followUp:95,pipeline:38,notes:'Excellent week. 5 new accounts.',submittedBy:'Sarah Rushton',submittedAt:'Fri Mar 31 5:06 PM',verified:'verified'},
+  purchasing:{poFill:97,vendorOnTime:94,rushOrders:0,costVariance:2.8,vendorReorder:1,notes:'No rush orders. Vendors performing well.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Mar 31 4:38 PM',verified:'verified'},
+},
+};
+
+// Employee-level data: EMP_DATA[week][deptKey][empName] = {kpi values, scorecard, notes}
+const EMP_DATA={cur:{},p1:{},p2:{}};
+// Pre-populate sample employee data for current week
+const sampleEmp={
+  csr:{
+    'Nicole Lombardo':{calls:38,orders:17,fcr:85,accuracy:98,authRate:92,attendance:5,output:5,quality:5,communication:5},
+    'Michaela Valle':{calls:35,orders:15,fcr:80,accuracy:96,authRate:88,attendance:4,output:4,quality:4,communication:4},
+    'Holly Shafer':{calls:32,orders:13,fcr:82,accuracy:95,authRate:85,attendance:5,output:4,quality:4,communication:5},
+    'Natalie Jones':{calls:30,orders:13,fcr:78,accuracy:96,authRate:84,attendance:3,output:4,quality:4,communication:3},
+    'Rebecca Pierce':{calls:27,orders:13,fcr:84,accuracy:97,authRate:90,attendance:5,output:4,quality:5,communication:4},
+  },
+  driver:{
+    'Moses Oneil':{deliveries:21,onTime:98,redeliveries:0,safety:0,otHours:1,attendance:5,output:5,quality:5,communication:5},
+    'Ian Rohman':{deliveries:19,onTime:95,redeliveries:1,safety:0,otHours:2,attendance:5,output:5,quality:4,communication:4},
+    'Scott White':{deliveries:18,onTime:94,redeliveries:1,safety:0,otHours:3,attendance:4,output:4,quality:4,communication:4},
+    'Tyler Nalley':{deliveries:16,onTime:96,redeliveries:0,safety:0,otHours:0,attendance:5,output:4,quality:5,communication:5},
+    'Jordan Goodrich':{deliveries:15,onTime:93,redeliveries:2,safety:0,otHours:4,attendance:3,output:3,quality:3,communication:3},
+    'Richard Williams':{deliveries:14,onTime:95,redeliveries:0,safety:0,otHours:2,attendance:4,output:4,quality:4,communication:4},
+    'Kado Rohman':{deliveries:13,onTime:95,redeliveries:0,safety:0,otHours:1,attendance:5,output:4,quality:4,communication:5},
+    'Jeremy Guse':{deliveries:14,onTime:97,redeliveries:0,safety:0,otHours:0,attendance:5,output:5,quality:5,communication:5},
+  },
+  route:{'Kayden Rohman':{routesComp:5,avgStops:8.2,changes:2,milesPerDel:13.8,dispatchOT:95,attendance:5,output:5,quality:5,communication:5}},
+  whhq:{
+    'Derek Teater':{unitsProc:18,turnaround:2.1,errors:0,posComp:6,reorders:1,attendance:5,output:5,quality:5,communication:4},
+    'Shawn Berryman':{unitsProc:16,turnaround:2.4,errors:1,posComp:5,reorders:1,attendance:4,output:4,quality:4,communication:4},
+    'Bailey Detty':{unitsProc:14,turnaround:2.8,errors:0,posComp:4,reorders:0,attendance:5,output:4,quality:5,communication:5},
+    'Gerardo Aguilar Jr.':{unitsProc:12,turnaround:3.1,errors:0,posComp:3,reorders:0,attendance:4,output:3,quality:4,communication:3},
+    'Hector Salas':{unitsProc:15,turnaround:2.5,errors:0,posComp:5,reorders:1,attendance:5,output:4,quality:4,communication:4},
+  },
+  whtf:{
+    'Simon Alexander':{unitsProc:10,turnaround:3.0,stagingOT:90,errors:1,coordination:94,attendance:4,output:4,quality:4,communication:4},
+    'Elias Spooner':{unitsProc:9,turnaround:3.2,stagingOT:88,errors:1,coordination:94,attendance:3,output:3,quality:3,communication:3},
+    'Hunter Jones':{unitsProc:8,turnaround:3.5,stagingOT:87,errors:0,coordination:95,attendance:5,output:4,quality:4,communication:4},
+    'Justin Coates':{unitsProc:11,turnaround:2.8,stagingOT:92,errors:0,coordination:94,attendance:5,output:5,quality:5,communication:5},
+  },
+  repair:{
+    'Ronald Griffiths':{woComp:5,turnaround:3.8,blocked:1,rework:0,partsReady:82,attendance:5,output:4,quality:5,communication:4},
+    'Braxton Wilburn':{woComp:4,turnaround:4.6,blocked:1,rework:1,partsReady:74,attendance:4,output:3,quality:3,communication:3},
+    'Brianna Richards-Batt':{woComp:0,turnaround:0,blocked:0,rework:0,partsReady:100,attendance:5,output:5,quality:5,communication:5},
+  },
+  va:{
+    'Steven Toomey':{auths:6,authApproval:88,fulfillDays:9,conversion:86,portalAcc:95,attendance:5,output:4,quality:4,communication:4},
+    'Alexa Johnson':{auths:2,authApproval:100,fulfillDays:7,conversion:92,portalAcc:100,attendance:5,output:5,quality:5,communication:5},
+  },
+  billing:{
+    'Michelle White':{claims:35,cleanClaim:97,denials:1,postingAcc:100,ar90:8,attendance:5,output:5,quality:5,communication:5},
+    'Tricia Horning':{claims:27,cleanClaim:94,denials:3,postingAcc:98,ar90:10,attendance:4,output:4,quality:4,communication:4},
+  },
+  rt:{
+    'Kimberly Saul':{setups:2,cpap:85,setupDays:4.2,cmn:98,retention:94,attendance:5,output:5,quality:5,communication:5},
+    'Vickie Lancaster':{setups:1,cpap:81,setupDays:5.1,cmn:96,retention:92,attendance:4,output:4,quality:4,communication:4},
+  },
+  sales:{
+    'Jackson Matheson':{newRefs:3,visits:9,orders:22,followUp:88,pipeline:28,attendance:5,output:5,quality:4,communication:5},
+    'Josiah Matau':{newRefs:0,visits:2,orders:5,followUp:80,pipeline:15,attendance:4,output:3,quality:4,communication:4},
+  },
+  purchasing:{
+    'Breanna Lawson':{posPlaced:7,poFill:93,rush:1,variance:4.0,reorders:1,attendance:5,output:5,quality:5,communication:5},
+  },
+};
+EMP_DATA.cur=JSON.parse(JSON.stringify(sampleEmp));
+EMP_DATA.p1=JSON.parse(JSON.stringify(sampleEmp)); // simplified: use same for demo
+EMP_DATA.p2=JSON.parse(JSON.stringify(sampleEmp));
+
+const EMP_COMMENTS={};
+Object.keys(DEPTS).forEach(k=>{EMP_COMMENTS[k]={};DEPTS[k].employees.forEach(e=>{EMP_COMMENTS[k][e.n]=[];});});
+
+const MGR_RATINGS={};
+let CW='cur',CV='regional',DV={},entryDV={};
+
+// ── UTILITIES ─────────────────────────────────────────────────────────
+function gst(k,v){if(v===undefined||v===null||v==='')return '';if(k.li){if(v<=k.success)return'green';if(v<=k.coast)return'amber';return'red';}else{if(v>=k.success)return'green';if(v>=k.coast)return'amber';return'red';}}
+function gsc(dk){const s=SUBS[CW][dk],ks=DEPTS[dk].kpis;if(!s)return 0;let t=0,n=0;ks.forEach(k=>{const v=s[k.key];if(v===undefined)return;const st=gst(k,v);t+=st==='green'?100:st==='amber'?60:20;n++;});return n?Math.round(t/n):0;}
+function gtr(dk){const c=gsc(dk);const tmpW=CW;CW='p1';const p=gsc(dk);CW=tmpW;const d=c-p;if(d>5)return{a:'↑',c:VG,t:'+'+d};if(d<-5)return{a:'↓',c:VR,t:''+d};return{a:'→',c:VA,t:'~flat'};}
+function scc(s){return s>=80?'sc-g':s>=55?'sc-a':'sc-r';}
+function fv(k,v){if(v===undefined||v===null||v==='')return'—';if(k.unit==='%')return(+v).toFixed(1)+'%';if(k.unit==='days')return(+v).toFixed(1)+'d';if(k.unit==='miles')return(+v).toFixed(1)+'mi';if(k.unit==='score')return Math.round(+v)+'/100';return String(v);}
+function bw(k,v){if(v===undefined||v===null)return 0;if(k.li){const mx=k.coast*1.7;return Math.max(4,Math.min(100,(+v/mx)*100));}return Math.max(4,Math.min(100,+v));}
+function ecolor(n){const cs=['#1D6A96','#1E5631','#7B3F00','#4A235A','#8B0000','#145A32','#1A5276','#117A65','#1B4F72','#2C6B8A'];let h=0;for(let c of n)h=(h<<5)-h+c.charCodeAt(0);return cs[Math.abs(h)%cs.length];}
+function wl(){return CW==='cur'?'Apr 14, 2026':CW==='p1'?'Apr 7, 2026':'Mar 31, 2026';}
+function empScore(dk,en){
+  const ekpis=EMP_KPIS[dk]||[];const d=EMP_DATA[CW][dk]?.[en]||{};
+  let t=0,n=0;
+  ekpis.forEach(k=>{const v=d[k.key];if(v===undefined)return;const s=gst(k,v);t+=s==='green'?100:s==='amber'?60:20;n++;});
+  // Add scorecard score
+  SC_DIMS.forEach(dim=>{const r=d[dim.key];if(r){t+=(r/5)*100;n++;}});
+  return n?Math.round(t/n):0;
+}
+
+// ── NAV ───────────────────────────────────────────────────────────────
+function buildNav(){
+  const nav=document.getElementById('nav');
+  const tabs=[
+    {id:'regional',l:'Regional Overview'},
+    {sep:true},
+    {id:'csr',l:'CSR',dk:'csr'},{id:'driver',l:'Driver',dk:'driver'},{id:'route',l:'Route',dk:'route'},
+    {id:'whhq',l:'WH HQ',dk:'whhq'},{id:'whtf',l:'WH TF',dk:'whtf'},{id:'repair',l:'Repair',dk:'repair'},
+    {id:'va',l:'VA',dk:'va'},{id:'billing',l:'Billing',dk:'billing'},{id:'rt',l:'RT',dk:'rt'},
+    {id:'sales',l:'Sales',dk:'sales'},{id:'purchasing',l:'Purchasing',dk:'purchasing'},
+    {sep:true},
+    {id:'verify',l:'Verify Submissions'},{id:'mgr-rate',l:'Manager Ratings',tag:'ROM'},{id:'rom-report',l:'ROM Report',tag:'ROM'},
+    {sep:true},{id:'data-entry',l:'✏ Enter Data'},
+  ];
+  nav.innerHTML=tabs.map(t=>{
+    if(t.sep)return'<div class="nsep"></div>';
+    const dot=t.dk?('<span class="nd nd-0" id="nd-'+(t.id)+'"></span>'):'';
+    const tag=t.tag?('<span class="tag-rom">'+(t.tag)+'</span>'):'';
+    return('<div class="ntab" id="nt-'+(t.id)+'" onclick="sv(\''+(t.id)+'\',this)">'+(dot)+(t.l)+(tag)+'</div>');
+  }).join('');
+}
+function updDots(){Object.keys(DEPTS).forEach(k=>{const dot=document.getElementById('nd-'+k);if(!dot)return;const sc=gsc(k);dot.className='nd '+(sc>=80?'nd-g':sc>=55?'nd-a':'nd-r');});}
+function sv(view,el){
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
+  const tab=el||document.getElementById('nt-'+view);if(tab)tab.classList.add('active');
+  CV=view;const mc=document.getElementById('mc');
+  if(view==='regional')rReg(mc);
+  else if(view==='data-entry')rEntry(mc);
+  else if(view==='mgr-rate')rMgr(mc);
+  else if(view==='rom-report')rROM(mc);
+  else if(view==='verify')rVerify(mc);
+  else if(DEPTS[view])rDept(view,mc);
+}
+
+// ── REGIONAL ─────────────────────────────────────────────────────────
+function rReg(mc){
+  const ks=Object.keys(DEPTS),scs=ks.map(k=>gsc(k));
+  const g=scs.filter(s=>s>=80).length,a=scs.filter(s=>s>=55&&s<80).length,r=scs.filter(s=>s<55).length;
+  let h=('<p class="st">Regional Overview — Week of '+(wl())+'</p><p class="ss">Click any department card to drill into KPIs, submitted reports, and employee performance.</p>\n  <div class="pill-row"><div class="pill pg">● '+(g)+' on track</div>'+(a?('<div class="pill pa">● '+(a)+' need attention</div>'):'')+' '+(r?('<div class="pill pr">● '+(r)+' failing</div>'):'')+'</div>\n  <div class="rg">');
+  ks.forEach(k=>{
+    const D=DEPTS[k],sub=SUBS[CW][k],sc=gsc(k),tr=gtr(k);
+    const vs=sub?.verified;const vb=vs==='verified'?('<span style="font-size:9px;color:'+(VG)+';font-weight:600">✓ Verified</span>'):vs==='flagged'?('<span style="font-size:9px;color:'+(VR)+';font-weight:600">⚑ Flagged</span>'):sub?.submittedAt?('<span style="font-size:9px;color:var(--text3)">Pending</span>'):('<span style="font-size:9px;color:'+(VR)+'">Not submitted</span>');
+    h+=('<div class="dc" onclick="drill(\''+(k)+'\')"><div class="dc-h"><div class="di" style="background:'+(D.color)+'22">'+(D.icon)+'</div><div class="dn"><div class="dn-t">'+(D.name)+'</div><div class="dn-m">'+(D.mgr)+'</div></div><div class="ds '+(scc(sc))+'">'+(sc)+'</div></div><div class="kb">');
+    D.kpis.forEach(kp=>{const v=sub?.[kp.key];const s=v!==undefined?gst(kp,v):'';const fc=s==='green'?'#2D9E5F':s==='amber'?'#D4930A':s==='red'?'#C0392B':'#CBD5E0';const dc=s==='green'?VG:s==='amber'?VA:s==='red'?VR:'#CBD5E0';
+      h+=('<div class="kr"><div class="kl" title="'+(kp.name)+'">'+(kp.name)+'</div><div class="kt"><div class="kf" style="width:'+(bw(kp,v))+'%;background:'+(fc)+'"></div></div><div class="kd" style="background:'+(dc)+'"></div></div>');});
+    const gn=D.kpis.filter(kp=>{const v=sub?.[kp.key];return v!==undefined&&gst(kp,v)==='green';}).length;
+    const an=D.kpis.filter(kp=>{const v=sub?.[kp.key];return v!==undefined&&gst(kp,v)==='amber';}).length;
+    const rn=D.kpis.filter(kp=>{const v=sub?.[kp.key];return v!==undefined&&gst(kp,v)==='red';}).length;
+    h+=('</div><div class="df"><div class="dfg"><span class="dfc" style="color:'+(VG)+'">● '+(gn)+'</span><span class="dfc" style="color:'+(VA)+'">● '+(an)+'</span><span class="dfc" style="color:'+(VR)+'">● '+(rn)+'</span>'+(vb)+'</div><span class="dtr" style="color:'+(tr.c)+'">'+(tr.a)+' '+(tr.t)+'</span></div></div>');
+  });
+  h+='</div>';mc.innerHTML=h;
+}
+function drill(k){document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));const tab=document.getElementById('nt-'+k);if(tab)tab.classList.add('active');CV=k;rDept(k,document.getElementById('mc'));}
+
+// ── DEPT DETAIL ───────────────────────────────────────────────────────
+function rDept(k,mc){
+  const D=DEPTS[k],sub=SUBS[CW][k],sc=gsc(k),tr=gtr(k);
+  const mode=DV[k]||'kpis';
+  let h=('<div class="wb"><div class="wbi">'+(D.icon)+'</div><div class="wbt"><h4>Why '+(D.name)+' metrics matter</h4><p>'+(D.why)+'</p></div></div>\n  <div class="dh"><div class="dhi" style="background:'+(D.color)+'22">'+(D.icon)+'</div>\n  <div style="flex:1"><div style="font-size:16px;font-weight:600">'+(D.name)+'</div><div style="font-size:10px;color:var(--text3);margin-top:2px">'+(D.mgr)+' — Week of '+(wl())+'</div></div>\n  <div style="text-align:right"><div class="bsc '+(scc(sc))+'">'+(sc)+'</div><div style="font-size:9px;color:var(--text3)">dept score / 100</div><div style="font-size:10px;font-weight:500;color:'+(tr.c)+';margin-top:1px">'+(tr.a)+' '+(tr.t)+' vs last week</div></div></div>\n  <div class="dts">\n    <button class="dt '+(mode==='kpis'?'active':'')+'" onclick="sdv(\''+(k)+'\',\'kpis\')">KPI Dashboard</button>\n    <button class="dt '+(mode==='submission'?'active':'')+'" onclick="sdv(\''+(k)+'\',\'submission\')">Submitted Report</button>\n    <button class="dt '+(mode==='employees'?'active':'')+'" onclick="sdv(\''+(k)+'\',\'employees\')">Employee Performance</button>\n  </div>');
+
+  if(mode==='kpis'){
+    h+=('<div class="kg">');
+    D.kpis.forEach((kp,i)=>{
+      const v=sub?.[kp.key];const s=v!==undefined?gst(kp,v):'';
+      const vc=s==='green'?VG:s==='amber'?VA:s==='red'?VR:'#718096';
+      const fc=s==='green'?'#2D9E5F':s==='amber'?'#D4930A':s==='red'?'#C0392B':'#CBD5E0';
+      let ta='',tc='#718096';
+      if(v!==undefined){const tmpW=CW;CW='p1';const pv=SUBS.p1[k]?.[kp.key];CW=tmpW;if(pv!==undefined){const df=+v-+pv;const bt=kp.li?df<0:df>0;tc=bt?VG:df!==0?VR:'#718096';ta=bt?'↑':df!==0?'↓':'→';}}
+      const stxt=s==='green'?'✓ On Track':s==='amber'?'⚠ Watch':s==='red'?'✗ Failing':'No data';
+      h+=('<div class="kc"><div class="kct"><span class="kr2">KPI '+(i+1)+'</span><div class="kn">'+(kp.name)+'</div>\n      <div class="kva"><div class="kv" style="color:'+(vc)+'">'+(fv(kp,v))+'<span class="ta" style="color:'+(tc)+'">'+(ta)+'</span></div><div class="ku">this week</div></div></div>\n      <div class="kw"><span class="kwl">Why it matters</span>'+(kp.why)+'</div>\n      <div class="kp"><div class="kp-t"><span>Performance</span><span style="color:'+(vc)+';font-weight:600">'+(stxt)+'</span></div><div class="kp-b"><div class="kp-f" style="width:'+(bw(kp,v))+'%;background:'+(fc)+'"></div></div></div>\n      <div class="tr-r"><div class="tc tg"><div class="tl">Success</div><div class="tt">'+(kp.s)+'</div></div><div class="tc ta2"><div class="tl">Coasting</div><div class="tt">'+(kp.c)+'</div></div><div class="tc tr2"><div class="tl">Failing</div><div class="tt">'+(kp.f)+'</div></div></div></div>');
+    });
+    h+=('</div>');
+  } else if(mode==='submission'){
+    if(!sub?.submittedAt){
+      h+=('<div class="sv-box"><div class="sv-empty">No submission received for this department this week.<br><span style="font-size:10px">Reports are due every Friday by end of day.</span></div></div>');
+    } else {
+      const vs=sub.verified;const vc=vs==='verified'?VG:vs==='flagged'?VR:'#718096';
+      const vt=vs==='verified'?'Verified ✓':vs==='flagged'?'Flagged ⚑':'Pending Review';
+      h+=('<div class="sv-box"><div class="sv-hdr"><div><h3>Submitted Report — '+(D.name)+'</h3><div class="sv-meta">By '+(sub.submittedBy)+' on '+(sub.submittedAt)+'</div></div>\n      <div class="sv-badge" style="background:'+(vc)+'22;color:'+(vc)+';border:1px solid '+(vc)+'">'+(vt)+'</div></div>\n      <div class="sv-grid">');
+      D.kpis.forEach((kp,i)=>{
+        const v=sub[kp.key];const s=v!==undefined?gst(kp,v):'';
+        const vc2=s==='green'?VG:s==='amber'?VA:s==='red'?VR:'#718096';
+        const st=s==='green'?'✓ On target':s==='amber'?'⚠ Watch':s==='red'?'✗ Below standard':'';
+        h+=('<div class="sf"><div class="sf-l">KPI '+(i+1)+' — '+(kp.name)+'</div>\n        <div class="sf-v" style="color:'+(vc2)+'">'+(v!==undefined?v:'—')+' <span style="font-size:10px;color:var(--text3);font-weight:400">'+(kp.unit)+'</span></div>\n        '+(st?('<div class="sf-s" style="color:'+(vc2)+'">'+(st)+'</div>'):'')+'\n        <div class="sf-i">'+(kp.inst)+'</div></div>');
+      });
+      h+=('</div>');
+      if(sub.notes)h+=('<div class="sv-notes"><div class="sv-nd">Manager Notes</div><div style="font-size:11px;color:var(--text2);line-height:1.6">'+(sub.notes)+'</div></div>');
+      if(!vs){
+        h+=('<div class="vbar"><p>Have you reviewed this submission for accuracy?</p><div class="vbtns"><button class="vb vb-ok" onclick="doVerify(\''+(k)+'\',\'verified\')">Looks accurate — Mark Verified</button><button class="vb vb-fl" onclick="doVerify(\''+(k)+'\',\'flagged\')">Flag for Follow-Up</button></div></div>');
+      } else {
+        h+=('<div class="vbar"><p style="color:'+(vc)+';font-weight:500">'+(vt)+' — reviewed by Coby Hunt</p><div class="vbtns"><button class="vb" style="background:var(--lgray);color:var(--text2);border:1px solid var(--border)" onclick="doVerify(\''+(k)+'\',null)">Reset</button>'+(vs==='verified'?('<button class="vb vb-fl" onclick="doVerify(\''+(k)+'\',\'flagged\')">Flag</button>'):('<button class="vb vb-ok" onclick="doVerify(\''+(k)+'\',\'verified\')">Mark Verified</button>'))+'</div></div>');
+      }
+      h+=('</div>');
+    }
+  } else {
+    // EMPLOYEE PERFORMANCE
+    h+=('<div class="ib">Each employee card shows their individual KPI metrics, a 4-dimension scorecard rating, and weekly comment notes. Enter employee data in the Data Entry tab — select the employee name to enter their specific metrics.</div>\n    <div class="eg">');
+    D.employees.forEach(emp=>{
+      const ec=ecolor(emp.n);const ed=EMP_DATA[CW][k]?.[emp.n]||{};
+      const ekpis=EMP_KPIS[k]||[];const esc=empScore(k,emp.n);
+      const sk=emp.n.replace(/[^a-zA-Z0-9]/g,'_');
+      const comments=EMP_COMMENTS[k][emp.n]||[];
+      const wkCmt=comments.find(c=>c.week===CW);
+      const priorCmts=comments.filter(c=>c.week!==CW).slice(-2).reverse();
+      h+=('<div class="ec"><div class="ech"><div class="ea" style="background:'+(ec)+'">'+(emp.av)+'</div>\n      <div><div class="en">'+(emp.n)+'</div><div class="er">'+(emp.r)+'</div></div>\n      <div class="esc '+(scc(esc))+'" style="margin-left:auto">'+(esc)+'</div></div>\n      <div class="ekpis">');
+      ekpis.forEach(kp=>{
+        const v=ed[kp.key];const s=v!==undefined?gst(kp,v):'';
+        const vc=s==='green'?VG:s==='amber'?VA:s==='red'?VR:'#CBD5E0';
+        const fw=v!==undefined?bw(kp,v):0;
+        const dispV=v!==undefined?(kp.unit==='%'?(+v).toFixed(1)+'%':kp.unit==='days'?(+v).toFixed(1)+'d':kp.unit==='miles'?(+v).toFixed(1)+'mi':v):'—';
+        h+=('<div class="ekpi-row">\n          <div class="ekpi-lbl" title="'+(kp.inst)+'">'+(kp.name)+'</div>\n          <div class="ekpi-bar"><div class="ekpi-bar-f" style="width:'+(fw)+'%;background:'+(vc)+'"></div></div>\n          <div class="ekpi-val" style="color:'+(vc)+'">'+(dispV)+'</div>\n          <div class="ekpi-dot" style="background:'+(vc)+'"></div>\n        </div>');
+      });
+      h+=('</div>');
+      // Scorecard stars
+      h+=('<div class="esc-sec"><div class="esc-lbl">Scorecard Ratings</div><div class="esc-grid">');
+      SC_DIMS.forEach(dim=>{
+        const rating=ed[dim.key]||0;
+        h+=('<div class="esc-item"><div class="esc-name" title="'+(dim.hint)+'">'+(dim.name)+'</div><div class="esc-stars">');
+        for(let i=1;i<=5;i++){
+          const on=i<=rating;const cls=on?(rating>=4?'on-g':rating>=3?'on':'on-r'):'';
+          h+=('<div class="star '+(cls)+'" style="'+(on?('background:'+(rating>=4?'var(--gmid)':rating>=3?'var(--amid)':'var(--rmid)')):'')+'"></div>');
+        }
+        h+=('</div></div>');
+      });
+      h+=('</div></div>');
+      // Weekly comment
+      h+=('<div class="ecom"><div class="ecom-lbl">Weekly Comment — '+(wl())+(priorCmts.length?('<span class="ecom-hist" onclick="togHist(\'hist_'+(sk)+'\')">Prior weeks</span>'):'')+'</div>\n      <textarea class="ecom-ta" id="cmt_'+(k)+'_'+(sk)+'" placeholder="Enter your observations for '+(emp.n)+' this week...&#10;&#10;• Performance and output&#10;• Attendance or punctuality&#10;• Wins or standout moments&#10;• Concerns or coaching needed">'+(wkCmt?.text||'')+'</textarea>\n      <button class="ecom-save" onclick="saveCmt(\''+(k)+'\',\''+(emp.n)+'\',\''+(sk)+'\')">Save</button>\n      <div class="ecom-saved" id="sv_'+(sk)+'">✓ Saved</div>\n      '+(priorCmts.length?('<div class="hist-box" id="hist_'+(sk)+'" style="display:none">'+(priorCmts.map(function(c){ return '<div class="hent"><div class="hw">'+(c.week==='p1'?'Apr 7, 2026':c.week==='p2'?'Mar 31, 2026':c.week)+'</div><div class="ht">'+(c.text||'<em style="color:var(--text3)">No comment entered</em>')+'</div></div>'; }).join(''))+'</div>'):'')+'\n      </div></div>');
+    });
+    h+=('</div>');
+  }
+  mc.innerHTML=h;
+}
+function sdv(k,m){DV[k]=m;rDept(k,document.getElementById('mc'));}
+function saveCmt(dk,en,sk){
+  const ta=document.getElementById('cmt_'+dk+'_'+sk);if(!ta)return;
+  const arr=EMP_COMMENTS[dk][en];const idx=arr.findIndex(c=>c.week===CW);
+  if(idx>=0)arr[idx].text=ta.value;else arr.push({week:CW,text:ta.value});
+  const sv=document.getElementById('sv_'+sk);if(sv){sv.style.display='block';setTimeout(()=>sv.style.display='none',2000);}
+}
+function togHist(id){const el=document.getElementById(id);if(el)el.style.display=el.style.display==='none'?'block':'none';}
+function doVerify(k,st){if(SUBS[CW][k])SUBS[CW][k].verified=st;rDept(k,document.getElementById('mc'));updDots();}
+
+// ── VERIFY SUBMISSIONS ────────────────────────────────────────────────
+function rVerify(mc){
+  const ks=Object.keys(DEPTS);
+  let h=('<p class="st">Submission Verification — Week of '+(wl())+'</p><p class="ss">Review each department submission. Mark verified if numbers look accurate, flag if something needs follow-up.</p>');
+  const pending=ks.filter(k=>SUBS[CW][k]?.submittedAt&&!SUBS[CW][k]?.verified);
+  const verified=ks.filter(k=>SUBS[CW][k]?.verified==='verified');
+  const flagged=ks.filter(k=>SUBS[CW][k]?.verified==='flagged');
+  const missing=ks.filter(k=>!SUBS[CW][k]?.submittedAt);
+  h+=('<div class="pill-row">'+(verified.length?('<div class="pill pg">● '+(verified.length)+' verified</div>'):'')+' '+(pending.length?('<div class="pill pa">● '+(pending.length)+' pending review</div>'):'')+' '+(flagged.length?('<div class="pill pr">● '+(flagged.length)+' flagged</div>'):'')+' '+(missing.length?('<div class="pill" style="background:var(--lgray);color:var(--text3)">● '+(missing.length)+' not submitted</div>'):'')+'</div>');
+  ks.forEach(k=>{
+    const D=DEPTS[k],sub=SUBS[CW][k];
+    if(!sub?.submittedAt){h+=('<div class="sv-box" style="margin-bottom:10px"><div class="sv-hdr" style="background:var(--rbg)"><div><h3 style="color:'+(VR)+'">'+(D.icon)+' '+(D.name)+'</h3><div class="sv-meta" style="color:'+(VR)+'">'+(D.mgr)+' — Not submitted</div></div><div class="sv-badge" style="background:'+(VR)+'22;color:'+(VR)+';border:1px solid '+(VR)+'">Not Submitted</div></div></div>');return;}
+    const vs=sub.verified;const vc=vs==='verified'?VG:vs==='flagged'?VR:'#718096';
+    const vt=vs==='verified'?'Verified ✓':vs==='flagged'?'Flagged ⚑':'Pending Review';
+    h+=('<div class="sv-box" style="margin-bottom:10px">\n    <div class="sv-hdr"><div><h3>'+(D.icon)+' '+(D.name)+'</h3><div class="sv-meta">By '+(sub.submittedBy)+' on '+(sub.submittedAt)+' | Score: '+(gsc(k))+'/100</div></div>\n    <div style="display:flex;align-items:center;gap:7px"><div class="sv-badge" style="background:'+(vc)+'22;color:'+(vc)+';border:1px solid '+(vc)+'">'+(vt)+'</div>\n    <button class="btn btn-s" style="font-size:9px;padding:4px 10px" onclick="drill(\''+(k)+'\');DV[\''+(k)+'\']=\'submission\'">Full Report</button></div></div>\n    <div style="padding:10px 14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;border-bottom:1px solid var(--border)">');
+    D.kpis.forEach(kp=>{const v=sub[kp.key];const s=v!==undefined?gst(kp,v):'';const vc2=s==='green'?VG:s==='amber'?VA:s==='red'?VR:'#CBD5E0';
+      h+=('<div style="display:flex;align-items:center;gap:6px"><div style="width:6px;height:6px;border-radius:50%;background:'+(vc2)+';flex-shrink:0"></div><span style="font-size:9px;color:var(--text3);flex:1">'+(kp.name)+'</span><span style="font-family:\'DM Mono\',monospace;font-size:10px;font-weight:500;color:'+(vc2)+'">'+(fv(kp,v))+'</span></div>');});
+    h+=('</div>');
+    if(sub.notes)h+=('<div style="padding:9px 14px;background:#FAFBFC;border-bottom:1px solid var(--border)"><span style="font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:600">Notes: </span><span style="font-size:10px;color:var(--text2)">'+(sub.notes)+'</span></div>');
+    if(!vs){h+=('<div class="vbar"><p>Review above — does this look accurate?</p><div class="vbtns"><button class="vb vb-ok" onclick="doVerify2(\''+(k)+'\',\'verified\')">Mark Verified</button><button class="vb vb-fl" onclick="doVerify2(\''+(k)+'\',\'flagged\')">Flag for Follow-Up</button></div></div>');}
+    else{h+=('<div class="vbar"><p style="color:'+(vc)+';font-weight:500">'+(vt)+' — Coby Hunt</p><div class="vbtns"><button class="vb" style="background:var(--lgray);color:var(--text2);border:1px solid var(--border)" onclick="doVerify2(\''+(k)+'\',null)">Reset</button>'+(vs==='verified'?('<button class="vb vb-fl" onclick="doVerify2(\''+(k)+'\',\'flagged\')">Flag</button>'):('<button class="vb vb-ok" onclick="doVerify2(\''+(k)+'\',\'verified\')">Mark Verified</button>'))+'</div></div>');}
+    h+=('</div>');
+  });
+  mc.innerHTML=h;
+}
+function doVerify2(k,st){if(SUBS[CW][k])SUBS[CW][k].verified=st;rVerify(document.getElementById('mc'));updDots();}
+
+// ── DATA ENTRY ────────────────────────────────────────────────────────
+function rEntry(mc){
+  const mode=entryDV.mode||'dept';
+  let h=('<p class="st">Enter This Week\'s Data</p><p class="ss">Switch between Department Data (overall KPIs) and Employee Data (individual metrics per employee) using the tabs below.</p>\n  <div class="entry-tabs">\n    <button class="etab '+(mode==='dept'?'active':'')+'" onclick="setEntryMode(\'dept\')">Department Totals</button>\n    <button class="etab '+(mode==='emp'?'active':'')+'" onclick="setEntryMode(\'emp\')">Employee Metrics</button>\n  </div>');
+
+  if(mode==='dept'){
+    Object.entries(DEPTS).forEach(([k,D])=>{
+      const sub=SUBS[CW][k]||{};
+      h+=('<div class="ep"><div class="eph"><div class="di" style="background:'+(D.color)+'22;width:28px;height:28px;font-size:12px">'+(D.icon)+'</div><h3>'+(D.name)+'</h3><span style="font-size:9px;color:var(--text3);margin-left:5px">— '+(D.mgr)+'</span></div>\n      <p class="eps">Department-wide totals. These feed the regional overview and verification.</p>\n      <div class="ep-grid">');
+      D.kpis.forEach(kp=>{
+        const cv=sub[kp.key]!==undefined?sub[kp.key]:'';
+        const s=cv!==''?gst(kp,cv):'';const bc=s==='green'?VG:s==='amber'?VA:s==='red'?VR:'';
+        h+=('<div class="ef"><label style="color:'+(D.color)+'">'+(kp.name)+' <span style="font-size:8px;color:var(--text3);font-weight:400">('+(kp.unit)+')</span></label>\n        <input type="number" id="di_'+(k)+'_'+(kp.key)+'" value="'+(cv)+'" step="'+(kp.unit==='%'?'0.1':'1')+'" min="0" '+(bc?('style="border-color:'+(bc)+';border-width:2px"'):'')+'\n          onchange="luv(\''+(k)+'\',\''+(kp.key)+'\',this)">\n        <div class="ef-i"><b>How:</b> '+(kp.inst)+'</div><div class="ef-e">'+(kp.ex)+'</div></div>');
+      });
+      h+=('</div>\n      <div style="margin-top:10px"><label style="font-size:10px;font-weight:600;color:'+(D.color)+';display:block;margin-bottom:3px">Manager Notes <span style="color:'+(VR)+'">*required</span></label>\n      <textarea class="ta" id="di_'+(k)+'_notes" placeholder="Flags, wins, issues, anything needing Coby\'s attention this week...">'+(sub.notes||'')+'</textarea></div>\n      <div style="display:flex;align-items:center;gap:8px;margin-top:10px"><button class="btn btn-p" onclick="subDept(\''+(k)+'\')">Submit '+(D.name)+'</button><span class="btn-note">Marks submitted and visible in Verify Submissions</span></div></div>');
+    });
+  } else {
+    // Employee entry
+    const selKey=entryDV.dk||Object.keys(DEPTS)[0];
+    h+=('<div style="margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">\n    <span style="font-size:11px;color:var(--text3)">Select department:</span>');
+    Object.entries(DEPTS).forEach(([k,D])=>{
+      h+=('<button class="btn '+(selKey===k?'btn-p':'btn-s')+'" style="font-size:10px;padding:5px 12px" onclick="setEntryDept(\''+(k)+'\')">'+(D.icon)+' '+(D.name)+'</button>');
+    });
+    h+=('</div>');
+    const D=DEPTS[selKey];const ekpis=EMP_KPIS[selKey]||[];
+    h+=('<div class="ib">Enter individual KPI metrics for each '+(D.name)+' team member below. Also set their scorecard rating (1–5) for attendance, output, quality, and communication.</div>\n    <div class="sc-entry-grid">');
+    D.employees.forEach(emp=>{
+      const ec=ecolor(emp.n);const ed=EMP_DATA[CW][selKey]?.[emp.n]||{};
+      const sk=emp.n.replace(/[^a-zA-Z0-9]/g,'_');
+      const esc=empScore(selKey,emp.n);
+      h+=('<div class="sc-entry-card"><div class="sc-ec-hdr">\n        <div class="ea" style="background:'+(ec)+';width:26px;height:26px;font-size:11px">'+(emp.av)+'</div>\n        <div class="sc-ec-name">'+(emp.n)+'</div>\n        <div class="sc-ec-role">'+(emp.r)+'</div>\n        <div style="font-family:\'DM Mono\',monospace;font-size:13px;font-weight:500;'+(esc>=80?('color:'+(VG)):esc>=55?('color:'+(VA)):('color:'+(VR)))+';margin-left:auto">'+(esc)+'</div>\n      </div><div class="sc-ec-body">');
+
+      // KPI inputs
+      h+=('<div style="font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:600;margin-bottom:2px">Individual KPI Metrics</div>');
+      ekpis.forEach(kp=>{
+        const cv=ed[kp.key]!==undefined?ed[kp.key]:'';
+        const s=cv!==''?gst(kp,cv):'';const bc=s==='green'?VG:s==='amber'?VA:s==='red'?VR:'';
+        h+=('<div class="ef" style="margin-bottom:4px"><label style="color:'+(D.color)+';font-size:9px">'+(kp.name)+' <span style="color:var(--text3);font-weight:400">('+(kp.unit)+')</span></label>\n        <input type="number" id="ei_'+(selKey)+'_'+(sk)+'_'+(kp.key)+'" value="'+(cv)+'" step="'+(kp.unit==='%'?'0.1':'1')+'" min="0" style="padding:5px 8px;font-size:11px;'+(bc?('border-color:'+(bc)+';border-width:2px'):'')+'"\n          onchange="luvEmp(\''+(selKey)+'\',\''+(emp.n)+'\',\''+(kp.key)+'\',this,\''+(sk)+'\')">\n        <div class="ef-i" style="font-size:8px">'+(kp.inst)+'</div></div>');
+      });
+
+      // Scorecard
+      h+=('<div style="font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:600;margin:6px 0 4px">Scorecard Ratings (1–5)</div>');
+      SC_DIMS.forEach(dim=>{
+        const rating=ed[dim.key]||0;
+        h+=('<div class="sc-row"><div class="sc-row-lbl">'+(dim.name)+'</div><div class="sc-row-stars">');
+        for(let i=1;i<=5;i++){
+          h+=('<div class="sc-star '+(i<=rating?'on':'')+'" onclick="setScorecard(\''+(selKey)+'\',\''+(emp.n)+'\',\''+(dim.key)+'\','+(i)+',\''+(sk)+'\')" title="'+(i)+'">'+(i<=rating?'★':'☆')+'</div>');
+        }
+        h+=('</div><div class="sc-row-hint" style="font-size:8px;color:var(--text3)">'+(dim.hint)+'</div></div>');
+      });
+      h+=('</div></div>');
+    });
+    h+=('</div>\n    <div style="display:flex;align-items:center;gap:8px;margin-top:8px">\n      <button class="btn btn-p" onclick="saveEmpData(\''+(selKey)+'\')">Save '+(D.name)+' Employee Data</button>\n      <span class="btn-note">Saves all employee metrics and scorecard ratings for this department</span>\n    </div>');
+  }
+  mc.innerHTML=h;
+}
+
+function setEntryMode(m){entryDV.mode=m;rEntry(document.getElementById('mc'));}
+function setEntryDept(k){entryDV.dk=k;rEntry(document.getElementById('mc'));}
+
+function luv(k,key,el){
+  if(!SUBS[CW][k])SUBS[CW][k]={};
+  SUBS[CW][k][key]=parseFloat(el.value)||0;
+  const kp=DEPTS[k].kpis.find(p=>p.key===key);
+  if(kp){const s=gst(kp,SUBS[CW][k][key]),c=s==='green'?VG:s==='amber'?VA:VR;el.style.borderColor=c;el.style.borderWidth='2px';}
+  updDots();
+}
+
+function luvEmp(dk,en,key,el,sk){
+  if(!EMP_DATA[CW][dk])EMP_DATA[CW][dk]={};
+  if(!EMP_DATA[CW][dk][en])EMP_DATA[CW][dk][en]={};
+  EMP_DATA[CW][dk][en][key]=parseFloat(el.value)||0;
+  const kp=(EMP_KPIS[dk]||[]).find(p=>p.key===key);
+  if(kp){const s=gst(kp,EMP_DATA[CW][dk][en][key]),c=s==='green'?VG:s==='amber'?VA:VR;el.style.borderColor=c;el.style.borderWidth='2px';}
+  // Update employee score display
+  const scoreEl=el.closest('.sc-entry-card')?.querySelector('[style*="DM Mono"]');
+  if(scoreEl){const sc=empScore(dk,en);scoreEl.textContent=sc;scoreEl.style.color=sc>=80?VG:sc>=55?VA:VR;}
+}
+
+function setScorecard(dk,en,dim,val,sk){
+  if(!EMP_DATA[CW][dk])EMP_DATA[CW][dk]={};
+  if(!EMP_DATA[CW][dk][en])EMP_DATA[CW][dk][en]={};
+  EMP_DATA[CW][dk][en][dim]=val;
+  rEntry(document.getElementById('mc'));
+}
+
+function subDept(k){
+  const D=DEPTS[k];const now=new Date();
+  const ts=now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})+' '+now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  if(!SUBS[CW][k])SUBS[CW][k]={};
+  D.kpis.forEach(kp=>{const el=document.getElementById('di_'+k+'_'+kp.key);if(el)SUBS[CW][k][kp.key]=parseFloat(el.value)||0;});
+  const nEl=document.getElementById('di_'+k+'_notes');if(nEl)SUBS[CW][k].notes=nEl.value;
+  SUBS[CW][k].submittedBy=D.mgr;SUBS[CW][k].submittedAt=ts;SUBS[CW][k].verified=null;
+  updDots();alert(((D.name)+' submitted!\\nScore: '+(gsc(k))+'/100\\nCoby can review in Verify Submissions.'));
+}
+
+function saveEmpData(dk){
+  const D=DEPTS[dk];const now=new Date();
+  if(!EMP_DATA[CW][dk])EMP_DATA[CW][dk]={};
+  D.employees.forEach(emp=>{
+    const sk=emp.n.replace(/[^a-zA-Z0-9]/g,'_');
+    if(!EMP_DATA[CW][dk][emp.n])EMP_DATA[CW][dk][emp.n]={};
+    (EMP_KPIS[dk]||[]).forEach(kp=>{
+      const el=document.getElementById('ei_'+dk+'_'+sk+'_'+kp.key);
+      if(el&&el.value!=='')EMP_DATA[CW][dk][emp.n][kp.key]=parseFloat(el.value)||0;
+    });
+  });
+  alert(((D.name)+' employee data saved! View in the Employee Performance tab.'));
+}
+
+// ── MANAGER RATINGS ───────────────────────────────────────────────────
+const QS=[
+  {id:'reports',t:'Were all reports submitted on time and accurately for the week?',opts:['Yes','Partial','No']},
+  {id:'projects',t:'Were all projects and action items for the week completed on time?',opts:['Yes','Partial','No']},
+  {id:'comms',t:'Did the manager proactively communicate issues before they became problems?',opts:['Yes','Partial','No']},
+  {id:'team',t:'Was the team adequately staffed and led this week?',opts:['Yes','Partial','No','N/A']},
+  {id:'overall',t:'Overall manager performance rating for the week',opts:['Exceeding','Meeting','Approaching','Below']},
+];
+function mgrSc(k){const r=MGR_RATINGS[k]||{};let s=50;const yn={Yes:20,Partial:8,No:-15,'N/A':0};['reports','projects','comms','team'].forEach(q=>{if(r[q])s+=yn[r[q]]||0;});const ov={Exceeding:10,Meeting:0,Approaching:-10,Below:-20};if(r.overall)s+=ov[r.overall]||0;return Math.max(0,Math.min(100,s));}
+function rMgr(mc){
+  let h=('<p class="st">Manager Performance Ratings</p><p class="ss">Complete weekly for each manager. These ratings feed the ROM Report sent to Sarah Rushton.</p>\n  <div class="ib">Completed by Coby Hunt — visible only in this section and the generated ROM Report.</div><div class="mr-grid">');
+  // One card per unique manager — deduplicate and exclude Sarah Rushton (COO level, not rated here)
+  const seenMgrs={};
+  Object.entries(DEPTS).forEach(([k,D])=>{
+    if(D.mgr==='Sarah Rushton')return;
+    if(seenMgrs[D.mgr])return;
+    seenMgrs[D.mgr]=true;
+    if(!MGR_RATINGS[k])MGR_RATINGS[k]={};const ms=mgrSc(k);
+    // Show all departments this manager is responsible for
+    const allDepts=Object.entries(DEPTS).filter(([,d])=>d.mgr===D.mgr).map(([,d])=>d.name).join(' + ');
+    h+=('<div class="mr-c"><div class="mr-ch"><div class="di" style="background:'+(D.color)+'22;width:26px;height:26px;font-size:11px">'+(D.icon)+'</div><div><div class="mr-cn">'+(D.mgr)+'</div><div class="mr-cd">'+(allDepts)+'</div></div></div><div class="mr-b">');
+    QS.forEach(q=>{
+      const sel=MGR_RATINGS[k][q.id]||'';
+      h+=('<div class="mr-q"><div class="mr-qt">'+(q.t)+'</div><div class="mr-opts">');
+      q.opts.forEach(o=>{
+        let cls='';if(sel===o){if(o==='Yes'||o==='Exceeding')cls='mop-e';else if(o==='No'||o==='Below')cls='mop-b';else if(o==='Approaching')cls='mop-a';else if(o==='Meeting')cls='mop-m';else if(o==='N/A')cls='mop-na';else cls='mop-p';}
+        h+=('<div class="mop '+(cls)+'" onclick="setMgr(\''+(k)+'\',\''+(q.id)+'\',\''+(o)+'\',this)">'+(o)+'</div>');
+      });
+      h+=('</div></div>');
+    });
+    const nv=MGR_RATINGS[k].notes||'';
+    h+=('<textarea class="mr-notes" placeholder="Notes / observations for '+(D.mgr)+' this week..." onchange="MGR_RATINGS[\''+(k)+'\'].notes=this.value">'+(nv)+'</textarea>\n    </div><div class="mr-foot"><span class="mr-fl">Manager score</span><span class="mr-fv" id="ms_'+(k)+'" style="color:'+(ms>=75?VG:ms>=50?VA:VR)+'">'+(ms)+'/100</span></div></div>');
+  });
+  h+=('</div><div style="margin-top:12px"><button class="btn btn-g" onclick="alert(\'Ratings saved. Go to ROM Report to generate your weekly COO report.\')">Save All Ratings</button></div>');
+  mc.innerHTML=h;
+}
+function setMgr(k,q,v,el){
+  if(!MGR_RATINGS[k])MGR_RATINGS[k]={};MGR_RATINGS[k][q]=v;
+  el.parentElement.querySelectorAll('.mop').forEach(o=>o.className='mop');
+  let cls='';if(v==='Yes'||v==='Exceeding')cls='mop-e';else if(v==='No'||v==='Below')cls='mop-b';else if(v==='Approaching')cls='mop-a';else if(v==='Meeting')cls='mop-m';else if(v==='N/A')cls='mop-na';else cls='mop-p';
+  el.className='mop '+cls;
+  const el2=document.getElementById('ms_'+k);const ms=mgrSc(k);if(el2){el2.textContent=ms+'/100';el2.style.color=ms>=75?VG:ms>=50?VA:VR;}
+}
+
+// ── ROM REPORT ────────────────────────────────────────────────────────
+function rROM(mc){
+  const ks=Object.keys(DEPTS),scs=ks.map(k=>gsc(k));
+  const reg=Math.round(scs.reduce((a,b)=>a+b,0)/scs.length);
+  const g=scs.filter(s=>s>=80).length,a=scs.filter(s=>s>=55&&s<80).length,r=scs.filter(s=>s<55).length;
+  let rpt=('PROCARE MEDICAL EQUIPMENT\\nREGIONAL OPERATIONS WEEKLY REPORT\\nPrepared by: Coby Hunt, Regional Operations Manager\\nWeek of: '+(wl())+'\\nSubmitted to: Sarah Rushton, COO\\n\\n'+('='.repeat(60))+'\\nSECTION 1 — REGIONAL SCORECARD\\n'+('='.repeat(60))+'\\n\\n');
+  rpt+=(('Department'.padEnd(24))+('Manager'.padEnd(22))+('Score'.padEnd(8))+('Status'.padEnd(10))+'Verified\\n'+('-'.repeat(72))+'\\n');
+  ks.forEach(k=>{const sc=gsc(k),st=sc>=80?'ON TRACK':sc>=55?'WATCH':'FAILING';const vs=SUBS[CW][k]?.verified||'pending';rpt+=((DEPTS[k].name.padEnd(24))+(DEPTS[k].mgr.padEnd(22))+((sc+'/100').padEnd(8))+(st.padEnd(10))+(vs)+'\\n');});
+  rpt+=('\\nRegional Average: '+(reg)+'/100  |  On Track: '+(g)+'  |  Watch: '+(a)+'  |  Failing: '+(r)+'\\n\\n');
+  const ns=ks.filter(k=>!SUBS[CW][k]?.submittedAt);const fl=ks.filter(k=>SUBS[CW][k]?.verified==='flagged');
+  if(ns.length||fl.length){rpt+=(('='.repeat(60))+'\\nSECTION 2 — SUBMISSION FLAGS\\n'+('='.repeat(60))+'\\n\\n');if(ns.length)rpt+=('NOT SUBMITTED: '+(ns.map(k=>DEPTS[k].mgr).join(', '))+'\\n');if(fl.length)rpt+=('FLAGGED FOR FOLLOW-UP: '+(fl.map(k=>DEPTS[k].mgr).join(', '))+'\\n');rpt+='\n';}
+  rpt+=(('='.repeat(60))+'\\nSECTION 3 — DEPARTMENT FLAGS & NOTES\\n'+('='.repeat(60))+'\\n\\n');
+  ks.forEach(k=>{const D=DEPTS[k],sub=SUBS[CW][k],sc=gsc(k);const fail=D.kpis.filter(kp=>sub?.[kp.key]!==undefined&&gst(kp,sub[kp.key])==='red');const watch=D.kpis.filter(kp=>sub?.[kp.key]!==undefined&&gst(kp,sub[kp.key])==='amber');
+    rpt+=((D.name.toUpperCase())+' — '+(D.mgr)+' — '+(sc)+'/100\\n');if(fail.length)rpt+=('  FAILING: '+(fail.map(kp=>kp.name+' ('+fv(kp,sub[kp.key])+')').join(', '))+'\\n');if(watch.length)rpt+=('  WATCH:   '+(watch.map(kp=>kp.name+' ('+fv(kp,sub[kp.key])+')').join(', '))+'\\n');if(!fail.length&&!watch.length)rpt+=('  All KPIs on track.\\n');if(sub?.notes)rpt+=('  Notes: '+(sub.notes)+'\\n');rpt+='\n';});
+  rpt+=(('='.repeat(60))+'\\nSECTION 4 — MANAGER RATINGS\\n'+('='.repeat(60))+'\\n\\n');
+  rpt+=(('Manager'.padEnd(22))+('Reports'.padEnd(10))+('Projects'.padEnd(10))+('Overall'.padEnd(12))+'Score\\n'+('-'.repeat(60))+'\\n');
+  // Deduplicate managers in ratings section, exclude Sarah Rushton
+  const romSeenMgrs={};
+  ks.forEach(k=>{
+    const D=DEPTS[k];
+    if(D.mgr==='Sarah Rushton')return;
+    if(romSeenMgrs[D.mgr])return;
+    romSeenMgrs[D.mgr]=true;
+    const r2=MGR_RATINGS[k]||{};
+    rpt+=((D.mgr.padEnd(22))+((r2.reports||'—').padEnd(10))+((r2.projects||'—').padEnd(10))+((r2.overall||'—').padEnd(12))+(mgrSc(k))+'/100\\n');
+  });
+  rpt+=('\\n'+('='.repeat(60))+'\\nSECTION 5 — PRIORITIES & COO NEEDS\\n'+('='.repeat(60))+'\\n\\n1. [Enter top priority for next week]\\n2. [Enter second priority]\\n3. [Enter third priority]\\n\\nSupport / decisions needed from Sarah:\\n[Enter anything requiring COO attention]\\n\\n'+('─'.repeat(60))+'\\nCoby Hunt | Regional Operations Manager\\nProCare Medical Equipment\\n'+('─'.repeat(60)));
+  mc.innerHTML=('<p class="st">Weekly ROM Report</p><p class="ss">Auto-generated from this week\'s submitted data, manager ratings, and verification status. Edit priorities before sending to Sarah Rushton.</p>\n  <div class="rep-panel"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:7px">\n    <strong style="font-size:13px">Report — Week of '+(wl())+'</strong>\n    <div style="display:flex;gap:7px"><button class="btn btn-s" onclick="sv(\'rom-report\')">↻ Refresh</button><button class="btn btn-p" onclick="copyR()">Copy to Clipboard</button></div>\n  </div>\n  <textarea id="rptTxt" style="width:100%;height:500px;font-family:\'DM Mono\',monospace;font-size:10px;line-height:1.7;padding:12px;border:1px solid var(--border);border-radius:6px;background:#FAFBFC;color:var(--text2);resize:vertical">'+(rpt)+'</textarea>\n  <p style="margin-top:6px;font-size:9px;color:var(--text3)">Edit priorities and notes above before copying.</p></div>');
+}
+function copyR(){const ta=document.getElementById('rptTxt');ta.select();document.execCommand('copy');alert('Report copied! Paste into an email to Sarah Rushton.');}
+
+// ── WEEK & TIME ───────────────────────────────────────────────────────
+function chW(v){CW=v;updDots();sv(CV);}
+function updT(){const n=new Date();document.getElementById('hdrT').textContent=n.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});}
+
+// ── INIT ──────────────────────────────────────────────────────────────
+buildNav();updDots();sv('regional');updT();setInterval(updT,30000);
+
+
+// ── EMPLOYEE VERIFICATION STORE ───────────────────────────────────────
+// EMP_VERIFY[week][deptKey][empName] = 'verified' | 'flagged' | null
+const EMP_VERIFY = {cur:{},p1:{},p2:{}};
+
+// ── IMPROVEMENT SUGGESTIONS ENGINE ───────────────────────────────────
+// Generates specific, actionable suggestions based on actual scores
+function getSuggestions(dk, empName) {
+  const ed = EMP_DATA[CW][dk]?.[empName] || {};
+  const ekpis = EMP_KPIS[dk] || [];
+  const suggestions = [];
+
+  // Find failing and coasting KPIs
+  ekpis.forEach(kp => {
+    const v = ed[kp.key];
+    if (v === undefined) return;
+    const s = gst(kp, v);
+    if (s === 'red' || s === 'amber') {
+      const tip = getKPITip(dk, kp.key, s, v, kp);
+      if (tip) suggestions.push({level: s, kpi: kp.name, tip});
+    }
+  });
+
+  // Scorecard suggestions
+  SC_DIMS.forEach(dim => {
+    const r = ed[dim.key] || 0;
+    if (r > 0 && r <= 2) suggestions.push({level:'red', kpi: dim.name, tip: getScorecardTip(dim.key, r)});
+    else if (r === 3) suggestions.push({level:'amber', kpi: dim.name, tip: getScorecardTip(dim.key, r)});
+  });
+
+  return suggestions;
+}
+
+function getKPITip(dk, key, status, val, kpi) {
+  const tips = {
+    // CSR
+    calls: {red:'Call volume is significantly below target. Review scheduling to ensure adequate coverage during peak call hours. Consider whether unanswered calls are going to voicemail and implement a return-call process.', amber:'Call volume is below the 150-call target. Check if there are time blocks where coverage is thin and adjust schedules accordingly.'},
+    orders: {red:'Order entry volume is critically low. Review whether referrals are coming in but not being processed, or whether intake needs support. Target is 60+ orders per week.', amber:'Order volume is below target. Identify whether the gap is in referral volume or in conversion of referrals to orders.'},
+    fcr: {red:'First-call resolution is below 70%. Invest in product knowledge training and ensure CSRs have authority to resolve common issues without escalating.', amber:'FCR between 70–84%. Identify the top 3 reasons for callbacks and build quick-reference guides for those scenarios.'},
+    accuracy: {red:'Order accuracy below 90% means rework is routine. Implement a pre-submit checklist and peer review for complex orders.', amber:'Order accuracy between 90–96%. Review the most common error types and create a targeted training session.'},
+    authRate: {red:'Auth approval below 75% signals systemic documentation issues. Audit the last 10 denials for common missing fields and build a pre-submission checklist.', amber:'Auth approval between 75–89%. Pull the top denial reason code and address it directly with a process change.'},
+    // Driver
+    deliveries: {red:'Delivery count is low. Verify whether routes are being fully dispatched and whether the driver is being fully utilized each day.', amber:'Delivery count below target. Review route assignments to ensure this driver has adequate stop volume.'},
+    onTime: {red:'On-time delivery rate below 88%. Review this driver\'s routes for time estimation accuracy and identify recurring late stops.', amber:'On-time rate between 88–94%. Identify which stops are consistently running late and adjust time windows.'},
+    redeliveries: {red:'Re-delivery count is high. Review whether the issue is equipment staging, address verification, or patient availability. Each re-delivery is a direct cost.', amber:'Re-deliveries occurring. Review the reasons for each one — most should be preventable with better prep.'},
+    safety: {red:'Safety incident recorded. Conduct a formal incident review, document the root cause, and implement a corrective action. Do not normalize incidents.', amber:'Safety incident recorded. Review with driver immediately even if minor.'},
+    otHours: {red:'Overtime hours are high. Review route efficiency, dispatch timing, and whether workload is appropriately distributed.', amber:'Overtime hours trending up. Monitor closely and review whether route planning is setting realistic time expectations.'},
+    // Repair
+    woComp: {red:'Work order completion rate below 75% means backlog is compounding. Triage open WOs by patient impact and prioritize blocked orders.', amber:'WO completion between 75–89%. Identify what is causing carry-forward — parts delays, complexity, or workload.'},
+    turnaround: {red:'Average turnaround over 5 days. Identify the longest-sitting WOs and determine whether parts, complexity, or workload is the bottleneck.', amber:'Turnaround between 3–5 days. Review whether parts ordering is proactive or reactive.'},
+    blocked: {red:'Multiple patient orders are blocked by equipment in this technician\'s queue. Escalate the highest-priority blocked items immediately and communicate ETAs to CSR.', amber:'A patient order is waiting on repair. Communicate proactively with CSR and set a specific return-to-service date.'},
+    rework: {red:'Comeback rate over 5% indicates quality shortcuts or incomplete diagnosis. Review recent comebacks to identify the pattern.', amber:'Comebacks occurring. Review the most recent cases — was the root cause addressed or just the symptom?'},
+    partsReady: {red:'Parts availability below 70% means repairs are regularly stalled. Review reorder points and identify which parts are most frequently missing.', amber:'Parts delays occurring on some repairs. Review which parts are causing delays and adjust stock levels.'},
+    // Billing
+    cleanClaim: {red:'Clean claim rate below 88%. Pull the top 3 rejection reason codes and address each one with a targeted process fix.', amber:'Clean claim rate between 88–94%. Identify the most common first-pass rejection and eliminate it.'},
+    denials: {red:'Denial count is high. Identify the top denial reason by payer and address it — documentation gap, coding error, or timely filing issue.', amber:'Denials occurring. Track by payer and denial code to find the pattern.'},
+    postingAcc: {red:'Payment posting errors are creating unreliable AR aging. Implement a same-day error correction process and review posting workflow.', amber:'Occasional posting errors. Review and correct same day to maintain AR accuracy.'},
+    ar90: {red:'90+ day AR rate is high for this person\'s accounts. Prioritize follow-up on the oldest balances — most payers have timely filing limits.', amber:'Aging balances accumulating. Increase follow-up frequency on accounts approaching 60 days.'},
+    // RT
+    cpap: {red:'CPAP compliance below 70% for this person\'s patients. Contact every non-compliant patient this week and document the intervention.', amber:'CPAP compliance between 70–84%. Identify which patients are at risk and schedule compliance coaching calls.'},
+    setupDays: {red:'Average setup time over 10 days. Identify the bottleneck — auth delays, scheduling gaps, or equipment availability.', amber:'Setup time between 5–10 days. Review whether auth turnaround or scheduling is causing the delay.'},
+    cmn: {red:'CMN compliance below 93% means billing exposure is significant. Identify every patient without a valid CMN and pursue signatures this week.', amber:'A few CMNs missing. Track down outstanding signatures before end of week.'},
+    retention: {red:'Patient retention below 85% is unsustainable. Identify why patients are discontinuing — equipment issues, compliance failure, or insurance loss.', amber:'Some patient attrition occurring. Review discontinuation reasons and identify any preventable losses.'},
+    // Sales
+    newRefs: {red:'No new referral sources this week. Schedule at least 3 new account visits next week and identify which physician offices have not yet been contacted.', amber:'New referral source count below target. Identify 5 prospects to contact this week.'},
+    visits: {red:'Referral source visit count critically low. Accounts go cold without face time. Schedule visits immediately for your top 10 accounts.', amber:'Visit count below target. Prioritize accounts that have not been contacted in 3+ weeks.'},
+    orders: {red:'Orders from sales activity below 15. Review which accounts are active but not converting and identify the barrier.', amber:'Sales-linked orders below target. Follow up with accounts that expressed interest but have not submitted referrals.'},
+    followUp: {red:'Follow-up completion below 75%. Referral sources that are not followed up on go cold. Review the scheduling system and clear the backlog this week.', amber:'Some follow-ups missed. Identify which accounts were skipped and contact them first thing next week.'},
+    // Purchasing
+    rush: {red:'Multiple rush orders placed. Identify which inventory items triggered them and adjust PAR levels or reorder timing to prevent recurrence.', amber:'Rush orders placed. Review the root cause — was it a forecasting miss or an unexpected demand spike?'},
+    variance: {red:'Cost variance over 10%. Pull the specific purchases driving the overage and renegotiate or find alternative vendors.', amber:'Cost variance between 5–10%. Review whether the overage is on contracted items — if so, address with vendor.'},
+    reorders: {red:'Vendor re-orders indicate incomplete initial orders. Implement a needs-assessment checklist before placing any PO.', amber:'Some re-orders occurring. Review which vendors and items are being re-ordered and identify the planning gap.'},
+  };
+  const deptTips = tips[key];
+  if (!deptTips) return null;
+  return deptTips[status] || deptTips['amber'] || null;
+}
+
+function getScorecardTip(dim, rating) {
+  const tips = {
+    attendance: {1:'Attendance is a serious concern. Have a direct conversation documenting absences and set clear expectations. Consider whether an attendance improvement plan is needed.', 2:'Multiple attendance issues this period. Address directly in 1:1 and document the conversation.', 3:'Attendance is meeting the minimum but not consistent. Acknowledge and set the expectation for improvement.'},
+    output: {1:'Output is well below expectations. Clarify performance standards, identify any barriers, and set specific measurable targets for next week.', 2:'Output below expectations. Review workload balance and identify whether the gap is capability, clarity, or capacity.', 3:'Output meets the minimum. Identify one specific area where this employee could increase productivity and discuss it in the next 1:1.'},
+    quality: {1:'Work quality is significantly below standard. Implement a review process for this employee\'s work output and provide immediate coaching on the most common errors.', 2:'Quality issues occurring. Identify the specific error patterns and provide targeted coaching.', 3:'Quality meets the minimum. Identify one recurring error type and address it specifically.'},
+    communication: {1:'Communication is a significant gap. Set explicit expectations for response time and proactive updates. Address directly in next 1:1.', 2:'Communication needs improvement. Coach on specific scenarios where better communication would have changed the outcome.', 3:'Communication is adequate but not proactive. Encourage this employee to surface issues earlier and share wins more openly.'},
+  };
+  return tips[dim]?.[rating] || null;
+}
+
+// Department-level suggestions
+function getDeptSuggestions(dk) {
+  const sub = SUBS[CW][dk] || {};
+  const suggestions = [];
+  DEPTS[dk].kpis.forEach(kp => {
+    const v = sub[kp.key];
+    if (v === undefined) return;
+    const s = gst(kp, v);
+    if (s === 'red' || s === 'amber') {
+      const tip = getKPITip(dk, kp.key, s, v, kp);
+      if (tip) suggestions.push({level: s, kpi: kp.name, tip});
+    }
+  });
+  return suggestions;
+}
+
+// ── PATCH rDept to add suggestions + emp verification ─────────────────
+const _origRDept = rDept;
+rDept = function(k, mc) {
+  _origRDept(k, mc);
+  // After rendering, inject suggestions into KPI tab and emp verification into employees tab
+  const mode = DV[k] || 'kpis';
+  if (mode === 'kpis') injectDeptSuggestions(k);
+  if (mode === 'employees') injectEmpVerification(k);
+};
+
+function injectDeptSuggestions(dk) {
+  const sugs = getDeptSuggestions(dk);
+  if (!sugs.length) return;
+  const grid = document.querySelector('.kg');
+  if (!grid) return;
+  const div = document.createElement('div');
+  div.style.cssText = 'grid-column:1/-1;background:#fff;border-radius:9px;border:1px solid #E2E8F0;overflow:hidden;margin-bottom:4px';
+  const colors = {red:'#8B0000', amber:'#7B5200'};
+  const bgs = {red:'#F8D7DA', amber:'#FFF3CD'};
+  let h = ('<div style="padding:10px 14px;background:#1F4E79;border-bottom:1px solid #E2E8F0">\n    <span style="font-size:11px;font-weight:600;color:#fff">💡 Improvement Suggestions — based on this week\\\'s scores</span></div>\n    <div style="padding:12px 14px;display:flex;flex-direction:column;gap:8px">');
+  sugs.forEach(s => {
+    h += ('<div style="display:flex;gap:10px;align-items:flex-start;padding:8px 10px;background:'+(bgs[s.level])+';border-radius:6px;border-left:3px solid '+(colors[s.level])+'">\n      <div style="flex-shrink:0;font-size:10px;font-weight:700;color:'+(colors[s.level])+';min-width:50px;padding-top:1px">'+(s.kpi)+'</div>\n      <div style="font-size:10px;color:#2C2C2A;line-height:1.6">'+(s.tip)+'</div>\n    </div>');
+  });
+  h += ('</div>');
+  div.innerHTML = h;
+  grid.insertBefore(div, grid.firstChild);
+}
+
+function injectEmpVerification(dk) {
+  const cards = document.querySelectorAll('.ec');
+  const D = DEPTS[dk];
+  cards.forEach((card, i) => {
+    const emp = D.employees[i];
+    if (!emp) return;
+    if (!EMP_VERIFY[CW][dk]) EMP_VERIFY[CW][dk] = {};
+    const vs = EMP_VERIFY[CW][dk][emp.n] || null;
+    const vcolor = vs === 'verified' ? '#1A6B3C' : vs === 'flagged' ? '#8B0000' : '#718096';
+    const vtxt = vs === 'verified' ? 'Verified ✓' : vs === 'flagged' ? 'Flagged ⚑' : 'Pending Review';
+    const sk = emp.n.replace(/[^a-zA-Z0-9]/g,'_');
+
+    // Inject suggestions for this employee
+    const sugs = getSuggestions(dk, emp.n);
+    const ecom = card.querySelector('.ecom');
+    if (ecom && sugs.length) {
+      const sugDiv = document.createElement('div');
+      sugDiv.style.cssText = 'border-top:1px solid #E2E8F0;padding:8px 13px;background:#FAFBFC';
+      const bgs = {red:'#F8D7DA', amber:'#FFF3CD'};
+      const colors = {red:'#8B0000', amber:'#7B5200'};
+      let sh = ('<div style="font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:#718096;font-weight:600;margin-bottom:5px">💡 Improvement Suggestions</div>');
+      sugs.slice(0,3).forEach(s => {
+        sh += ('<div style="margin-bottom:5px;padding:6px 8px;background:'+(bgs[s.level])+';border-radius:5px;border-left:3px solid '+(colors[s.level])+'">\n          <div style="font-size:9px;font-weight:700;color:'+(colors[s.level])+';margin-bottom:2px">'+(s.kpi)+'</div>\n          <div style="font-size:9px;color:#2C2C2A;line-height:1.5">'+(s.tip)+'</div>\n        </div>');
+      });
+      sugDiv.innerHTML = sh;
+      ecom.parentNode.insertBefore(sugDiv, ecom);
+    }
+
+    // Inject verification bar at bottom of card
+    const vDiv = document.createElement('div');
+    vDiv.style.cssText = 'padding:7px 13px;background:#F4F6F9;border-top:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between';
+    vDiv.innerHTML = ('<span style="font-size:9px;color:'+(vcolor)+';font-weight:600">'+(vtxt)+'</span>\n      <div style="display:flex;gap:5px">\n        '+(vs !== 'verified' ? ('<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',\'verified\',this)" style="padding:3px 9px;background:#1A6B3C;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Verify</button>') : '')+'\n        '+(vs !== 'flagged' ? ('<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',\'flagged\',this)" style="padding:3px 9px;background:#8B0000;color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Flag</button>') : '')+'\n        '+(vs ? ('<button onclick="setEmpVerify(\''+(dk)+'\',\''+(emp.n)+'\',null,this)" style="padding:3px 9px;background:#F4F6F9;color:#595959;border:1px solid #E2E8F0;border-radius:4px;font-size:9px;font-weight:600;cursor:pointer">Reset</button>') : '')+'\n      </div>');
+    card.appendChild(vDiv);
+  });
+}
+
+function setEmpVerify(dk, empName, status, btn) {
+  if (!EMP_VERIFY[CW][dk]) EMP_VERIFY[CW][dk] = {};
+  EMP_VERIFY[CW][dk][empName] = status;
+  // Re-render employees tab
+  DV[dk] = 'employees';
+  rDept(dk, document.getElementById('mc'));
+}
+
+function buildNav() {
+  var nav = document.getElementById('nav');
+  if (!nav) return;
+  var isManager = (currentUser === '__MANAGER__');
+  var html = "";
+  html += "<div class=\"ntab active\" id=\"nt-kpis\" onclick=\"setDeptTab('kpis',this)\">KPI Dashboard</div>";
+  if (isManager) {
+    html += "<div class=\"ntab\" id=\"nt-submission\" onclick=\"setDeptTab('submission',this)\">Submitted Report</div>";
+  }
+  html += "<div class=\"ntab\" id=\"nt-employees\" onclick=\"setDeptTab('employees',this)\">" + (isManager ? "Employee Performance" : "My Performance") + "</div>";
+  nav.innerHTML = html;
+}
+function setDeptTab(mode, el) {
+  var tabs = document.querySelectorAll('.ntab');
+  for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove('active'); }
+  if (el) { el.classList.add('active'); }
+  DV['purchasing'] = mode;
+  renderDeptFiltered('purchasing', document.getElementById('mc'));
+}
+function chW(v) {
+  CW = v;
+  renderDeptFiltered('purchasing', document.getElementById('mc'));
+}
+function renderDeptFiltered(k, mc) {
+  var isManager = (currentUser === '__MANAGER__');
+  var mode = DV[k] || 'kpis';
+  if (mode === 'employees' && !isManager) {
+    var D = DEPTS[k];
+    var allEmps = D.employees.slice();
+    D.employees = allEmps.filter(function(e) { return e.n === currentUser; });
+    rDept(k, mc);
+    D.employees = allEmps;
+  } else {
+    rDept(k, mc);
+  }
+}
+function updTime() {
+  var n = new Date();
+  var el = document.getElementById('hdrT');
+  if (el) { el.textContent = n.toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'}); }
+}
+function initDashboard() {
+  buildNav();
+  DV['purchasing'] = 'kpis';
+  renderDeptFiltered('purchasing', document.getElementById('mc'));
+  updTime();
+  setInterval(updTime, 30000);
+}
+</script>
+</body></html>
