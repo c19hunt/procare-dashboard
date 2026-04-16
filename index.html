@@ -447,10 +447,10 @@ purchasing:{name:'Purchasing Department',mgr:'Justin Cavanaugh',icon:'🛒',colo
 why:'Purchasing controls the supply chain that everything else depends on. A missed order, a bad vendor relationship, or an unnecessary re-order costs money and puts patient care at risk.',
 employees:[{n:'Breanna Lawson',r:'Purchasing',av:'BL'}],
 kpis:[
-{name:'PO Fill Rate',unit:'%',key:'poFill',success:95,coast:85,li:false,why:'A PO not filled on time or completely forces emergency orders, re-orders, and stockouts.',inst:'(POs received complete and on time ÷ total POs placed) × 100',ex:'Ex: 9 of 11 = 81.8%',s:'95%+ — vendors reliable',c:'85–94% — some delays or partial fills',f:'Below 85% — supply chain unreliable'},
+{name:'Stockout Incidents',unit:'count',key:'stockouts',success:0,coast:2,li:true,why:'A stockout in purchasing means the warehouse ran out before a PO could arrive — a direct patient impact and a signal that reorder timing failed.',inst:'Count every SKU that hit zero on-hand this week due to a procurement gap. List item names in notes.',ex:'Ex: 0 OR 1: bed wedges hit zero — emergency PO placed',s:'0 — no procurement-driven stockouts',c:'1–2 — investigate reorder timing',f:'3+ — procurement process failing'},
 {name:'Vendor On-Time Delivery',unit:'%',key:'vendorOnTime',success:90,coast:75,li:false,why:'Vendors who deliver late create downstream stockout risk.',inst:'(Deliveries received on or before expected date ÷ total deliveries received) × 100',ex:'Ex: 8 of 10 = 80%',s:'90%+ — vendors delivering reliably',c:'75–89% — some late deliveries',f:'Below 75% — vendors frequently late'},
 {name:'Emergency / Rush Orders',unit:'count',key:'rushOrders',success:1,coast:4,li:true,why:'Emergency orders are almost always more expensive and signal inventory management broke down.',inst:'Count POs placed as urgent or expedited due to stockout or near-stockout',ex:'Ex: 2 rush orders: bed wedges and transport chairs',s:'0–1 — purchasing is proactive',c:'2–4 — some reactivity',f:'5+ — purchasing reactive, costs elevated'},
-{name:'Cost Variance Rate',unit:'%',key:'costVariance',success:5,coast:10,li:true,why:'Paying more than expected erodes margins without anyone noticing immediately.',inst:'(Actual spend − expected spend) ÷ expected spend × 100',ex:'Ex: $2,100 vs $2,000 = 5%',s:'Under 5% — near contract price',c:'5–10% — some price drift',f:'Over 10% — pricing audit needed'},
+{name:'Inventory Accuracy Rate',unit:'%',key:'invAccuracy',success:97,coast:92,li:false,why:'Inaccurate inventory counts lead to ghost orders, missed stockouts, and PAR levels that do not reflect reality.',inst:'(SKUs with on-hand count matching physical count ÷ total SKUs audited this week) × 100. Run against your weekly cycle count.',ex:'Ex: 48 of 50 SKUs match = 96%',s:'97%+ — counts reliable',c:'92–96% — discrepancies emerging',f:'Below 92% — counts unreliable, PAR data compromised'},
 {name:'Vendor Re-Order Rate',unit:'count',key:'vendorReorder',success:2,coast:5,li:true,why:'Re-ordering same vendor within same week signals incomplete first orders and duplicate shipping costs.',inst:'Count times a second PO was placed with same vendor this week because an item was missed',ex:'Ex: 2 re-orders',s:'2 or fewer — orders complete',c:'3–5 — incomplete orders getting through',f:'6+ — ordering fragmented'},
 ]},
 };
@@ -469,7 +469,7 @@ cur:{
   billing:{cleanClaim:96,denialRate:4.2,daysAR:31,ar90:9.1,posting:99.1,notes:'3 Medicaid denials traced to missing CMN at intake — working with Jaquilyn.',submittedBy:'Michelle White',submittedAt:'Fri Apr 14 4:33 PM',verified:null},
   rt:{cpap:83,setupDays:4.5,utilization:84,cmn:97,retention:93,notes:'6 CPAP patients below compliance — all contacted and re-educated. 3 CMNs outstanding.',submittedBy:'Kimberly Saul',submittedAt:'Fri Apr 14 4:55 PM',verified:null},
   sales:{newReferrals:3,sourceVisits:11,salesOrders:27,followUp:90,pipeline:28,notes:'Visited St. Luke\'s discharge planning Thursday — strong interest. Jackson opened 3 new accounts.',submittedBy:'Sarah Rushton',submittedAt:'Fri Apr 14 5:08 PM',verified:null},
-  purchasing:{poFill:92,vendorOnTime:88,rushOrders:2,costVariance:4.5,vendorReorder:2,notes:'2 rush orders due to low HQ warehouse inventory. Both vendors delivered within 48 hours.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Apr 14 4:39 PM',verified:null},
+  purchasing:{stockouts:1,vendorOnTime:88,rushOrders:2,invAccuracy:95,vendorReorder:2,notes:'2 rush orders due to low HQ warehouse inventory. Both vendors delivered within 48 hours.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Apr 14 4:39 PM',verified:null},
 },
 p1:{
   csr:{calls:144,orders:58,fcr:79,accuracy:93,authRate:82,notes:'Lower volume — several staff out Monday.',submittedBy:'Jaquilyn Janousek',submittedAt:'Fri Apr 7 4:51 PM',verified:'verified'},
@@ -482,7 +482,7 @@ p1:{
   billing:{cleanClaim:94,denialRate:5.8,daysAR:37,ar90:12.4,posting:98.5,notes:'Higher denial rate. Top reason: missing documentation.',submittedBy:'Michelle White',submittedAt:'Fri Apr 7 4:36 PM',verified:'verified'},
   rt:{cpap:79,setupDays:6.2,utilization:81,cmn:95,retention:91,notes:'CPAP compliance low — 9 patients below threshold. Two discontinuations.',submittedBy:'Kimberly Saul',submittedAt:'Fri Apr 7 4:58 PM',verified:'verified'},
   sales:{newReferrals:1,sourceVisits:7,salesOrders:18,followUp:78,pipeline:14,notes:'Jackson out sick Thursday and Friday. Below target on visits.',submittedBy:'Sarah Rushton',submittedAt:'Fri Apr 7 5:09 PM',verified:'verified'},
-  purchasing:{poFill:84,vendorOnTime:78,rushOrders:5,costVariance:9.2,vendorReorder:6,notes:'5 rush orders. Vendor delays from two primary suppliers.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Apr 7 4:42 PM',verified:'flagged'},
+  purchasing:{stockouts:3,vendorOnTime:78,rushOrders:5,invAccuracy:91,vendorReorder:6,notes:'5 rush orders. Vendor delays from two primary suppliers.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Apr 7 4:42 PM',verified:'flagged'},
 },
 p2:{
   csr:{calls:178,orders:84,fcr:88,accuracy:98,authRate:93,notes:'Best week this quarter. Team fully staffed and performing well.',submittedBy:'Jaquilyn Janousek',submittedAt:'Fri Mar 31 4:49 PM',verified:'verified'},
@@ -495,7 +495,7 @@ p2:{
   billing:{cleanClaim:97,denialRate:3.1,daysAR:28,ar90:7.8,posting:99.5,notes:'Best billing week of the quarter.',submittedBy:'Michelle White',submittedAt:'Fri Mar 31 4:33 PM',verified:'verified'},
   rt:{cpap:88,setupDays:4.1,utilization:86,cmn:99,retention:94,notes:'CPAP compliance up. All CMNs current.',submittedBy:'Kimberly Saul',submittedAt:'Fri Mar 31 4:53 PM',verified:'verified'},
   sales:{newReferrals:5,sourceVisits:14,salesOrders:34,followUp:95,pipeline:38,notes:'Excellent week. 5 new accounts.',submittedBy:'Sarah Rushton',submittedAt:'Fri Mar 31 5:06 PM',verified:'verified'},
-  purchasing:{poFill:97,vendorOnTime:94,rushOrders:0,costVariance:2.8,vendorReorder:1,notes:'No rush orders. Vendors performing well.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Mar 31 4:38 PM',verified:'verified'},
+  purchasing:{stockouts:0,vendorOnTime:94,rushOrders:0,invAccuracy:98,vendorReorder:1,notes:'No rush orders. Vendors performing well.',submittedBy:'Justin Cavanaugh',submittedAt:'Fri Mar 31 4:38 PM',verified:'verified'},
 },
 };
 
@@ -555,7 +555,7 @@ const sampleEmp={
     'Josiah Matau':{newRefs:0,visits:2,orders:5,followUp:80,pipeline:15,attendance:4,output:3,quality:4,communication:4},
   },
   purchasing:{
-    'Breanna Lawson':{posPlaced:7,poFill:93,rush:1,variance:4.0,reorders:1,attendance:5,output:5,quality:5,communication:5},
+    'Breanna Lawson':{posPlaced:7,stockouts:0,rush:1,invAccuracy:96,reorders:1,attendance:5,output:5,quality:5,communication:5},
   },
 };
 EMP_DATA.cur=JSON.parse(JSON.stringify(sampleEmp));
