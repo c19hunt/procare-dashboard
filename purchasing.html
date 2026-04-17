@@ -850,8 +850,8 @@ function rEntry(mc){
   mc.innerHTML=h;
 }
 
-function setEntryMode(m){entryDV.mode=m;rEntry(document.getElementById('mc'));}
-function setEntryDept(k){entryDV.dk=k;rEntry(document.getElementById('mc'));}
+function setEntryMode(m){entryDV.mode=m;renderDeptFiltered('purchasing', document.getElementById('mc'));}
+function setEntryDept(k){entryDV.dk=k;renderDeptFiltered('purchasing', document.getElementById('mc'));}
 
 function luv(k,key,el){
   if(!SUBS[CW][k])SUBS[CW][k]={};
@@ -876,7 +876,7 @@ function setScorecard(dk,en,dim,val,sk){
   if(!EMP_DATA[CW][dk])EMP_DATA[CW][dk]={};
   if(!EMP_DATA[CW][dk][en])EMP_DATA[CW][dk][en]={};
   EMP_DATA[CW][dk][en][dim]=val;
-  rEntry(document.getElementById('mc'));
+  renderDeptFiltered('purchasing', document.getElementById('mc'));
 }
 
 function subDept(k){
@@ -890,17 +890,59 @@ function subDept(k){
 }
 
 function saveEmpData(dk){
-  const D=DEPTS[dk];const now=new Date();
-  if(!EMP_DATA[CW][dk])EMP_DATA[CW][dk]={};
-  D.employees.forEach(emp=>{
-    const sk=emp.n.replace(/[^a-zA-Z0-9]/g,'_');
-    if(!EMP_DATA[CW][dk][emp.n])EMP_DATA[CW][dk][emp.n]={};
-    (EMP_KPIS[dk]||[]).forEach(kp=>{
-      const el=document.getElementById('ei_'+dk+'_'+sk+'_'+kp.key);
-      if(el&&el.value!=='')EMP_DATA[CW][dk][emp.n][kp.key]=parseFloat(el.value)||0;
+  var D = DEPTS[dk];
+  var weekMap = {'cur':'2026-04-14','p1':'2026-04-07','p2':'2026-03-31'};
+  var weekDate = weekMap[CW] || '2026-04-14';
+  var enteredBy = currentUser === '__MANAGER__' ? D.mgr : currentUser;
+  var promises = [];
+
+  D.employees.forEach(function(emp) {
+    var ed = EMP_DATA[CW][dk] ? (EMP_DATA[CW][dk][emp.n] || {}) : {};
+    var ekpis = EMP_KPIS[dk] || [];
+    var payload = {
+      dept: dk,
+      empName: emp.n,
+      week: weekDate,
+      kpi1: ed[ekpis[0] ? ekpis[0].key : 'k1'] || 0,
+      kpi2: ed[ekpis[1] ? ekpis[1].key : 'k2'] || 0,
+      kpi3: ed[ekpis[2] ? ekpis[2].key : 'k3'] || 0,
+      kpi4: ed[ekpis[3] ? ekpis[3].key : 'k4'] || 0,
+      kpi5: ed[ekpis[4] ? ekpis[4].key : 'k5'] || 0,
+      attendance: ed.attendance || 0,
+      output: ed.output || 0,
+      quality: ed.quality || 0,
+      communication: ed.communication || 0,
+      comments: (EMP_COMMENTS[dk] && EMP_COMMENTS[dk][emp.n] && EMP_COMMENTS[dk][emp.n].length > 0)
+        ? (EMP_COMMENTS[dk][emp.n].find(function(c){return c.week===CW;}) || {text:''}).text
+        : '',
+      enteredBy: enteredBy
+    };
+
+    var p = fetch('https://defaulte5003052e1b34e5799663b29702fcf.5c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/986db28c4c7647ba935f3dfc507de5ed/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=GoffQfSLybyw56hMqG9XST27rGROYmIPSLnB7VfJCNA', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    }).then(function(resp) {
+      if (resp.ok || resp.status === 202) {
+        return {emp: emp.n, ok: true};
+      } else {
+        return {emp: emp.n, ok: false, status: resp.status};
+      }
+    }).catch(function(err) {
+      return {emp: emp.n, ok: false, error: err.message};
     });
+    promises.push(p);
   });
-  alert(((D.name)+' employee data saved! View in the Employee Performance tab.'));
+
+  Promise.all(promises).then(function(results) {
+    var failed = results.filter(function(r){return !r.ok;});
+    if (failed.length === 0) {
+      alert('Employee data saved successfully to SharePoint for all ' + D.employees.length + ' employee(s).');
+    } else {
+      var names = failed.map(function(r){return r.emp;}).join(', ');
+      alert('Saved ' + (results.length - failed.length) + ' of ' + results.length + ' records. Failed: ' + names + '. Check your internet connection and try again.');
+    }
+  });
 }
 
 // ── MANAGER RATINGS ───────────────────────────────────────────────────
